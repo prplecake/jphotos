@@ -9,6 +9,36 @@ photos, that isn't Flickr, or 500px, or Format, etc.
 photos.jrgnsn.net is eventually where this app will go live and will be
 where I host pictures, photography, etc.
 
+## Building
+
+**Dependencies:**
+
+* go (>-=1.12)
+
+	cd $REPO/cmd/jbooks-server; go build
+
+in the root of the repository.
+
+## Developing
+
+### Live reloading for development
+
+Live reloading can be accomplished with [codegangsta/gin][gin] by
+running:
+
+	gin --build cmd/jbooks-server
+
+in the root of the repository. Add `--all` to watch HTML templates,
+also. 
+
+### Initializing the database
+
+First, make sure you have postgres installed.
+
+Then, import the schema:
+
+	psql < $REPO/db/sql/schema.sql
+
 
 ## Resources
 
