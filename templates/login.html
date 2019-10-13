@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Login - jphotos</title>
-</head>
-<body>
+{{template "_pageHeader"}}
 	<h1>Login - jphotos</h1>
 	{{if .Error}}
 	<span style="color:red;">{{.Error}}</span>
@@ -17,5 +12,4 @@
 		</label><br />
 		<input type="submit" value="Login" />
 	</form>
-</body>
-</html>
+{{template "_pageFooter"}}

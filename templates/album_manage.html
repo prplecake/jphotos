@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>{{.Album.Name}} - jphotos</title>
-</head>
-<body>
+{{template "_pageHeader"}}
 	<h1>{{.Album.Name}} - jphotos</h1>
 	{{if .Auth}}
 		<form method="post" action="/album/{{.Album.Slug}}/delete">
@@ -15,6 +10,7 @@
 				<input type="text" name="new_name" id="new_name" />
 			</label>
 			<input type="submit" value="Rename album" />
+		</form>
 	{{end}}
 	{{if .Photos}}
 		{{range .Photos}}
@@ -28,18 +24,6 @@
 	<p>No photos.</p>
 	{{end}}
 
-	{{if .Auth}}
-	<form enctype="multipart/form-data" action="/upload" method="POST">
-		<label for="photoFiles">Photos: 
-			<input type="file" id="photoFiles" name="photoFiles" multiple/>
-		</label><br />
-		<label for="caption">Caption: 
-			<input type="text" id="caption" name="caption" />
-		</label><br />
-		<input type="submit" value="Upload & Add to Album" />
-		<input type="hidden" name="album-id" value="{{.Album.ID}}" />
-		<a href="/album/{{.Album.Slug}}/manage">manage this album</a>
-	</form>
-	{{end}}
-</body>
-</html>
+	{{template "photoUploadForm" .Album}}
+
+{{template "_pageFooter"}}
