@@ -33,7 +33,7 @@ func (s *Server) routes() {
 	r.HandleFunc("/", s.homeHandler)
 	r.HandleFunc("/login", s.loginHandler).Methods("GET", "POST")
 	r.HandleFunc("/albums", s.handleAlbumIndex)
-	r.HandleFunc("/album/{id}", s.handleGetAlbumByID)
+	r.HandleFunc("/album/{slug}", s.handleGetAlbum)
 	r.HandleFunc("/photo/{id}", s.handleGetPhotoByID)
 
 	http.Handle("/", r)

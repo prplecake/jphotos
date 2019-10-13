@@ -1,0 +1,7 @@
+app:
+  port: 8080
+database:
+  username: mjorgensen
+  name: something
+templates:
+  path: /path/to/templates

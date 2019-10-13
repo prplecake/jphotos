@@ -1,7 +1,6 @@
 package db
 
 import (
-	"database/sql"
 	"errors"
 	"time"
 
@@ -11,14 +10,7 @@ import (
 var (
 	// ErrUsernameExists is returned when the unique requirement of a username is violated
 	ErrUsernameExists = errors.New("DB: Username exists")
-	// ErrNotFound is returned when the requested value isn't found
-	ErrNotFound = errors.New("DB: Not Found")
 )
-
-// Query executes a raw query against the DB and returns the result
-func (pg *PGStore) Query(query string, args ...interface{}) (*sql.Rows, error) {
-	return pg.conn.Query(query, args...)
-}
 
 // AddUser adds a user to the users table of the database, hashing the password
 // with bcrypt

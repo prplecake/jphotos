@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{.Album.Name}} - jphotos</title>
+</head>
+<body>
+	<h1>{{.Album.Name}} - jphotos</h1>
+	{{if .Photos}}
+	<ul>
+		{{range .Photos}}
+		<li>{{.Caption}}</li>
+		{{end}}
+	</ul>
+	{{else}}
+	<p>No photos.</p>
+	{{end}}
+</body>
+</html>

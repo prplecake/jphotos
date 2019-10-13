@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+	log.Print("Initializing...")
 	config := defaultConfig()
 	configFile := "cmd/jphotos-server/jphotos.yaml"
 	cf, err := ioutil.ReadFile(configFile)
@@ -23,6 +24,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Print(config)
 
 	app.InitTemplates(config.Templates.Path + "/**")
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.DBName)

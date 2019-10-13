@@ -25,15 +25,43 @@ IF NOT EXISTS sessions
 CREATE TABLE
 IF NOT EXISTS groups
 (
-	id 			uuid DEFAULT uuid_generate_v4(),
+	id 	uuid 	DEFAULT uuid_generate_v4(),
 	group_name	TEXT	NOT NULL,
 	created		TIMESTAMPTZ	DEFAULT NOW(),
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE member
+CREATE TABLE 
+IF NOT EXISTS member
 (
 	member	uuid REFERENCES users (id),
 	groups	uuid REFERENCES groups (id),
 	admin	BOOLEAN
+);
+
+CREATE TABLE
+IF NOT EXISTS albums
+(
+	id uuid DEFAULT uuid_generate_v4(),
+	name	TEXT	NOT NULL,
+	slug	TEXT	NOT NULL,
+	created	TIMESTAMPTZ	DEFAULT NOW(),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE
+IF NOT EXISTS photos
+(
+	id 	uuid	DEFAULT uuid_generate_v4(),
+	caption		TEXT,
+	location 	TEXT,
+	added		TIMESTAMPTZ DEFAULT NOW(),
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE
+IF NOT EXISTS album_photos
+(
+	photo uuid REFERENCES photos (id),
+	album uuid REFERENCES albums (id)
 );

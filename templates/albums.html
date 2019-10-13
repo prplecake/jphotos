@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Albums - jphotos</title>
+</head>
+<body>
+	<h1>Albums - jphotos</h1>
+	<h2>All Albums</h2>
+	{{if .Albums}}
+	<ul>
+		{{range .Albums}}
+		<li><a href="/album/{{.Slug}}">{{.Name}}</a></li>
+		{{end}}
+	</ul>
+	{{else}}
+	<p>No albums.</p>
+	{{end}}
+
+	{{if .Auth}}
+	<form method="POST">
+		<label for="name">Create new album: 
+			<input type="text" name="name" id="name" />
+		</label>
+		<input type="submit" value="Create" />
+	</form>
+	{{end}}
+</body>
+</html>

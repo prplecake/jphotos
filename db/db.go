@@ -3,6 +3,8 @@
 package db
 
 import (
+	"database/sql"
+	"errors"
 	"time"
 )
 
@@ -29,9 +31,19 @@ type GroupMember struct {
 	Admin    bool
 }
 
+var (
+	// ErrNotFound is returned when the requested value isn't found
+	ErrNotFound = errors.New("DB: Not Found")
+)
+
 // IsExpired returns true is a session has expired
 func (s Session) IsExpired() bool {
 	return time.Now().After(s.Expires)
+}
+
+// Query executes a raw query against the DB and returns the result
+func (pg *PGStore) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	return pg.conn.Query(query, args...)
 }
 
 // A Store provides the methods required to access the database.
@@ -40,6 +52,11 @@ type Store interface {
 	AddUser(username string, hash []byte) error
 	GetUserByName(username string) (*User, error)
 	UserAddSession(user User, session string, expires time.Time) error
+
+	AddAlbum(name string) error
+	GetAlbums() ([]Album, error)
+	GetAlbum(slug string) (*Album, error)
+	GetAlbumPhotos(id string) ([]Photo, error)
 
 	GetGroupsForUser(u User) ([]Group, error)
 	GetGroupByID(is string) (Group, []GroupMember, error)
