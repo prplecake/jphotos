@@ -50,7 +50,7 @@ inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]. Please use
 patches.
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
-[~mjorgensen/photos.jrgnsn.net][todo].
+[~mjorgensen/jphotos][todo].
 
 [man]: https://man.sr.ht/~mjorgensen/jphotos
 [lists]: https://lists.sr.ht/~mjorgensen/public-inbox
