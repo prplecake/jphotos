@@ -147,38 +147,60 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
-	file, handler, err := r.FormFile("photoFile")
+	err := r.ParseMultipartForm(100000)
 	if err != nil {
-		log.Print("Error retrieving the file")
 		log.Print(err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	defer file.Close()
-	log.Printf("Uploaded file: %+v\n", handler.Filename)
-	log.Printf("File size: %+v\n", handler.Size)
-	log.Printf("MIME Header: %+v\n", handler.Header)
-	log.Printf("Album: %s\n", r.FormValue("album-id"))
 
-	newID := uuid.NewV4().String()
-	path := "uploads/photos/" + newID + ".jpeg"
+	files := r.MultipartForm.File["photoFiles"]
+	for i := range files {
+		file, err := files[i].Open()
+		defer file.Close()
+		if err != nil {
+			log.Print("Error retrieving the file")
+			log.Print(err)
+			return
+		}
 
-	fileBytes, err := ioutil.ReadAll(file)
-	if err != nil {
-		log.Print(err)
+		//log.Printf("Uploaded file: %+v\n", file.Name)
+		//log.Printf("File size: %+v\n", file.Size)
+		//log.Printf("MIME Header: %+v\n", file.Header)
+		//log.Printf("Album: %s\n", r.FormValue("album-id"))
+
+		newID := uuid.NewV4().String()
+		path := "uploads/photos/" + newID + ".jpeg"
+
+		fileBytes, err := ioutil.ReadAll(file)
+		if err != nil {
+			log.Print(err)
+		}
+
+		err = ioutil.WriteFile(path, fileBytes, 0644)
+		if err != nil {
+			log.Print(err)
+		}
+
+		err = s.db.AddPhoto(db.Photo{
+			ID:       newID,
+			Caption:  r.FormValue("caption"),
+			Location: "/" + path,
+		}, r.FormValue("album-id"))
+
+		log.Print("Successfully uploaded file.")
+		w.Write([]byte("Successfully uploaded file."))
 	}
-
-	err = ioutil.WriteFile(path, fileBytes, 0644)
-	if err != nil {
-		log.Print(err)
-	}
-
-	log.Print("Successfully uploaded file.")
-	w.Write([]byte("Successfully uploaded file."))
 
 	return
 }
 
 func (s *Server) handleGetPhotoByID(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Not implemented."))
-	return
+	photo, err := s.db.GetPhotoByID(mux.Vars(r)["id"])
+	if err != nil {
+		log.Print(err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
+
+	app.RenderTemplate(w, "photo", photo)
 }

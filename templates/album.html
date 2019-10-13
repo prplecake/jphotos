@@ -8,7 +8,13 @@
 	{{if .Photos}}
 	<ul>
 		{{range .Photos}}
-		<li>{{.Caption}}</li>
+		
+		<p>
+			<!--<a href="/photo/{{.ID}}">-->
+			<a href="{{.Location}}">
+				<img src="{{.Location}}" alt="{{.Caption}}" height="250px" />
+			</a><br />
+			{{.Caption}}
 		{{end}}
 	</ul>
 	{{else}}
@@ -17,7 +23,12 @@
 
 	{{if .Auth}}
 	<form enctype="multipart/form-data" action="/upload" method="POST">
-		<input type="file" name="photoFile" /><br />
+		<label for="photoFiles">Photos: 
+			<input type="file" id="photoFiles" name="photoFiles" multiple/>
+		</label><br />
+		<label for="caption">Caption: 
+			<input type="text" id="caption" name="caption" />
+		</label><br />
 		<input type="submit" value="Upload & Add to Album" />
 		<input type="hidden" name="album-id" value="{{.Album.ID}}" />
 	</form>
