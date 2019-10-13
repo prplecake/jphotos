@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home - jphotos</title>
+</head>
+<body>
+	<h1>Home - jphotos</h1>
+	<h2>Welcome, {{.Username}}</h2>
+	{{if .Groups}}
+	<ul>
+		{{range .Groups}}
+		<li><a href="/group?id={{.UUID}}">{{.Name}}</a></li>
+		{{end}}
+	</ul>
+	{{else}}
+	<p>No groups.</p>
+	{{end}}
+	<hr />
+	<ul>
+		<li><a href="/albums">Albums</a></li>
+	</ul>
+</body>
+</html>

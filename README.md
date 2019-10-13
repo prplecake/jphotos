@@ -15,7 +15,7 @@ where I host pictures, photography, etc.
 
 * go (>-=1.12)
 
-	cd $REPO/cmd/jbooks-server; go build
+	cd $REPO/cmd/jphotos-server; go build
 
 in the root of the repository.
 

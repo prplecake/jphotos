@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login - jphotos</title>
+</head>
+<body>
+	<h1>Login - jphotos</h1>
+	{{if .Error}}
+	<span style="color:red;">{{.Error}}</span>
+	{{end}}
+	<form {{if .Next}} action="/login?next={{.Next}}" {{end}} method="POST">
+		<label for="username">Username: 
+			<input type="text" name="username" id="username" value="{{.Username}}" />
+		</label><br />
+		<label for="password">Password: 
+			<input type="password" name="password" id="password" />
+		</label><br />
+		<input type="submit" value="Login" />
+	</form>
+</body>
+</html>

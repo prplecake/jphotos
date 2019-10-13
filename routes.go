@@ -1,0 +1,95 @@
+package jphotos
+
+import (
+	"log"
+	"net/http"
+
+	"git.sr.ht/~mjorgensen/jphotos/app"
+	"git.sr.ht/~mjorgensen/jphotos/auth"
+	"git.sr.ht/~mjorgensen/jphotos/db"
+)
+
+func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
+	type welcomeData struct {
+		Username string
+		Groups   []db.Group
+	}
+
+	auth, _ := auth.Get(r, auth.RoleUser, s.db)
+	if auth == nil {
+		app.RenderTemplate(w, "landing", nil)
+		return
+	}
+
+	groups, err := s.db.GetGroupsForUser(auth.User)
+	if err != nil {
+		log.Print(err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	app.RenderTemplate(w, "home", welcomeData{
+		Username: auth.User.Username,
+		Groups:   groups,
+	})
+}
+
+type loginData struct {
+	Username, password, Next, Error string
+}
+
+func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
+	if _, err := auth.Get(r, auth.RoleUser, s.db); err == nil {
+		// already logged in - redirect
+		app.RenderTemplate(w, "error", &app.ErrorInfo{
+			Info:          "Already logged in",
+			RedirectLink:  "/",
+			RedirectTimer: 0,
+		})
+		return
+	}
+	var ld = loginData{
+		Username: r.FormValue("username"),
+		password: r.FormValue("password"),
+		Next:     r.FormValue("next"),
+	}
+	if r.Method == "GET" {
+		log.Print("GET Request")
+		app.RenderTemplate(w, "login", ld)
+	} else {
+		log.Print("POST request")
+		token, err := auth.NewSession(ld.Username, ld.password, s.db)
+		if err != nil {
+			if err == auth.ErrInvalidUsernameOrPassword {
+				ld.Error = "Invalid username or password"
+				log.Println("Error: ", err)
+				app.RenderTemplate(w, "login", ld)
+				return
+			}
+			return
+		}
+		http.SetCookie(w, &http.Cookie{
+			Name:    auth.SessionCookieName,
+			Value:   token.Session,
+			Expires: token.Expires,
+		})
+		http.Redirect(w, r, ld.Next, http.StatusSeeOther)
+		log.Println("User '" + ld.Username + "' logged in")
+		return
+	}
+}
+
+func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Not implemented."))
+	return
+}
+
+func (s *Server) handleGetAlbumByID(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Not implemented."))
+	return
+}
+
+func (s *Server) handleGetPhotoByID(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Not implemented."))
+	return
+}
