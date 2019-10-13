@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -72,4 +73,40 @@ func (pg *PGStore) DeletePhotoByID(id string) error {
 	}
 
 	return nil
+}
+
+// UpdatePhotoCaption updates the photo's caption
+func (pg *PGStore) UpdatePhotoCaption(id, newCaption string) error {
+	_, err := pg.Query(
+		"UPDATE photos SET caption = $1 WHERE id = $2",
+		newCaption, id)
+	if err != nil {
+		return fmt.Errorf("UpdatePhotoCaption: %w", err)
+	}
+	log.Print("Photo caption updated.")
+	return nil
+}
+
+// GetPhotoAlbum returns the album slug a photo belongs to
+func (pg *PGStore) GetPhotoAlbum(photoID string) (string, error) {
+	rows, err := pg.Query(
+		"SELECT a.slug FROM albums AS a "+
+			"INNER JOIN album_photos AS ap ON ap.album = a.id "+
+			"WHERE ap.photo = $1",
+		photoID)
+	if err != nil {
+		return "", err
+	}
+
+	if !rows.Next() {
+		return "", ErrNotFound
+	}
+
+	var albumID string
+	err = rows.Scan(&albumID)
+	if err != nil {
+		return "", err
+	}
+
+	return albumID, nil
 }

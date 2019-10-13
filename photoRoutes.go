@@ -12,32 +12,20 @@ import (
 	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
-func (s *Server) handleGetPhotoByID(w http.ResponseWriter, r *http.Request) {
+func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 
 	type photoData struct {
-		Photo *db.Photo
-		Auth  *auth.Authorization
-	}
-	auth, _ := auth.Get(r, auth.RoleUser, s.db)
-	photo, err := s.db.GetPhotoByID(mux.Vars(r)["id"])
-	if err != nil {
-		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-	}
-	app.RenderTemplate(w, "photo", photoData{photo, auth})
-}
-
-func (s *Server) handleManagePhotoByID(w http.ResponseWriter, r *http.Request) {
-	type managePhotoData struct {
-		Photo  *db.Photo
-		Auth   *auth.Authorization
-		Albums []db.Album
+		Photo     *db.Photo
+		Auth      *auth.Authorization
+		Albums    []db.Album
+		AlbumSlug string
 	}
 
+	v := mux.Vars(r)
 	switch r.Method {
 	case "GET":
 		auth, _ := auth.Get(r, auth.RoleUser, s.db)
-		photo, err := s.db.GetPhotoByID(mux.Vars(r)["id"])
+		photo, err := s.db.GetPhotoByID(v["id"])
 		if err != nil {
 			if err == db.ErrNotFound {
 
@@ -50,15 +38,30 @@ func (s *Server) handleManagePhotoByID(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
+		album, err := s.db.GetPhotoAlbum(v["id"])
+		if err != nil {
+			log.Print(err)
+			http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+			return
+		}
 		albums, err := s.db.GetAlbums()
 		if err != nil {
 			log.Print(err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
-		app.RenderTemplate(w, "photo_manage", &managePhotoData{photo, auth, albums})
+		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album})
 	case "POST":
-		log.Print(r)
+		newCaption := r.FormValue("caption")
+		if newCaption != "" {
+			err := s.db.UpdatePhotoCaption(v["id"], newCaption)
+			if err != nil {
+				log.Print(err)
+				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+				return
+			}
+		}
+		http.Redirect(w, r, "/photo/"+v["id"], http.StatusSeeOther)
 	}
 }
 

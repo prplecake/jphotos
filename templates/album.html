@@ -1,4 +1,5 @@
 {{template "_pageHeader"}}
+<div class="album-content">
 	{{if .Photos}}
 		{{range .Photos}}
 		
@@ -6,13 +7,13 @@
 			<a href="/photo/{{.ID}}">
 				<img src="/{{.Location}}" alt="{{.Caption}}" height="250px" />
 			</a><br />
-			<span class="photo-caption">{{.Caption}}</span>
+			<div class="photo-caption">{{.Caption}}</div>
 		</div>
 		{{end}}
 	{{else}}
 	<p>No photos.</p>
 	{{end}}
-
+</div>
 	{{if .Auth}}
 	{{template "photoUploadForm" .Album}}
 	{{end}}
@@ -21,13 +22,14 @@
 {{define "photoUploadForm"}}
 	<form enctype="multipart/form-data" action="/upload" method="POST">
 		<label for="photoFiles">Photos: 
-			<input type="file" id="photoFiles" name="photoFiles" multiple/>
+			<input class="form-control" type="file" id="photoFiles" name="photoFiles" multiple/>
 		</label><br />
 		<label for="caption">Caption: 
-			<input type="text" id="caption" name="caption" />
+			<input class="form-control" type="text" id="caption"
+				name="caption" />
 		</label><br />
-		<input type="submit" value="Upload & Add to Album" />
+		<input class="btn btn-primary" type="submit" value="Upload & Add to Album" />
+		<a class="btn" href="/album/{{.Slug}}/manage">manage this album</a>
 		<input type="hidden" name="album-id" value="{{.ID}}" />
-		<a href="/album/{{.Slug}}/manage">manage this album</a>
 	</form>
 {{end}}

@@ -44,8 +44,8 @@ func (s *Server) routes() {
 	r.HandleFunc("/album/{slug}/delete", s.handleDeleteAlbumBySlug).
 		Methods("POST")
 
-	r.HandleFunc("/photo/{id}", s.handleGetPhotoByID)
-	r.HandleFunc("/photo/{id}/manage", s.handleManagePhotoByID)
+	r.HandleFunc("/photo/{id}", s.handlePhotoByID)
+	r.HandleFunc("/photo/{id}/manage", s.handlePhotoByID)
 	r.HandleFunc("/photo/{id}/delete", s.handleDeletePhotoByID).
 		Methods("POST")
 

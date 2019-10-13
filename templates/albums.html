@@ -1,11 +1,13 @@
 {{template "_pageHeader"}}
 <h2>All Albums</h2>
 {{if .Albums}}
-<ul class="album-list">
+<div class="album-list">
 	{{range .Albums}}
-	<li><a href="/album/{{.Slug}}">{{.Name}}</a></li>
+	<a href="/album/{{.Slug}}" class="album-list-item btn">
+		{{.Name}}
+	</a>
 	{{end}}
-</ul>
+</div>
 {{else}}
 <p class="error">No albums.</p>
 {{end}}
@@ -13,9 +15,9 @@
 {{if .Auth}}
 <form method="POST">
 	<label for="name">Create new album: 
-		<input type="text" name="name" id="name" />
+		<input class="form-control" type="text" name="name" id="name" />
 	</label>
-	<input type="submit" value="Create" />
+	<input class="btn btn-primary" type="submit" value="Create" />
 </form>
 {{end}}
 
