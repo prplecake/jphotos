@@ -39,13 +39,22 @@ func (s *Server) handleManagePhotoByID(w http.ResponseWriter, r *http.Request) {
 		auth, _ := auth.Get(r, auth.RoleUser, s.db)
 		photo, err := s.db.GetPhotoByID(mux.Vars(r)["id"])
 		if err != nil {
-			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			if err == db.ErrNotFound {
+
+				log.Print(err)
+				app.RenderTemplate(w, "error", &app.ErrorInfo{
+					Info:          "Photo not found",
+					RedirectLink:  "/",
+					RedirectTimer: 3,
+				})
+				return
+			}
 		}
 		albums, err := s.db.GetAlbums()
 		if err != nil {
 			log.Print(err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
 		}
 		app.RenderTemplate(w, "photo_manage", &managePhotoData{photo, auth, albums})
 	case "POST":
