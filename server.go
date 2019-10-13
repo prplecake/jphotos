@@ -35,6 +35,7 @@ func (s *Server) routes() {
 	r.HandleFunc("/albums", s.handleAlbumIndex)
 	r.HandleFunc("/album/{slug}", s.handleGetAlbum)
 	r.HandleFunc("/photo/{id}", s.handleGetPhotoByID)
+	r.HandleFunc("/upload", s.handleUploadPhoto).Methods("POST")
 
 	http.Handle("/", r)
 }

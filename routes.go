@@ -1,10 +1,12 @@
 package jphotos
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	uuid "github.com/satori/go.uuid"
 
 	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
@@ -116,24 +118,63 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 	type albumData struct {
 		Album  *db.Album
 		Photos []db.Photo
+		Auth   *auth.Authorization
 	}
+
 	album, err := s.db.GetAlbum(mux.Vars(r)["slug"])
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
+
 	photos, err := s.db.GetAlbumPhotos(album.ID)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
+
+	auth, _ := auth.Get(r, auth.RoleUser, s.db)
+
 	var ad = albumData{
 		Album:  album,
 		Photos: photos,
+		Auth:   auth,
 	}
 	app.RenderTemplate(w, "album", ad)
+	return
+}
+
+func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
+	file, handler, err := r.FormFile("photoFile")
+	if err != nil {
+		log.Print("Error retrieving the file")
+		log.Print(err)
+		return
+	}
+	defer file.Close()
+	log.Printf("Uploaded file: %+v\n", handler.Filename)
+	log.Printf("File size: %+v\n", handler.Size)
+	log.Printf("MIME Header: %+v\n", handler.Header)
+	log.Printf("Album: %s\n", r.FormValue("album-id"))
+
+	newID := uuid.NewV4().String()
+	path := "uploads/photos/" + newID + ".jpeg"
+
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Print(err)
+	}
+
+	err = ioutil.WriteFile(path, fileBytes, 0644)
+	if err != nil {
+		log.Print(err)
+	}
+
+	log.Print("Successfully uploaded file.")
+	w.Write([]byte("Successfully uploaded file."))
+
 	return
 }
 
