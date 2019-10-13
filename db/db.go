@@ -57,12 +57,13 @@ type Store interface {
 	GetAlbums() ([]Album, error)
 	GetAlbum(slug string) (*Album, error)
 	GetAlbumPhotos(id string) ([]Photo, error)
+	GetAlbumSlugByID(id string) (string, error)
 
 	AddPhoto(p Photo, albumID string) error
 	GetPhotoByID(id string) (*Photo, error)
 
 	GetGroupsForUser(u User) ([]Group, error)
-	GetGroupByID(is string) (Group, []GroupMember, error)
+	GetGroupByID(id string) (Group, []GroupMember, error)
 
 	// SessionGet returns a valid session if one exists.
 	// Guranteed to not return expired sessinos.

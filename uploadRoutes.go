@@ -7,6 +7,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
+	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
 	"git.sr.ht/~mjorgensen/jphotos/db"
 )
@@ -35,10 +36,10 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//log.Printf("Uploaded file: %+v\n", file.Name)
-		//log.Printf("File size: %+v\n", file.Size)
-		//log.Printf("MIME Header: %+v\n", file.Header)
-		//log.Printf("Album: %s\n", r.FormValue("album-id"))
+		log.Printf("Uploaded file: %+v\n", files[i].Filename)
+		log.Printf("File size: %+v\n", files[i].Size)
+		log.Printf("MIME Header: %+v\n", files[i].Header)
+		log.Printf("Album: %s\n", r.FormValue("album-id"))
 
 		newID := uuid.NewV4().String()
 		path := "uploads/photos/" + newID + ".jpeg"
@@ -62,6 +63,15 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		log.Print("Successfully uploaded file.")
 		w.Write([]byte("Successfully uploaded file."))
 	}
-
-	return
+	slug, err := s.db.GetAlbumSlugByID(r.FormValue("album-id"))
+	log.Print(slug)
+	if err != nil {
+		log.Print(err)
+		app.RenderTemplate(w, "error", &app.ErrorInfo{
+			Info:          "Album Not Found",
+			RedirectLink:  "/",
+			RedirectTimer: 3,
+		})
+	}
+	http.NewRequest("GET", "/album/"+slug, nil)
 }

@@ -115,3 +115,29 @@ func (pg *PGStore) GetAlbumPhotos(id string) ([]Photo, error) {
 	}
 	return photos, nil
 }
+
+// GetAlbumSlugByID returns the slug matching the provided ID
+func (pg *PGStore) GetAlbumSlugByID(id string) (string, error) {
+	rows, err := pg.Query("SELECT slug FROM albums WHERE id = $1", id)
+	if err != nil {
+		return "", err
+	}
+
+	if !rows.Next() {
+		return "", ErrNotFound
+	}
+
+	var slug string
+
+	err = rows.Scan(&slug)
+	if err != nil {
+		return "", err
+	}
+
+	if rows.Next() {
+		panic("Database gurantee not met; multiples albums with same name")
+	}
+
+	return slug, nil
+
+}
