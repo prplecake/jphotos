@@ -42,14 +42,16 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
-	type albumData struct {
-		Album  *db.Album
-		Photos []db.Photo
-		Auth   *auth.Authorization
-	}
+type albumData struct {
+	Album  *db.Album
+	Photos []db.Photo
+	Auth   *auth.Authorization
+}
 
-	album, err := s.db.GetAlbum(mux.Vars(r)["slug"])
+func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	log.Print(v)
+	album, err := s.db.GetAlbum(v["slug"])
 	if err != nil {
 		log.Print(err)
 		if err == db.ErrNotFound {
