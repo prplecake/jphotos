@@ -3,3 +3,4 @@ jphotos-server
 gin-bin
 cmd/jphotos-server/jphotos-server
 cmd/jphotos-server/jphotos.yaml
+uploads/*
