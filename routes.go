@@ -124,7 +124,16 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 	album, err := s.db.GetAlbum(mux.Vars(r)["slug"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		log.Print(r)
+		if err == db.ErrNotFound {
+			app.RenderTemplate(w, "error", &app.ErrorInfo{
+				Info:          "Album Not Found",
+				RedirectLink:  "/",
+				RedirectTimer: 3,
+			})
+		} else {
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+		}
 		return
 	}
 
