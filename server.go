@@ -1,6 +1,7 @@
 package jphotos
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -25,6 +26,7 @@ func NewServer(db db.Store) *Server {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Print("Request URL: ", r.URL)
 	s.router.ServeHTTP(w, r)
 }
 
