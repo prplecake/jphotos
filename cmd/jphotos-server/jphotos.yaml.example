@@ -3,5 +3,3 @@ app:
 database:
   username: mjorgensen
   name: something
-templates:
-  path: /path/to/templates
