@@ -55,6 +55,8 @@ func (s *Server) routes() {
 	r.PathPrefix("/uploads/photos/").Handler(
 		http.StripPrefix("/uploads/photos/",
 			http.FileServer(http.Dir("uploads/photos/"))))
+	r.PathPrefix("/static/").Handler(
+		http.StripPrefix("/static/", http.FileServer(http.Dir("assets/"))))
 
 	http.Handle("/", r)
 }
