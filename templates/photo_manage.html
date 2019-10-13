@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Manage Photo - jphoto</title>
+</head>
+<body>
+	<h1>Photo - jphoto</h1>
+	{{if .Auth}}
+		<div class="manage-photo-container">
+			<a href="/photo/{{.Photo.ID}}/manage">manage this photo</a>
+			<div class="manage-photo-tools">
+				<form method="POST">
+					<input type="submit" name="delete" value="DELETE PHOTO" 
+						class="text-danger" formaction="/photo/{{.Photo.ID}}/delete" /><br />
+					{{if .Albums}}
+					<label for="new_album">Select a new album: <br />
+						<select name="new_album" id="new_album">
+							{{range .Albums}}
+							<option value="{{.ID}}">{{.Name}}</option>
+							{{end}}
+						</select>
+					</label>
+					{{end}}
+					<input type="submit" value="Update Photo" />
+				</form>
+			</div>
+		</div>
+	{{end}}
+	{{if .Photo}}
+	<center>
+		<img src="{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" /><br />
+		<em>{{.Photo.Caption}}</em>
+	</center>
+	{{else}}
+	<p>No photo...</p>
+	{{end}}
+</body>
+</html>

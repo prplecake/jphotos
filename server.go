@@ -34,10 +34,23 @@ func (s *Server) routes() {
 	r := s.router
 	r.HandleFunc("/", s.homeHandler)
 	r.HandleFunc("/login", s.loginHandler).Methods("GET", "POST")
+
+	r.HandleFunc("/album", s.handleGetAlbum)
+	r.HandleFunc("/album/", s.handleGetAlbum)
 	r.HandleFunc("/albums", s.handleAlbumIndex)
 	r.HandleFunc("/album/{slug}", s.handleGetAlbum)
+	r.HandleFunc("/album/{slug}/manage", s.handleManageAlbumBySlug).
+		Methods("GET", "POST")
+	r.HandleFunc("/album/{slug}/delete", s.handleDeleteAlbumBySlug).
+		Methods("POST")
+
 	r.HandleFunc("/photo/{id}", s.handleGetPhotoByID)
-	r.HandleFunc("/upload", s.handleUploadPhoto).Methods("POST")
+	r.HandleFunc("/photo/{id}/manage", s.handleManagePhotoByID)
+	r.HandleFunc("/photo/{id}/delete", s.handleDeletePhotoByID).
+		Methods("POST")
+
+	r.HandleFunc("/upload", s.handleUploadPhoto).
+		Methods("GET", "POST")
 
 	r.PathPrefix("/uploads/photos/").Handler(
 		http.StripPrefix("/uploads/photos/",

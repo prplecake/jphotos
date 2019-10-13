@@ -13,10 +13,10 @@ import (
 
 const (
 	// SessionCookieName is the name of the session cookie expected for authentication
-	SessionCookieName = "vbooks_session"
+	SessionCookieName = "jphotos_session"
 
 	// ExpirationTime is the duration a session cookie is valid for once issued
-	ExpirationTime = 30 * time.Minute
+	ExpirationTime = 60 * time.Minute
 )
 
 // A Token holds a session token

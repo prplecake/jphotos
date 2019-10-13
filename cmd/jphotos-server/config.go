@@ -8,6 +8,7 @@ type configuration struct {
 	App       appConfig
 	DB        databaseConfig `yaml:"database"`
 	Templates templateConfig
+	Uploads   uploadConfig
 }
 
 type appConfig struct {
@@ -20,6 +21,10 @@ type databaseConfig struct {
 }
 
 type templateConfig struct {
+	Path string
+}
+
+type uploadConfig struct {
 	Path string
 }
 
@@ -38,6 +43,9 @@ func defaultConfig() configuration {
 		},
 		Templates: templateConfig{
 			"templates",
+		},
+		Uploads: uploadConfig{
+			"uploads/",
 		},
 	}
 	return config

@@ -62,6 +62,6 @@ IF NOT EXISTS photos
 CREATE TABLE
 IF NOT EXISTS album_photos
 (
-	photo uuid REFERENCES photos (id),
-	album uuid REFERENCES albums (id)
+	photo uuid REFERENCES photos (id) ON DELETE CASCADE,
+	album uuid REFERENCES albums (id) ON DELETE CASCADE
 );

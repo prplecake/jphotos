@@ -139,5 +139,27 @@ func (pg *PGStore) GetAlbumSlugByID(id string) (string, error) {
 	}
 
 	return slug, nil
+}
 
+// DeleteAlbumBySlug deletes the album, and all photos in it,
+// matching the slug
+func (pg *PGStore) DeleteAlbumBySlug(slug string) error {
+	_, err := pg.Query("DELETE FROM albums WHERE slug = $1",
+		slug)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// RenameAlbum renames an album
+func (pg *PGStore) RenameAlbum(id, newName string) error {
+	_, err := pg.Query(
+		"UPDATE albums SET name = $1, slug = $2 "+
+			"WHERE id = $3",
+		newName, strings.ToLower(slugify.Marshal(newName)), id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

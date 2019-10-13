@@ -58,9 +58,12 @@ type Store interface {
 	GetAlbum(slug string) (*Album, error)
 	GetAlbumPhotos(id string) ([]Photo, error)
 	GetAlbumSlugByID(id string) (string, error)
+	DeleteAlbumBySlug(slug string) error
+	RenameAlbum(id, newName string) error
 
 	AddPhoto(p Photo, albumID string) error
 	GetPhotoByID(id string) (*Photo, error)
+	DeletePhotoByID(id string) error
 
 	GetGroupsForUser(u User) ([]Group, error)
 	GetGroupByID(id string) (Group, []GroupMember, error)

@@ -62,3 +62,14 @@ func (pg *PGStore) GetPhotoByID(id string) (*Photo, error) {
 		Added:    added,
 	}, nil
 }
+
+// DeletePhotoByID deletes the photo at the provided ID
+func (pg *PGStore) DeletePhotoByID(id string) error {
+	_, err := pg.Query("DELETE FROM photos WHERE id = $1",
+		id)
+	if err != nil {
+		return fmt.Errorf("DeletePhotoByID: %w", err)
+	}
+
+	return nil
+}

@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"gopkg.in/yaml.v2"
 
@@ -25,6 +26,11 @@ func main() {
 		log.Fatal(err)
 	}
 	log.Print(config)
+
+	err = os.MkdirAll(config.Uploads.Path, 0755)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	app.InitTemplates(config.Templates.Path + "/**")
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.DBName)

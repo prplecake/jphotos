@@ -5,10 +5,13 @@
 </head>
 <body>
 	<h1>Photo - jphoto</h1>
-	{{if .}}
+	{{if .Auth}}
+		<p style="text-align: right"><a href="/photo/{{.Photo.ID}}/manage">manage this photo</a></p>
+		{{end}}
+	{{if .Photo}}
 	<center>
-		<img src="{{.Location}}" alt="{{.Caption}}" height="100%" /><br />
-		<em>{{.Caption}}</em>
+		<img src="/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" /><br />
+		<em>{{.Photo.Caption}}</em>
 	</center>
 	{{else}}
 	<p>No photo...</p>

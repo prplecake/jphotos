@@ -57,12 +57,12 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		err = s.db.AddPhoto(db.Photo{
 			ID:       newID,
 			Caption:  r.FormValue("caption"),
-			Location: "/" + path,
+			Location: path,
 		}, r.FormValue("album-id"))
 
 		log.Print("Successfully uploaded file.")
-		w.Write([]byte("Successfully uploaded file."))
 	}
+
 	slug, err := s.db.GetAlbumSlugByID(r.FormValue("album-id"))
 	log.Print(slug)
 	if err != nil {
@@ -73,5 +73,5 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 			RedirectTimer: 3,
 		})
 	}
-	http.NewRequest("GET", "/album/"+slug, nil)
+	http.Redirect(w, r, "/album/"+slug, http.StatusSeeOther)
 }

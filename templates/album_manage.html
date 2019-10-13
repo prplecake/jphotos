@@ -5,9 +5,19 @@
 </head>
 <body>
 	<h1>{{.Album.Name}} - jphotos</h1>
+	{{if .Auth}}
+		<form method="post" action="/album/{{.Album.Slug}}/delete">
+			<input type="submit" value="DELETE ALBUM" class="text-danger"
+				href="/album/{{.Album.Slug}}/delete" />
+		</form><br />
+		<form method="post" action="/album/{{.Album.Slug}}/manage">
+			<label for="new_name"> Rename album: <br />
+				<input type="text" name="new_name" id="new_name" />
+			</label>
+			<input type="submit" value="Rename album" />
+	{{end}}
 	{{if .Photos}}
 		{{range .Photos}}
-		
 		<p>
 			<a href="/photo/{{.ID}}">
 				<img src="/{{.Location}}" alt="{{.Caption}}" height="250px" />
