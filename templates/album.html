@@ -1,35 +1,48 @@
-{{template "_pageHeader"}}
+{{template "_pageHeader" .Title}}
+{{if .Auth}}
+<details class="manage">
+	<summary>manage this album</summary>
+	<form method="post" action="/album/{{.Album.Slug}}/delete">
+		<input class="btn btn-danger" type="submit" value="Delete album"
+		href="/album/{{.Album.Slug}}/delete" />
+	</form><br />
+	<form method="post" action="/album/{{.Album.Slug}}/manage">
+		<label for="new_name">
+			<input class="form-control" type="text" name="new_name" id="new_name" />
+			rename album
+		</label><br />
+		<input class="btn" type="submit" value="Rename album" />
+	</form><br />
+	{{template "photoUploadForm" .Album}}
+</details>
+{{end}}
 <div class="album-content">
 	{{if .Photos}}
-		{{range .Photos}}
-		
-		<div class="photo-item">
-			<a href="/photo/{{.ID}}">
-				<img src="/{{.Location}}" alt="{{.Caption}}" height="250px" />
-			</a><br />
-			<div class="photo-caption">{{.Caption}}</div>
-		</div>
-		{{end}}
+	{{range .Photos}}
+	<div class="photo-item">
+		<a href="/photo/{{.ID}}">
+			<img src="/{{.Location}}" alt="{{.Caption}}" />
+		</a><br />
+		<div class="photo-caption">{{.Caption}}</div>
+	</div>
+	{{end}}
 	{{else}}
 	<p>No photos.</p>
 	{{end}}
 </div>
-	{{if .Auth}}
-	{{template "photoUploadForm" .Album}}
-	{{end}}
 {{template "_pageFooter"}}
 
 {{define "photoUploadForm"}}
-	<form enctype="multipart/form-data" action="/upload" method="POST">
-		<label for="photoFiles">Photos: 
-			<input class="form-control" type="file" id="photoFiles" name="photoFiles" multiple/>
-		</label><br />
-		<label for="caption">Caption: 
-			<input class="form-control" type="text" id="caption"
-				name="caption" />
-		</label><br />
-		<input class="btn btn-primary" type="submit" value="Upload & Add to Album" />
-		<a class="btn" href="/album/{{.Slug}}/manage">manage this album</a>
-		<input type="hidden" name="album-id" value="{{.ID}}" />
-	</form>
+<form enctype="multipart/form-data" action="/upload" method="POST">
+	<label for="photoFiles">Photos: 
+		<input class="form-control" type="file" id="photoFiles"
+			name="photoFiles" accept="image/jpeg" multiple />
+	</label><br />
+	<label for="caption">Caption: 
+		<input class="form-control" type="text" id="caption"
+		name="caption" />
+	</label><br />
+	<input class="btn btn-primary" type="submit" value="Upload & Add to Album" />
+	<input type="hidden" name="album-id" value="{{.ID}}" />
+</form>
 {{end}}
