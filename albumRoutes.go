@@ -48,6 +48,13 @@ type albumData struct {
 	Auth   *auth.Authorization
 }
 
+type payload struct {
+	Title  string
+	Album  *db.Album
+	Auth   *auth.Authorization
+	Photos []db.Photo
+}
+
 func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	log.Print(v)
@@ -75,12 +82,13 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
 
-	var ad = albumData{
+	p := &payload{
+		Title:  album.Name,
 		Album:  album,
-		Photos: photos,
 		Auth:   auth,
+		Photos: photos,
 	}
-	app.RenderTemplate(w, "album", ad)
+	app.RenderTemplate(w, "album", p)
 	return
 }
 
