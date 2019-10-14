@@ -170,7 +170,20 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	}
 
 	for _, photo := range photos {
-		http.NewRequest("GET", "/photo/"+photo.ID+"/delete", nil)
+		log.Printf("Removing photo from filesystem [%s]", photo.ID)
+		err := app.RemoveFile(photo.Location)
+		if err != nil {
+			log.Print(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		log.Printf("Removing photo from database [%s]", photo.ID)
+		err = s.db.DeletePhotoByID(photo.ID)
+		if err != nil {
+			log.Print(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 	}
 
 	err = s.db.DeleteAlbumBySlug(v["slug"])

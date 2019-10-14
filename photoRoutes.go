@@ -3,7 +3,6 @@ package jphotos
 import (
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 
@@ -80,8 +79,8 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	if err = os.Remove(photo.Location); err != nil {
-		log.Printf("File not found at specified location: %-w", err)
+	if err = app.RemoveFile(photo.Location); err != nil {
+		log.Printf("File not found at specified location: %w", err)
 	}
 
 	err = s.db.DeletePhotoByID(v["id"])
