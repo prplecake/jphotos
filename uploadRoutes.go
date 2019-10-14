@@ -1,11 +1,8 @@
 package jphotos
 
 import (
-	"io/ioutil"
 	"log"
 	"net/http"
-
-	uuid "github.com/satori/go.uuid"
 
 	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
@@ -26,7 +23,9 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	count := 0
 	files := r.MultipartForm.File["photoFiles"]
+	log.Printf("Preparing to upload %d files.", len(files))
 	for i := range files {
 		file, err := files[i].Open()
 		defer file.Close()
@@ -35,21 +34,17 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 			log.Print(err)
 			return
 		}
+		if files[i].Size == 0 {
+			log.Print("Error: file is empty. File size: ", files[i].Size)
+			continue
+		}
 
 		log.Printf("Uploaded file: %+v\n", files[i].Filename)
 		log.Printf("File size: %+v\n", files[i].Size)
 		log.Printf("MIME Header: %+v\n", files[i].Header)
 		log.Printf("Album: %s\n", r.FormValue("album-id"))
 
-		newID := uuid.NewV4().String()
-		path := "uploads/photos/" + newID + ".jpeg"
-
-		fileBytes, err := ioutil.ReadAll(file)
-		if err != nil {
-			log.Print(err)
-		}
-
-		err = ioutil.WriteFile(path, fileBytes, 0644)
+		newID, path, err := app.UploadSaveFile(file)
 		if err != nil {
 			log.Print(err)
 		}
@@ -60,8 +55,11 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 			Location: path,
 		}, r.FormValue("album-id"))
 
-		log.Print("Successfully uploaded file.")
+		count++
+		log.Printf("Successfully uploaded file %d.", count)
 	}
+	log.Printf("Uploaded %d of %d files.", count, len(files))
+	log.Printf("Uploaded %d files", count)
 
 	slug, err := s.db.GetAlbumSlugByID(r.FormValue("album-id"))
 	log.Print(slug)
