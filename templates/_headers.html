@@ -2,14 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{if .Page.Title}}{{.Page.Title}} - {{end}}jphotos</title>
+	<title>{{if .}}{{.}} - {{end}}jphotos</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/style.css" />
 </head>
 <body>
 	<div class="container">
 		<header>
 			<h1 class="page-title">
-				{{if .Title}}{{.Title}} - {{end}}jphotos
+				{{if .}}{{.}} - {{end}}jphotos
 			</h1>
 			{{template "navigation"}}
 		</header>
