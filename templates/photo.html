@@ -31,10 +31,10 @@
 		</details>
 		{{end}}
 	{{if .Photo}}
-	<center>
+	<div class="single-photo">
 		<img src="/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" /><br />
-		<em>{{.Photo.Caption}}</em>
-	</center>
+		<div class="photo-caption">{{.Photo.Caption}}</div>
+	</div>
 	{{else}}
 	<p>No photo...</p>
 	{{end}}

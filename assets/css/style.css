@@ -2,15 +2,24 @@ body {
 	background: white;
 	padding-bottom: 2rem;
 	max-width: 100%;
+	font-family: sans-serif;
+	height: 100%;
 }
 
 .container {
-	max-width: 800px;
+	max-width: 80%;
 	margin: 0 auto;
 }
 
 header {
 	display: grid;
+}
+header h1 {
+	grid-column-start: 1;
+}
+
+.page-title {
+	margin-bottom: 0;
 }
 
 navigation {
@@ -19,8 +28,14 @@ navigation {
 
 .nav {
 	list-style-type: none;
+	margin: 0;
+	padding: 0;
 }
+li[role="menuitem"] {
 
+    display: inline;
+
+}
 .navigation {
 	text-align: center;
 	position: relative;
@@ -150,18 +165,33 @@ label {
 
 .photo-item {
 	display: block;
-	max-width: 30%;
 	margin: 0 auto;
 }
 
 .photo-item img {
 	align-items: center;
 	display: block;
-	margin: 0 auto;
+	margin: 0 0.1em;
+	height: 250px;
+	max-width: 250px;
+	object-fit: cover;
 }
 
 .photo-caption {
 	text-align: center;
+}
+
+.single-photo {
+	height: 100%;
+	margin: auto 2em;
+}
+.single-photo > img {
+	display: block;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 90vh;
+	margin: 20px auto;
 }
 
 summary {
