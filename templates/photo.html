@@ -4,7 +4,8 @@
 		<details class="manage">
 			<summary>manage this photo</summary>
 			<div class="manage-photo-tools">
-				<form method="POST" action="/photo/{{.Photo.ID}}/delete">
+				<form method="POST" 
+					action="/photo/{{.Photo.ID}}/delete?next=/album/{{.AlbumSlug}}">
 					<input type="submit" name="delete" value="Delete photo" 
 						class="text-danger btn btn-danger" />
 				</form><br />

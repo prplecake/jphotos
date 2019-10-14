@@ -90,6 +90,13 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Print("Photo removed from database.")
-
-	http.Redirect(w, r, "/albums", http.StatusSeeOther)
+	vars := r.URL.Query()
+	log.Print(vars)
+	next := vars["next"][0]
+	log.Print("v: ", v)
+	log.Print("Next: ", next)
+	if len(next) == 0 {
+		next = "/albums"
+	}
+	http.Redirect(w, r, next, http.StatusSeeOther)
 }

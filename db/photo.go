@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"time"
-
-	"github.com/lib/pq"
 )
 
 // A Photo is a view into a photo
