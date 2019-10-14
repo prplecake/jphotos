@@ -5,6 +5,7 @@ package db
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"time"
 )
 
@@ -43,7 +44,27 @@ func (s Session) IsExpired() bool {
 
 // Query executes a raw query against the DB and returns the result
 func (pg *PGStore) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	log.Print("Running query: ", query)
 	return pg.conn.Query(query, args...)
+}
+
+// Exec executes a raw query against the DB, returns the result, and
+// closes the connection
+func (pg *PGStore) Exec(query string, args ...interface{}) error {
+	txn, err := pg.conn.Begin()
+	if err != nil {
+		log.Printf("Currently there are %d connections.", pg.conn.Stats().OpenConnections)
+		return err
+	}
+	_, err = txn.Exec(query, args...)
+	if err != nil {
+		return err
+	}
+	err = txn.Commit()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // A Store provides the methods required to access the database.

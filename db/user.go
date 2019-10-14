@@ -33,6 +33,7 @@ func (pg *PGStore) GetUserByName(username string) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	if !rows.Next() {
 		return nil, ErrNotFound
@@ -59,12 +60,12 @@ func (pg *PGStore) GetUserByName(username string) (*User, error) {
 
 // UserAddSession stores a session in the database
 func (pg *PGStore) UserAddSession(user User, session string, expires time.Time) error {
-	_, err := pg.Query("INSERT INTO sessions VALUES ($1, $2, $3)",
+	err := pg.Exec("INSERT INTO sessions VALUES ($1, $2, $3)",
 		user.id, session, expires)
 	if err != nil {
 		return err
 	}
-	_, err = pg.Query("UPDATE users SET last_login = NOW() WHERE id = $1", user.id)
+	err = pg.Exec("UPDATE users SET last_login = NOW() WHERE id = $1", user.id)
 	return err
 }
 
@@ -73,11 +74,11 @@ func (pg *PGStore) UserAddSession(user User, session string, expires time.Time) 
 // SessionGet will not return an expired session.
 func (pg *PGStore) SessionGet(session string, newExpiration time.Time) (*Session, error) {
 	// TODO: Is this a bad thing to do?
-	_, err := pg.Query("DELETE FROM sessions WHERE expires < NOW()")
+	err := pg.Exec("DELETE FROM sessions WHERE expires < NOW()")
 	if err != nil {
 		panic(err)
 	}
-	_, err = pg.Query(
+	err = pg.Exec(
 		"UPDATE sessions"+
 			" SET expires = $1"+
 			" WHERE token = $2", newExpiration, session)
@@ -85,6 +86,7 @@ func (pg *PGStore) SessionGet(session string, newExpiration time.Time) (*Session
 		return nil, err
 	}
 
+	//c, err := pg.conn.Conn(ctx)
 	rows, err := pg.Query(
 		"SELECT username, id, expires FROM sessions"+
 			" INNER JOIN users ON sessions.user_id = users.id"+
@@ -92,6 +94,7 @@ func (pg *PGStore) SessionGet(session string, newExpiration time.Time) (*Session
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 	if !rows.Next() {
 		return nil, ErrNotFound
 	}
@@ -112,6 +115,6 @@ func (pg *PGStore) SessionGet(session string, newExpiration time.Time) (*Session
 
 // RevokeSession removes a user's session from the sessions table
 func (pg *PGStore) RevokeSession(session string) error {
-	_, err := pg.Query("DELETE FROM sessions WHERE token = $1", session)
+	err := pg.Exec("DELETE FROM sessions WHERE token = $1", session)
 	return err
 }

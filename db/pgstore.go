@@ -21,6 +21,7 @@ func NewPGStore(u, p, d string) (*PGStore, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.SetMaxIdleConns(5)
 	return &PGStore{conn: db}, nil
 }
 

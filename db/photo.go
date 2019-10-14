@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"time"
+
+	"github.com/lib/pq"
 )
 
 // A Photo is a view into a photo
@@ -14,7 +16,7 @@ type Photo struct {
 
 // AddPhoto adds a photo to the database
 func (pg *PGStore) AddPhoto(p Photo, albumID string) error {
-	_, err := pg.Query(
+	err := pg.Exec(
 		"INSERT INTO photos (id, caption, location) "+
 			"VALUES ($1, $2, $3)",
 		p.ID, p.Caption, p.Location)
@@ -22,7 +24,7 @@ func (pg *PGStore) AddPhoto(p Photo, albumID string) error {
 		return fmt.Errorf("AddPhoto: %w", err)
 	}
 
-	_, err = pg.Query(
+	err = pg.Exec(
 		"INSERT INTO album_photos (photo, album) "+
 			"VALUES ($1, $2)",
 		p.ID, albumID)
@@ -41,6 +43,7 @@ func (pg *PGStore) GetPhotoByID(id string) (*Photo, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 
 	if !rows.Next() {
 		return nil, ErrNotFound
@@ -66,10 +69,18 @@ func (pg *PGStore) GetPhotoByID(id string) (*Photo, error) {
 
 // DeletePhotoByID deletes the photo at the provided ID
 func (pg *PGStore) DeletePhotoByID(id string) error {
-	_, err := pg.Query("DELETE FROM photos WHERE id = $1",
-		id)
+	txn, err := pg.conn.Begin()
 	if err != nil {
-		return fmt.Errorf("DeletePhotoByID: %w", err)
+		log.Printf("Currently there are %d connections.", pg.conn.Stats().OpenConnections)
+		return fmt.Errorf("DeletePhotoByID/Begin(): %w", err)
+	}
+	_, err = txn.Exec("DELETE FROM photos WHERE id = $1", id)
+	if err != nil {
+		return fmt.Errorf("DeletePhotoByID/Exec(): %w", err)
+	}
+	err = txn.Commit()
+	if err != nil {
+		return fmt.Errorf("DeletePhotoByID/Commit(): %w", err)
 	}
 
 	return nil
@@ -77,7 +88,7 @@ func (pg *PGStore) DeletePhotoByID(id string) error {
 
 // UpdatePhotoCaption updates the photo's caption
 func (pg *PGStore) UpdatePhotoCaption(id, newCaption string) error {
-	_, err := pg.Query(
+	err := pg.Exec(
 		"UPDATE photos SET caption = $1 WHERE id = $2",
 		newCaption, id)
 	if err != nil {
@@ -97,6 +108,7 @@ func (pg *PGStore) GetPhotoAlbum(photoID string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer rows.Close()
 
 	if !rows.Next() {
 		return "", ErrNotFound

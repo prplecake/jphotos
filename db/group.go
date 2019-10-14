@@ -36,6 +36,7 @@ func (pg *PGStore) GetGroupsForUser(u User) ([]Group, error) {
 	if err != nil {
 		return nil, fmt.Errorf("GetGroupsForUser: %w", err)
 	}
+	defer rows.Close()
 	groups := make([]Group, 0)
 
 	for rows.Next() {

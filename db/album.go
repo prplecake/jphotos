@@ -27,7 +27,7 @@ var (
 func (pg *PGStore) AddAlbum(name string) error {
 	now := time.Now()
 	slug := strings.ToLower(slugify.Marshal(name))
-	_, err := pg.Query("INSERT INTO albums (name, slug, created)"+
+	err := pg.Exec("INSERT INTO albums (name, slug, created)"+
 		"VALUES ($1, $2, $3)",
 		name, slug, now)
 	if err, ok := err.(*pq.Error); ok {
@@ -45,6 +45,7 @@ func (pg *PGStore) GetAlbums() ([]Album, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
 
 	albums := make([]Album, 0)
 
@@ -144,22 +145,13 @@ func (pg *PGStore) GetAlbumSlugByID(id string) (string, error) {
 // DeleteAlbumBySlug deletes the album, and all photos in it,
 // matching the slug
 func (pg *PGStore) DeleteAlbumBySlug(slug string) error {
-	_, err := pg.Query("DELETE FROM albums WHERE slug = $1",
-		slug)
-	if err != nil {
-		return err
-	}
-	return nil
+	return pg.Exec("DELETE FROM albums WHERE slug = $1", slug)
 }
 
 // RenameAlbum renames an album
 func (pg *PGStore) RenameAlbum(id, newName string) error {
-	_, err := pg.Query(
+	return pg.Exec(
 		"UPDATE albums SET name = $1, slug = $2 "+
 			"WHERE id = $3",
 		newName, strings.ToLower(slugify.Marshal(newName)), id)
-	if err != nil {
-		return err
-	}
-	return nil
 }
