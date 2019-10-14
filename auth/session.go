@@ -16,7 +16,7 @@ const (
 	SessionCookieName = "jphotos_session"
 
 	// ExpirationTime is the duration a session cookie is valid for once issued
-	ExpirationTime = 60 * time.Minute
+	ExpirationTime = 7 * 24 * time.Hour // 1 week
 )
 
 // A Token holds a session token
