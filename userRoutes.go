@@ -3,6 +3,7 @@ package jphotos
 import (
 	"log"
 	"net/http"
+	"strings"
 
 	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
@@ -23,7 +24,7 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var ld = loginData{
-		Username: r.FormValue("username"),
+		Username: strings.ToLower(r.FormValue("username")),
 		password: r.FormValue("password"),
 		Next:     r.FormValue("next"),
 	}
