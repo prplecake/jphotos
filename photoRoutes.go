@@ -79,7 +79,10 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	if err = app.RemoveFile(photo.Location); err != nil {
+	if err = app.RemoveFile("data/uploads/photos/" + photo.Location); err != nil {
+		log.Printf("File not found at specified location: %w", err)
+	}
+	if err = app.RemoveFile("data/thumbnails/thumb_" + photo.Location); err != nil {
 		log.Printf("File not found at specified location: %w", err)
 	}
 

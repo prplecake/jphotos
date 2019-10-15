@@ -25,7 +25,8 @@ type templateConfig struct {
 }
 
 type uploadConfig struct {
-	Path string
+	Path           string
+	ThumbnailsPath string
 }
 
 func defaultConfig() configuration {
@@ -45,7 +46,8 @@ func defaultConfig() configuration {
 			"templates",
 		},
 		Uploads: uploadConfig{
-			"uploads/",
+			"data/uploads/photos/",
+			"data/thumbnails/",
 		},
 	}
 	return config

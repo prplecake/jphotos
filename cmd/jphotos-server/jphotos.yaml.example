@@ -3,3 +3,6 @@ app:
 database:
   username: mjorgensen
   name: something
+uploads:
+  path: data/uploads/photos/
+  thumbnailpath: data/thumbnails/

@@ -31,6 +31,10 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
+	err = os.MkdirAll(config.Uploads.ThumbnailsPath, 0755)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	app.InitTemplates(config.Templates.Path + "/**")
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.DBName)
