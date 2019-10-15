@@ -15,7 +15,7 @@ where I host pictures, photography, etc.
 
 * go (>-=1.12)
 
-	cd $REPO/cmd/jphotos-server; go build
+		cd $REPO/cmd/jphotos-server; go build
 
 in the root of the repository.
 
@@ -28,8 +28,10 @@ running:
 
 	gin --build cmd/jbooks-server
 
-in the root of the repository. Add `--all` to watch HTML templates,
-also. 
+in the root of the repository.
+
+- add `--all` to watch HTML templates
+- add `--excludeDir data` so gin doesn't rebuild after a photo upload
 
 ### Initializing the database
 
@@ -42,15 +44,15 @@ Then, import the schema:
 
 ## Resources
 
-Once documentation exists, it will be able to be [found here][man].
+Once documentation exists, it will be able to be [found here][man]
 
 Discussion and patches are welcome and should be directed to my public
-inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]. Please use
-`--subject-prefix PATCH jphotos` for clarity when sending
+inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]
+Please use `--subject-prefix PATCH jphotos` for clarity when sending
 patches.
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
-[~mjorgensen/jphotos][todo].
+[~mjorgensen/jphotos][todo]
 
 [man]: https://man.sr.ht/~mjorgensen/jphotos
 [lists]: https://lists.sr.ht/~mjorgensen/public-inbox
