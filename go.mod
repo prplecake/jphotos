@@ -9,5 +9,6 @@ require (
 	github.com/metal3d/go-slugify v0.0.0-20160607203414-7ac2014b2f23
 	github.com/satori/go.uuid v1.2.0
 	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
+	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8
 	gopkg.in/yaml.v2 v2.2.4
 )
