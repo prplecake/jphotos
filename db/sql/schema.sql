@@ -43,8 +43,8 @@ CREATE TABLE
 IF NOT EXISTS albums
 (
 	id uuid DEFAULT uuid_generate_v4(),
-	name	TEXT	NOT NULL,
-	slug	TEXT	NOT NULL,
+	name	TEXT		NOT NULL,
+	slug	TEXT UNIQUE	NOT NULL,
 	created	TIMESTAMPTZ	DEFAULT NOW(),
 	PRIMARY KEY (id)
 );
