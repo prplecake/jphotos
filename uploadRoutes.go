@@ -3,6 +3,7 @@ package jphotos
 import (
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
@@ -44,15 +45,15 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		log.Printf("MIME Header: %+v\n", files[i].Header)
 		log.Printf("Album: %s\n", r.FormValue("album-id"))
 
-		newID, path, err := app.UploadSaveFile(file)
+		newID, path, err := app.UploadSavePhoto(file, files[i].Filename)
 		if err != nil {
-			log.Print(err)
+			log.Print("UploadSavePhoto: ", err)
 		}
 
 		err = s.db.AddPhoto(db.Photo{
 			ID:       newID,
 			Caption:  r.FormValue("caption"),
-			Location: path,
+			Location: filepath.Base(path),
 		}, r.FormValue("album-id"))
 
 		count++
