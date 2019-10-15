@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"image"
 	"image/jpeg"
+	"image/png"
 	"log"
 	"net/http"
 	"path/filepath"
@@ -35,15 +36,25 @@ func detectContentType(fb []byte) string {
 
 func createThumbnail(path string, fb []byte) error {
 	i, err := process(path, fb)
+	thumbPath := "data/thumbnails/thumb_" + filepath.Base(path)
+
+	dst := createRect(i)
+	var buffer bytes.Buffer
 	switch i.ContentType {
 	case "image/jpeg":
-		dst := thumbnailJPEG(i)
-		var buffer bytes.Buffer
 		err := jpeg.Encode(&buffer, dst, nil)
 		if err != nil {
 			return err
 		}
-		thumbPath := "data/thumbnails/thumb_" + filepath.Base(path)
+		err = writeFile(thumbPath, buffer.Bytes(), 0644)
+		if err != nil {
+			return err
+		}
+	case "image/png":
+		err := png.Encode(&buffer, dst)
+		if err != nil {
+			return err
+		}
 		err = writeFile(thumbPath, buffer.Bytes(), 0644)
 		if err != nil {
 			return err
@@ -74,11 +85,7 @@ func process(path string, fb []byte) (*Image, error) {
 	return i, nil
 }
 
-func thumbnailGIF(i *Image, size int) *Image {
-	return nil
-}
-
-func thumbnailJPEG(i *Image) *image.RGBA {
+func createRect(i *Image) *image.RGBA {
 	img, _, err := image.Decode(bytes.NewReader(i.Data))
 	if err != nil {
 		log.Print(err)
@@ -95,8 +102,4 @@ func thumbnailJPEG(i *Image) *image.RGBA {
 	scaler.Scale(dst, rect, img, img.Bounds(), draw.Over, nil)
 	return dst
 
-}
-
-func thumbnailPNG(i *Image, size int) *Image {
-	return nil
 }
