@@ -9,13 +9,20 @@ photos, that isn't Flickr, or 500px, or Format, Imgur, etc.
 photos.jrgnsn.net is eventually where this app will go live and will be
 where I host pictures, photography, etc.
 
-## Building
+## Features
+
+* No "social media" features
+* No JavaScript!
+* Blazingly fast
+
+## Building and Running
 
 **Dependencies:**
 
 * go (>-=1.12)
 
-		cd $REPO/cmd/jphotos-server; go build
+		go build ./cmd/jphotos-server/
+		./jphotos-server
 
 in the root of the repository.
 
@@ -30,8 +37,8 @@ running:
 
 in the root of the repository.
 
-- add `--all` to watch HTML templates
-- add `--excludeDir data` so gin doesn't rebuild after a photo upload
+* add `--all` to watch HTML templates
+* add `--excludeDir data` so gin doesn't rebuild after a photo upload
 
 [gin]: https://github.com/codegangsta/gin
 
@@ -43,6 +50,8 @@ Then, import the schema:
 
 	psql < $REPO/db/sql/schema.sql
 
+* [macOS PostgreSQL Help]
+(https://man.sr.ht/~mjorgensen/jphotos/macos_postgresql.md)
 
 ## Resources
 
