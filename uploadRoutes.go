@@ -47,6 +47,10 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 
 		newID, path, err := app.UploadSavePhoto(file, files[i].Filename)
 		if err != nil {
+			if err == app.ErrBadContentType {
+				log.Printf("Bad content type, not uploading [%s]", files[i].Filename)
+				continue
+			}
 			log.Print("UploadSavePhoto: ", err)
 		}
 
