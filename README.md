@@ -47,8 +47,8 @@ Then, import the schema:
 Once documentation exists, it will be able to be [found here][man]
 
 Discussion and patches are welcome and should be directed to my public
-inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]
-Please use `--subject-prefix PATCH jphotos` for clarity when sending
+inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]. Please use
+`--subject-prefix PATCH jphotos` for clarity when sending
 patches.
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
