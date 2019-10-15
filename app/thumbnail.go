@@ -6,7 +6,6 @@ import (
 	"image/jpeg"
 	"image/png"
 	"log"
-	"net/http"
 	"path/filepath"
 
 	"golang.org/x/image/draw"
@@ -20,22 +19,11 @@ type Image struct {
 	Size        int
 }
 
-func okContentType(contentType string) bool {
-	return contentType == "image/png" || contentType == "image/jpeg" || contentType == "image/gif"
-}
-
-// detectContentType from
-// https://golangcode.com/get-the-content-type-of-file/
-func detectContentType(fb []byte) string {
-	// Only the first 512 bytes are used to sniff the content type.
-	// Use the net/http package's handy DetectContentType function.
-	// Always seems to return a valid content-type by returning
-	// "application/octet-stream" if no others seemed to match.
-	return http.DetectContentType(fb[:512])
-}
-
-func createThumbnail(path string, fb []byte) error {
-	i, err := process(path, fb)
+func createThumbnail(path string, fb []byte, contentType string) error {
+	i, err := process(path, fb, contentType)
+	if err != nil {
+		return err
+	}
 	thumbPath := "data/thumbnails/thumb_" + filepath.Base(path)
 
 	dst := createRect(i)
@@ -66,10 +54,7 @@ func createThumbnail(path string, fb []byte) error {
 	return nil
 }
 
-func process(path string, fb []byte) (*Image, error) {
-	contentType := detectContentType(fb)
-	log.Print(contentType)
-
+func process(path string, fb []byte, contentType string) (*Image, error) {
 	_, _, err := image.Decode(bytes.NewReader(fb))
 	if err != nil {
 		return nil, err
