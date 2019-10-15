@@ -60,6 +60,15 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
+		newAlbum := r.FormValue("new_album")
+		if newAlbum != "" {
+			err := s.db.UpdatePhotoAlbum(v["id"], newAlbum)
+			if err != nil {
+				log.Print(err)
+				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+				return
+			}
+		}
 		http.Redirect(w, r, "/photo/"+v["id"], http.StatusSeeOther)
 	}
 }

@@ -87,6 +87,7 @@ type Store interface {
 	DeletePhotoByID(id string) error
 	UpdatePhotoCaption(id, newCaption string) error
 	GetPhotoAlbum(id string) (string, error)
+	UpdatePhotoAlbum(photoID, albumID string) error
 
 	GetGroupsForUser(u User) ([]Group, error)
 	GetGroupByID(id string) (Group, []GroupMember, error)

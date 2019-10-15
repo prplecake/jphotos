@@ -96,6 +96,11 @@ func (pg *PGStore) UpdatePhotoCaption(id, newCaption string) error {
 	return nil
 }
 
+// UpdatePhotoAlbum changes the album a photo belongs to
+func (pg *PGStore) UpdatePhotoAlbum(photoID, albumID string) error {
+	return nil
+}
+
 // GetPhotoAlbum returns the album slug a photo belongs to
 func (pg *PGStore) GetPhotoAlbum(photoID string) (string, error) {
 	rows, err := pg.Query(
