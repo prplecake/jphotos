@@ -40,7 +40,7 @@ func (pg *PGStore) AddAlbum(name string) error {
 
 // GetAlbums returns a list of all Albums
 func (pg *PGStore) GetAlbums() ([]Album, error) {
-	rows, err := pg.Query("SELECT name, slug FROM albums " +
+	rows, err := pg.Query("SELECT id, name, slug FROM albums " +
 		"ORDER BY name ASC")
 	if err != nil {
 		log.Fatal(err)
@@ -50,12 +50,12 @@ func (pg *PGStore) GetAlbums() ([]Album, error) {
 	albums := make([]Album, 0)
 
 	for rows.Next() {
-		var name, slug string
-		err := rows.Scan(&name, &slug)
+		var name, slug, id string
+		err := rows.Scan(&id, &name, &slug)
 		if err != nil {
 			return nil, fmt.Errorf("GetAlbums: Couldn't scan: %w", err)
 		}
-		albums = append(albums, Album{name, slug, ""})
+		albums = append(albums, Album{name, slug, id})
 	}
 	return albums, nil
 }
