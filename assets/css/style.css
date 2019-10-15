@@ -62,7 +62,6 @@ li[role="menuitem"] {
 
 .text-danger {
 	color: red;
-	font-weight: bold;
 }
 
 .btn {
@@ -142,6 +141,18 @@ label {
 /*	Albums
 /*
 /***************************************************/
+
+.create-album {
+	display: flex;
+}
+
+.create-album-form {
+
+}
+
+.create-album-errors {
+	margin-left: 1em;
+}
 
 .album-list {
 	display:flex;

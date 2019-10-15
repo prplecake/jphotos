@@ -1,12 +1,23 @@
 {{template "_pageHeader"}}
 
 {{if .Auth}}
+<div class="create-album">
+<div class="create-album-form">
 <form method="POST">
 	<label for="name">Create new album: 
 		<input class="form-control" type="text" name="name" id="name" />
 	</label>
 	<input class="btn btn-primary" type="submit" value="Create" />
 </form>
+</div>
+{{if .Errors}}
+<div class="create-album-errors text-danger">
+	{{range .Errors}}
+	<p>{{.}}</p>
+	{{end}}
+</div>
+{{end}}
+</div>
 {{end}}
 
 <h2>All Albums</h2>

@@ -1,6 +1,7 @@
 package jphotos
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -11,21 +12,48 @@ import (
 	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
+func verifyAlbumInput(name string) []string {
+	issues := []string{}
+	if len(name) == 0 {
+		log.Printf("Album name [%s] verification...", name)
+		issues = append(issues,
+			fmt.Sprintf("Album name cannot be blank."))
+	}
+	return issues
+}
+
 func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	type albumData struct {
 		Albums []db.Album
 		Auth   *auth.Authorization
-	}
-
-	if r.Method == "POST" {
-		name := r.FormValue("name")
-		if err := s.db.AddAlbum(name); err != nil {
-			log.Fatal(err)
-		}
-
+		Errors []string
 	}
 
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
+
+	if r.Method == "POST" {
+		albums, err := s.db.GetAlbums()
+		if err != nil {
+			log.Print(err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		name := r.FormValue("name")
+		log.Printf("Album name: %s", name)
+		errors := verifyAlbumInput(name)
+		fmt.Print("Errors: ", errors)
+		if len(errors) > 0 {
+			app.RenderTemplate(w, "albums", albumData{
+				Albums: albums,
+				Auth:   auth,
+				Errors: errors,
+			})
+			return
+		}
+		if err := s.db.AddAlbum(name); err != nil {
+			log.Fatal(err)
+		}
+	}
 
 	albums, err := s.db.GetAlbums()
 	if err != nil {
