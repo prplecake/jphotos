@@ -4,7 +4,7 @@ jphotos is a simple HTTP server for sharing pictures.
 
 jphotos will be written in Go and use Amazon S3 as the storage backend.
 The project will fill a long-time desire to have a platform to share my
-photos, that isn't Flickr, or 500px, or Format, etc.
+photos, that isn't Flickr, or 500px, or Format, Imgur, etc.
 
 photos.jrgnsn.net is eventually where this app will go live and will be
 where I host pictures, photography, etc.
@@ -32,6 +32,8 @@ in the root of the repository.
 
 - add `--all` to watch HTML templates
 - add `--excludeDir data` so gin doesn't rebuild after a photo upload
+
+[gin]: https://github.com/codegangsta/gin
 
 ### Initializing the database
 
