@@ -163,6 +163,7 @@ label {
 
 .album-list {
 	display:flex;
+	flex-wrap: wrap;
 }
 .album-list-item {
 	margin: 1em;
@@ -175,6 +176,51 @@ label {
 	flex-wrap: wrap;
 }
 
+<<<<<<< Updated upstream
+=======
+.album-content img {
+	border: 1px solid gainsboro;
+}
+
+.album-content img:hover {
+	border: 1px solid darkgray;
+}
+
+.album {
+	display: grid;
+}
+
+.album-cover {
+	display: flex;
+	max-width: 167px;
+	min-width: 167px;
+	flex-wrap: wrap;
+	margin: 0 auto;
+}
+
+.album-cover-image {
+	width: 75px;
+	height: 75px;
+	border: 1px dashed black;
+	margin: .2rem;
+	background-color: #e9ecef;
+}
+
+.album-cover-image div {
+	margin: 27px 0 0 0;
+	height: 100%;
+	width: 100%;
+}
+
+.album-name {
+	margin: 0.5rem auto;
+}
+
+.no-padding {
+	padding: 0;
+}
+
+>>>>>>> Stashed changes
 /****************************************************
 /*
 /*	Photos

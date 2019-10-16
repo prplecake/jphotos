@@ -24,9 +24,20 @@
 {{if .Albums}}
 <div class="album-list">
 	{{range .Albums}}
-	<a href="/album/{{.Slug}}" class="album-list-item btn">
+<a href="/album/{{.Slug}}">
+	<div class="album album-list-item">
+	<button class="btn no-padding">
+		<div class="album-cover">
+			<div class="album-cover-image"><div>1</div></div>
+			<div class="album-cover-image"><div>2</div></div>
+			<div class="album-cover-image"><div>3</div></div>
+			<div class="album-cover-image"><div>4</div></div>
+		</div>
+	</button>
+	<div class="album-name">
 		{{.Name}}
-	</a>
+	</div>
+</div></a>
 	{{end}}
 </div>
 {{else}}
