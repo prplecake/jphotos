@@ -26,7 +26,7 @@ func NewServer(db db.Store) *Server {
 }
 
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	log.Print("Request URL: ", r.URL)
+	// log.Print("Request URL: ", r.URL)
 	s.router.ServeHTTP(w, r)
 }
 
@@ -62,4 +62,5 @@ func (s *Server) routes() {
 		http.StripPrefix("/static/", http.FileServer(http.Dir("assets/"))))
 
 	http.Handle("/", r)
+	log.Print("Routes initialized.")
 }
