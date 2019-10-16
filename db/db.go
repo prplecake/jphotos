@@ -80,7 +80,6 @@ type Store interface {
 	GetAllAlbums() ([]Album, error)
 	GetAlbumBySlug(slug string) (*Album, error)
 	GetAlbumPhotosByID(id string) ([]Photo, error)
-	GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo, error)
 	GetAlbumSlugByID(id string) (string, error)
 
 	AddAlbum(name string) error
