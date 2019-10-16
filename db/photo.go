@@ -98,11 +98,13 @@ func (pg *PGStore) UpdatePhotoCaption(id, newCaption string) error {
 
 // UpdatePhotoAlbum changes the album a photo belongs to
 func (pg *PGStore) UpdatePhotoAlbum(photoID, albumID string) error {
-	return nil
+	return pg.Exec(
+		"UPDATE album_photos SET album = $2 WHERE photo = $1",
+		photoID, albumID)
 }
 
 // GetPhotoAlbum returns the album slug a photo belongs to
-func (pg *PGStore) GetPhotoAlbum(photoID string) (string, error) {
+func (pg *PGStore) GetAlbumIDByPhotoID(photoID string) (string, error) {
 	rows, err := pg.Query(
 		"SELECT a.slug FROM albums AS a "+
 			"INNER JOIN album_photos AS ap ON ap.album = a.id "+
