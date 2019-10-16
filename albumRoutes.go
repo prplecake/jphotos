@@ -15,7 +15,6 @@ import (
 func verifyAlbumInput(name string) []string {
 	issues := []string{}
 	if len(name) == 0 {
-		log.Printf("Album name [%s] verification...", name)
 		issues = append(issues,
 			fmt.Sprintf("Album name cannot be blank."))
 	}
@@ -31,31 +30,26 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
 
+	var errors []string
+
 	if r.Method == "POST" {
-		albums, err := s.db.GetAlbums()
-		if err != nil {
-			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
-			return
-		}
 		name := r.FormValue("name")
 		log.Printf("Album name: %s", name)
-		errors := verifyAlbumInput(name)
+		errors = verifyAlbumInput(name)
 		fmt.Print("Errors: ", errors)
-		if len(errors) > 0 {
-			app.RenderTemplate(w, "albums", albumData{
-				Albums: albums,
-				Auth:   auth,
-				Errors: errors,
-			})
-			return
-		}
-		if err := s.db.AddAlbum(name); err != nil {
-			log.Fatal(err)
+		if len(errors) == 0 {
+			if err := s.db.AddAlbum(name); err != nil {
+				if err == db.ErrAlbumExists {
+					errors = append(errors,
+						fmt.Sprintf("Album name already exists."))
+				} else {
+					log.Fatal(err)
+				}
+			}
 		}
 	}
 
-	albums, err := s.db.GetAlbums()
+	albums, err := s.db.GetAllAlbums()
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -65,6 +59,7 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	app.RenderTemplate(w, "albums", albumData{
 		Albums: albums,
 		Auth:   auth,
+		Errors: errors,
 	})
 
 	return
