@@ -32,7 +32,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) routes() {
 	r := s.router
-	r.HandleFunc("/", s.homeHandler)
+	r.HandleFunc("/", s.handleAlbumIndex)
 	r.HandleFunc("/login", s.loginHandler).Methods("GET", "POST")
 
 	r.HandleFunc("/album", s.handleGetAlbum)
