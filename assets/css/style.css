@@ -73,6 +73,7 @@ li[role="menuitem"] {
 	font-weight: 400;
 	font-family: sans-serif;
 	line-height: 1.5;
+	vertical-align: middle;
 	cursor: pointer;
 	color: #000;
 	text-decoration: none;
@@ -119,6 +120,7 @@ li[role="menuitem"] {
     border-radius: .25rem;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 	border-radius: 0;
+	vertical-align: bottom;
 }
 select {
 	border-color: #888;
