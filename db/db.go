@@ -74,21 +74,35 @@ type Store interface {
 	GetUserByName(username string) (*User, error)
 	UserAddSession(user User, session string, expires time.Time) error
 
-	AddAlbum(name string) error
-	GetAlbums() ([]Album, error)
-	GetAlbum(slug string) (*Album, error)
-	GetAlbumPhotos(id string) ([]Photo, error)
+	//
+	// Album Methods
+	// These are methods used to primarily access the albums tabl
+	GetAllAlbums() ([]Album, error)
+	GetAlbumBySlug(slug string) (*Album, error)
+	GetAlbumPhotosByID(id string) ([]Photo, error)
+	GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo, error)
 	GetAlbumSlugByID(id string) (string, error)
-	DeleteAlbumBySlug(slug string) error
-	RenameAlbum(id, newName string) error
 
+	AddAlbum(name string) error
+
+	RenameAlbumByID(id, newName string) error
+
+	DeleteAlbumBySlug(slug string) error
+
+	//
+	// Photo Methods
+	// These are methods used to primarily access the photos table
 	AddPhoto(p Photo, albumID string) error
 	GetPhotoByID(id string) (*Photo, error)
-	DeletePhotoByID(id string) error
+	GetAlbumIDByPhotoID(id string) (string, error)
+
 	UpdatePhotoCaption(id, newCaption string) error
-	GetPhotoAlbum(id string) (string, error)
 	UpdatePhotoAlbum(photoID, albumID string) error
 
+	DeletePhotoByID(id string) error
+
+	//
+	// Group Methods
 	GetGroupsForUser(u User) ([]Group, error)
 	GetGroupByID(id string) (Group, []GroupMember, error)
 

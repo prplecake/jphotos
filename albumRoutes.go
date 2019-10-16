@@ -81,7 +81,7 @@ type payload struct {
 func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	log.Print(v)
-	album, err := s.db.GetAlbum(v["slug"])
+	album, err := s.db.GetAlbumBySlug(v["slug"])
 	if err != nil {
 		log.Print(err)
 		if err == db.ErrNotFound {
@@ -96,7 +96,7 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	photos, err := s.db.GetAlbumPhotos(album.ID)
+	photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -124,7 +124,7 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	}
 	v := mux.Vars(r)
 
-	album, err := s.db.GetAlbum(v["slug"])
+	album, err := s.db.GetAlbumBySlug(v["slug"])
 	if err != nil {
 		if err == db.ErrNotFound {
 			app.RenderTemplate(w, "error", &app.ErrorInfo{
@@ -138,7 +138,7 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	photos, err := s.db.GetAlbumPhotos(album.ID)
+	photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -154,7 +154,7 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		app.RenderTemplate(w, "album_manage", manageAlbumData)
 	case "POST":
 		if len(r.FormValue("new_name")) > 0 {
-			err := s.db.RenameAlbum(album.ID, r.FormValue("new_name"))
+			err := s.db.RenameAlbumByID(album.ID, r.FormValue("new_name"))
 			if err != nil {
 				log.Print(err)
 				http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -177,7 +177,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 	}
 	v := mux.Vars(r)
-	album, err := s.db.GetAlbum(v["slug"])
+	album, err := s.db.GetAlbumBySlug(v["slug"])
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -185,7 +185,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	}
 
 	log.Printf("Album %s deleted.", v["slug"])
-	photos, err := s.db.GetAlbumPhotos(album.ID)
+	photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	if err != nil {
 		log.Print(err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)

@@ -39,7 +39,7 @@ func (pg *PGStore) AddAlbum(name string) error {
 }
 
 // GetAlbums returns a list of all Albums
-func (pg *PGStore) GetAlbums() ([]Album, error) {
+func (pg *PGStore) GetAllAlbums() ([]Album, error) {
 	rows, err := pg.Query("SELECT id, name, slug FROM albums " +
 		"ORDER BY name ASC")
 	if err != nil {
@@ -61,7 +61,7 @@ func (pg *PGStore) GetAlbums() ([]Album, error) {
 }
 
 // GetAlbum returns an album, if it exists and matches the provided id
-func (pg *PGStore) GetAlbum(slug string) (*Album, error) {
+func (pg *PGStore) GetAlbumBySlug(slug string) (*Album, error) {
 	rows, err := pg.Query("SELECT name, id FROM albums WHERE slug = $1", slug)
 	if err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ func (pg *PGStore) GetAlbum(slug string) (*Album, error) {
 }
 
 // GetAlbumPhotos returns a list of all photos in an album
-func (pg *PGStore) GetAlbumPhotos(id string) ([]Photo, error) {
+func (pg *PGStore) GetAlbumPhotosByID(id string) ([]Photo, error) {
 	rows, err := pg.Query(
 		"SELECT p.id, p.caption, p.location, p.added "+
 			"FROM album_photos as ap "+
@@ -149,7 +149,7 @@ func (pg *PGStore) DeleteAlbumBySlug(slug string) error {
 }
 
 // RenameAlbum renames an album
-func (pg *PGStore) RenameAlbum(id, newName string) error {
+func (pg *PGStore) RenameAlbumByID(id, newName string) error {
 	return pg.Exec(
 		"UPDATE albums SET name = $1, slug = $2 "+
 			"WHERE id = $3",

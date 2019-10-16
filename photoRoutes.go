@@ -37,13 +37,13 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		album, err := s.db.GetPhotoAlbum(v["id"])
+		album, err := s.db.GetAlbumIDByPhotoID(v["id"])
 		if err != nil {
 			log.Print(err)
 			http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
 			return
 		}
-		albums, err := s.db.GetAlbums()
+		albums, err := s.db.GetAllAlbums()
 		if err != nil {
 			log.Print(err)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
