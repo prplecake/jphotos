@@ -11,9 +11,9 @@
 {{end}}
 {{if .Photo}}
 <div class="single-photo">
-	<img src="/p/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" /><br />
-	<div class="photo-caption">{{.Photo.Caption}}</div>
+	<img src="/p/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" />
 </div>
+<div class="photo-caption">{{.Photo.Caption}}</div>
 {{else}}
 <p>No photo...</p>
 {{end}}
