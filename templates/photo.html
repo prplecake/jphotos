@@ -1,14 +1,23 @@
 {{template "_pageHeader"}}
-<a href="/album/{{.AlbumSlug}}">Back to album</a>
-{{if .Auth}}
-<details class="manage">
-	<summary>manage this photo</summary>
-	<div class="manage-photo-tools">
-		{{template "deletePhotoForm" .}}
-		{{template "updatePhotoForm" .}}
+<div class="page-tools">
+	<div class="page-links">
+		<a href="/album/{{.AlbumSlug}}">Back to album</a>
 	</div>
-</details>
+	
+{{if .Auth}}
+<div class="page-auth">
+	<details class="manage">
+		<summary>manage this photo</summary>
+		<div class="manage-photo-tools">
+			{{template "deletePhotoForm" .}}
+			{{template "updatePhotoForm" .}}
+		</div>
+	</details>
+</div>
 {{end}}
+
+</div>
+
 {{if .Photo}}
 <div class="single-photo">
 	<img src="/p/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" />
