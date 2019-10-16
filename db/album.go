@@ -117,6 +117,37 @@ func (pg *PGStore) GetAlbumPhotosByID(id string) ([]Photo, error) {
 	return photos, nil
 }
 
+// GetFirstXPhotosFromAlbumByID returns the top X photos that belong to
+// that album ID.
+// The idea is that the first X photos will be used to make the album
+// covers.
+func (pg *PGStore) GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo, error) {
+	rows, err := pg.Query(
+		"SELECT TOP $2 p.id, p.location "+
+			"FROM album_photos as ap "+
+			"INNER JOIN photos as p ON p.id = ap.photo "+
+			"INNER JOIN albums as a ON ap.album = a.id "+
+			"WHERE ap.album = $1 ORDER BY p.added ASC",
+		albumID, x)
+	if err != nil {
+		return nil, fmt.Errorf("GetFirstXPhotosFromAlbumByID: %w", err)
+	}
+	photos := make([]Photo, 0)
+
+	for rows.Next() {
+		var (
+			id, caption, location string
+			added                 time.Time
+		)
+		err = rows.Scan(&id, &caption, &location, &added)
+		if err != nil {
+			return nil, fmt.Errorf("GetFirstXPhotosFromAlbumByID: %w", err)
+		}
+		photos = append(photos, Photo{id, caption, location, added})
+	}
+	return photos, nil
+}
+
 // GetAlbumSlugByID returns the slug matching the provided ID
 func (pg *PGStore) GetAlbumSlugByID(id string) (string, error) {
 	rows, err := pg.Query("SELECT slug FROM albums WHERE id = $1", id)
