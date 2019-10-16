@@ -107,6 +107,11 @@ li[role="menuitem"] {
 	background-color: #c82333;
 	border: #dee2e6 1px solid;
 }
+
+form {
+	margin-bottom: 1rem;
+}
+
 .form-control {
     font-size: 1rem;
     line-height: 1.5;
@@ -213,4 +218,12 @@ summary {
 }
 details.manage {
 	text-align: right;
+}
+
+.manage-photo-tools.form-control {
+	vertical-align: unset;
+}
+
+details.delete {
+	margin-bottom: 1rem;
 }

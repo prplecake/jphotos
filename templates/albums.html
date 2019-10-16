@@ -4,10 +4,9 @@
 <div class="create-album">
 <div class="create-album-form">
 <form method="POST">
-	<label for="name">Create new album: 
-		<input class="form-control" type="text" name="name" id="name" />
-	</label>
-	<input class="btn btn-primary" type="submit" value="Create" />
+	<input class="form-control" type="text" name="name" id="name"
+		placeholder="new album" required />
+	<button class="btn btn-primary" type="submit">Create album</button>
 </form>
 </div>
 {{if .Errors}}

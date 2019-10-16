@@ -2,18 +2,9 @@
 {{if .Auth}}
 <details class="manage">
 	<summary>manage this album</summary>
-	<form method="post" action="/album/{{.Album.Slug}}/delete">
-		<input class="btn btn-danger" type="submit" value="Delete album"
-		href="/album/{{.Album.Slug}}/delete" />
-	</form><br />
-	<form method="post" action="/album/{{.Album.Slug}}/manage">
-		<label for="new_name">
-			<input class="form-control" type="text" name="new_name" id="new_name" />
-			rename album
-		</label><br />
-		<input class="btn" type="submit" value="Rename album" />
-	</form><br />
-	{{template "photoUploadForm" .Album}}
+	{{template "deleteAlbumForm" .Album}}
+	{{template "renameAlbumForm" .Album}}
+	{{template "uploadPhotoForm" .Album}}
 </details>
 {{end}}
 <div class="album-content">
@@ -32,16 +23,33 @@
 </div>
 {{template "_pageFooter"}}
 
-{{define "photoUploadForm"}}
+{{define "renameAlbumForm"}}
+	<div><form method="post" action="/album/{{.Slug}}/manage">
+		<input class="form-control" type="text" name="new_name"
+			id="new_name" required/>
+		<button class="btn" type="submit">Rename album</button>
+	</form></div>
+{{end}}
+
+{{define "deleteAlbumForm"}}
+<details class="delete">
+	<summary class="btn btn-danger">Delete album</summary>
+	<form method="post" action="/album/{{.Slug}}/delete">
+		<button class="btn btn-danger" type="submit">
+			YES, delete {{.Name}}
+		</button>
+	</form>
+</details>
+{{end}}
+
+{{define "uploadPhotoForm"}}
 <form enctype="multipart/form-data" action="/upload" method="POST">
 	<label for="photoFiles">Photos: 
 		<input class="form-control" type="file" id="photoFiles"
 			name="photoFiles" accept="image/*" multiple />
 	</label><br />
-	<label for="caption">Caption: 
-		<input class="form-control" type="text" id="caption"
-		name="caption" />
-	</label><br />
+	<input class="form-control" type="text" id="caption"
+		name="caption" placeholder="caption" /><br />
 	<input class="btn btn-primary" type="submit" value="Upload & Add to Album" />
 	<input type="hidden" name="album-id" value="{{.ID}}" />
 </form>

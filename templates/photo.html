@@ -1,42 +1,52 @@
 {{template "_pageHeader"}}
-		<a href="/album/{{.AlbumSlug}}">Back to album</a>
-		{{if .Auth}}
-		<details class="manage">
-			<summary>manage this photo</summary>
-			<div class="manage-photo-tools">
-				<form method="POST" 
-					action="/photo/{{.Photo.ID}}/delete?next=/album/{{.AlbumSlug}}">
-					<input type="submit" name="delete" value="Delete photo" 
-						class="text-danger btn btn-danger" />
-				</form><br />
-				<form method="POST" action="/photo/{{.Photo.ID}}">
-					{{if .Albums}}
-					<label for="new_album">
-						<select class="form-control" name="new_album" id="new_album">
-							{{range .Albums}}
-							<option value="{{.ID}}">{{.Name}}</option>
-							{{end}}
-						</select>
-						select a new album
-					</label><br />
-					<label for="caption">
-						<input class="form-control" type="text" name="caption" 
-							id="caption" value="{{.Photo.Caption}}" />
-						update caption
-					</label><br />
-					{{end}}
-					<input type="submit" value="Update Photo"
-						class="btn btn-primary" />
-				</form>
-			</div>
-		</details>
-		{{end}}
-	{{if .Photo}}
-	<div class="single-photo">
-		<img src="/p/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" /><br />
-		<div class="photo-caption">{{.Photo.Caption}}</div>
+<a href="/album/{{.AlbumSlug}}">Back to album</a>
+{{if .Auth}}
+<details class="manage">
+	<summary>manage this photo</summary>
+	<div class="manage-photo-tools">
+		{{template "deletePhotoForm" .}}
+		{{template "updatePhotoForm" .}}
 	</div>
-	{{else}}
-	<p>No photo...</p>
-	{{end}}
+</details>
+{{end}}
+{{if .Photo}}
+<div class="single-photo">
+	<img src="/p/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" /><br />
+	<div class="photo-caption">{{.Photo.Caption}}</div>
+</div>
+{{else}}
+<p>No photo...</p>
+{{end}}
 {{template "_pageFooter"}}
+
+{{define "deletePhotoForm"}}
+<details class="delete">
+	<summary class="btn btn-danger">Delete photo</summary>
+	<form action="/photo/{{.Photo.ID}}/delete?next=/album/{{.AlbumSlug}}"
+		method="POST">
+	<button type="submit" class="text-danger btn btn-danger">
+		YES - delete this photo
+	</button>
+</form>
+</details>
+{{end}}
+
+{{define "updatePhotoForm"}}
+<form method="POST" action="/photo/{{.Photo.ID}}">
+	{{if .Albums}}
+	<label for="new_album">
+		select a new album
+		<select class="form-control" name="new_album" id="new_album">
+			<option value="">-- Choose --</option>
+			{{range .Albums}}
+			<option value="{{.ID}}">{{.Name}}</option>
+			{{end}}
+		</select>
+	</label><br />
+	<input class="form-control" type="text" name="caption" 
+		id="caption" value="{{.Photo.Caption}}" placeholder="caption" />
+	{{end}}
+	<input type="submit" value="Update Photo"
+	class="btn btn-primary" />
+</form>
+{{end}}
