@@ -83,7 +83,11 @@ func createRect(i *Image) *image.RGBA {
 	)
 	rect := image.Rect(0, 0, x, y)
 	dst := image.NewRGBA(rect)
-	scaler := draw.ApproxBiLinear
+    // scaler can be one of:
+    //  - CatmullRom        - best quality, slowest
+    //  - ApproxBiLinear    - mid quality, mid-speed
+    //  - NearestNeighbor   - low quality, fast
+	scaler := draw.CatmullRom
 	scaler.Scale(dst, rect, img, img.Bounds(), draw.Over, nil)
 	return dst
 
