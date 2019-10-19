@@ -50,8 +50,11 @@ Then, import the schema:
 
 	psql < $REPO/db/sql/schema.sql
 
-* [macOS PostgreSQL Help]
-(https://man.sr.ht/~mjorgensen/jphotos/macos_postgresql.md)
+* [Debian PostgreSQL Help][debian-postgres]
+* [macOS PostgreSQL Help][macos-postgres]
+
+[debian-postgres]:https://man.sr.ht/~mjorgensen/jphotos/debian_postgresql.md
+[macos-postgres]:https://man.sr.ht/~mjorgensen/jphotos/macos_postgresql.md
 
 ## Resources
 
