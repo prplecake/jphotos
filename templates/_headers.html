@@ -16,8 +16,25 @@
 		<div class="content">
 {{end}}
 
+{{define "_photoPageHeader"}}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{if .}}{{.}} - {{end}}jphotos</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+</head>
+<body>
+	<div class="photo-container">
+{{end}}
+
 {{define "_pageFooter"}}
 		</div>
+	</div>
+</body>
+</html>
+{{end}}
+
+{{define "_photoPageFooter"}}
 	</div>
 </body>
 </html>

@@ -1,38 +1,47 @@
-{{template "_pageHeader"}}
-<div class="page-tools">
+{{template "_photoPageHeader"}}
+<div class="left-sidebar">
+	<header>
+		<h1 class="page-title">
+			jphotos
+		</h1>
+	</header>
 	<div class="page-links">
 		<a href="/album/{{.AlbumSlug}}">Back to album</a>
+		{{template "navigation"}}
 	</div>
-	
-{{if .Auth}}
-<div class="page-auth">
-	<details class="manage">
-		<summary>manage this photo</summary>
-		<div class="manage-photo-tools">
-			{{template "deletePhotoForm" .}}
-			{{template "updatePhotoForm" .}}
-		</div>
-	</details>
-</div>
-{{end}}
-
 </div>
 
 {{if .Photo}}
 <div class="single-photo">
 	<img src="/p/{{.Photo.Location}}" alt="{{.Photo.Caption}}" height="100%" />
 </div>
+
+{{if .Auth}}
+<div class="right-sidebar">
+	<div class="page-auth">
+		<details class="manage">
+			<summary>manage this photo</summary>
+			<div class="manage-photo-tools">
+				{{template "deletePhotoForm" .}}
+				{{template "updatePhotoForm" .}}
+			</div>
+		</details>
+	</div>
+</div>
+{{end}}
+
 <div class="photo-caption">{{.Photo.Caption}}</div>
 {{else}}
 <p>No photo...</p>
 {{end}}
-{{template "_pageFooter"}}
+
+{{template "_photoPageFooter"}}
 
 {{define "deletePhotoForm"}}
 <details class="delete">
 	<summary class="btn btn-danger">Delete photo</summary>
 	<form action="/photo/{{.Photo.ID}}/delete?next=/album/{{.AlbumSlug}}"
-		method="POST">
+	method="POST">
 	<button type="submit" class="text-danger btn btn-danger">
 		YES - delete this photo
 	</button>
@@ -53,7 +62,7 @@
 		</select>
 	</label><br />
 	<input class="form-control" type="text" name="caption" 
-		id="caption" value="{{.Photo.Caption}}" placeholder="caption" />
+	id="caption" value="{{.Photo.Caption}}" placeholder="caption" />
 	{{end}}
 	<input type="submit" value="Update Photo"
 	class="btn btn-primary" />
