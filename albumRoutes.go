@@ -168,7 +168,48 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 			}
 			http.Redirect(w, r, "/album/"+slug, http.StatusSeeOther)
 		}
+	} else if strings.HasSuffix(r.URL.String(), "update") {
+		log.Print("Update...")
 	}
+}
+
+func (s *Server) handleBulkEditAlbumBySlug(w http.ResponseWriter, r *http.Request) {
+	auth, _ := auth.Get(r, auth.RoleUser, s.db)
+	if auth == nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	v := mux.Vars(r)
+
+	album, err := s.db.GetAlbumBySlug(v["slug"])
+	if err != nil {
+		if err == db.ErrNotFound {
+			app.RenderTemplate(w, "error", &app.ErrorInfo{
+				Info:          "Album not found",
+				RedirectLink:  "/albums",
+				RedirectTimer: 3,
+			})
+		}
+		log.Print(err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	photos, err := s.db.GetAlbumPhotosByID(album.ID)
+	if err != nil {
+		log.Print(err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	p := &payload{
+		Title:  album.Name,
+		Album:  album,
+		Auth:   auth,
+		Photos: photos,
+	}
+
+	app.RenderTemplate(w, "album-bulk-edit", p)
 }
 
 func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request) {
