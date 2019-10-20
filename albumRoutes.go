@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
 
@@ -116,7 +117,6 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request) {
-	var manageAlbumData albumData
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
 	if auth == nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -138,21 +138,13 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	photos, err := s.db.GetAlbumPhotosByID(album.ID)
-	if err != nil {
-		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
-
-	switch r.Method {
-	case "GET":
-		manageAlbumData.Album = album
-		manageAlbumData.Auth = auth
-		manageAlbumData.Photos = photos
-
-		app.RenderTemplate(w, "album_manage", manageAlbumData)
-	case "POST":
+	//photos, err := s.db.GetAlbumPhotosByID(album.ID)
+	//if err != nil {
+	//	log.Print(err)
+	//	http.Error(w, "Internal server error", http.StatusInternalServerError)
+	//	return
+	//}
+	if strings.HasSuffix(r.URL.String(), "rename") {
 		if len(r.FormValue("new_name")) > 0 {
 			err := s.db.RenameAlbumByID(album.ID, r.FormValue("new_name"))
 			if err != nil {
