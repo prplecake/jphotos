@@ -21,7 +21,7 @@ where I host pictures, photography, etc.
 
 * go (>-=1.12)
 
-		go build ./cmd/jphotos-server/
+		go build cmd/jphotos-server/
 		./jphotos-server
 
 in the root of the repository.
@@ -39,6 +39,10 @@ in the root of the repository.
 
 * add `--all` to watch HTML templates
 * add `--excludeDir data` so gin doesn't rebuild after a photo upload
+
+***Note:** I've had issues attempting to `go get` gin from within
+jphotos, so I'd recommend installing gin from outside the project
+directory.*
 
 [gin]: https://github.com/codegangsta/gin
 
