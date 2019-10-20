@@ -39,8 +39,12 @@ func (s *Server) routes() {
 	r.HandleFunc("/album/", s.handleGetAlbum)
 	r.HandleFunc("/albums", s.handleAlbumIndex)
 	r.HandleFunc("/album/{slug}", s.handleGetAlbum)
-	r.HandleFunc("/album/{slug}/manage", s.handleManageAlbumBySlug).
-		Methods("GET", "POST")
+	r.HandleFunc("/album/{slug}/manage", s.handleBulkEditAlbumBySlug).
+		Methods("GET")
+	r.HandleFunc("/album/{slug}/rename", s.handleManageAlbumBySlug).
+		Methods("POST")
+	r.HandleFunc("/album/{slug}/update", s.handleManageAlbumBySlug).
+		Methods("POST")
 	r.HandleFunc("/album/{slug}/delete", s.handleDeleteAlbumBySlug).
 		Methods("POST")
 
