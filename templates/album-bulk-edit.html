@@ -2,34 +2,43 @@
 {{if .Auth}}
 <details class="manage">
 	<summary>manage this album</summary>
-	<a class="btn" href="/album/{{.Album.Slug}}/manage">Bulk Edit</a>
 	{{template "deleteAlbumForm" .Album}}
 	{{template "renameAlbumForm" .Album}}
 	{{template "uploadPhotoForm" .Album}}
 </details>
 {{end}}
+<form method="POST">
+<button type="reset" class="btn btn-danger">Reset</button>
+
 <div class="album-content">
 	{{if .Photos}}
 	{{range .Photos}}
 	<div class="photo-item">
-		<a href="/photo/{{.ID}}">
-			<img src="/t/thumb_{{.Location}}" alt="{{.Caption}}" />
-		</a><br />
-		<div class="photo-caption">{{.Caption}}</div>
+			<label for="photo_{{.ID}}">
+				<input type="checkbox" id="photo_{{.ID}}" name="photo_{{.ID}}" />
+				<img src="/t/thumb_{{.Location}}" alt="{{.Caption}}" />
+			</label><br />
+		<div class="photo-caption">
+			<textarea id="caption_{{.ID}}" name="caption_{{.ID}}">{{.Caption}}</textarea>
+		</div>
 	</div>
 	{{end}}
 	{{else}}
 	<p>No photos.</p>
 	{{end}}
 </div>
+<button type="submit" class="btn btn-primary">Update Album</button>
+<button type="reset" class="btn">Reset Form</button>
+<button type="submit" class="btn btn-danger"
+	formaction="/album/{{.Album.Slug}}/update">Delete Selected Photos</button>
+</form>
 {{template "_pageFooter"}}
 
 {{define "renameAlbumForm"}}
-	<div><form method="post">
+	<div><form method="post" action="/album/{{.Slug}}/manage">
 		<input class="form-control" type="text" name="new_name"
 			id="new_name" required/>
-		<button class="btn" type="submit"
-			formaction="/album/{{.Slug}}/rename">Rename album</button>
+		<button class="btn" type="submit">Rename album</button>
 	</form></div>
 {{end}}
 
