@@ -40,7 +40,7 @@ in the root of the repository.
 * add `--all` to watch HTML templates
 * add `--excludeDir data` so gin doesn't rebuild after a photo upload
 
-***Note:** I've had issues attempting to `go get` gin from within
+***Note:*** *I've had issues attempting to `go get` gin from within
 jphotos, so I'd recommend installing gin from outside the project
 directory.*
 
