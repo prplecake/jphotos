@@ -84,8 +84,9 @@ func (pg *PGStore) DeletePhotoByID(id string) error {
 	return nil
 }
 
-// UpdatePhotoCaption updates the photo's caption
-func (pg *PGStore) UpdatePhotoCaption(id, newCaption string) error {
+// UpdatePhotoCaptionByID updates the photo's caption
+func (pg *PGStore) UpdatePhotoCaptionByID(id, newCaption string) error {
+
 	err := pg.Exec(
 		"UPDATE photos SET caption = $1 WHERE id = $2",
 		newCaption, id)
@@ -103,7 +104,7 @@ func (pg *PGStore) UpdatePhotoAlbum(photoID, albumID string) error {
 		photoID, albumID)
 }
 
-// GetPhotoAlbum returns the album slug a photo belongs to
+// GetAlbumIDByPhotoID returns the album slug a photo belongs to
 func (pg *PGStore) GetAlbumIDByPhotoID(photoID string) (string, error) {
 	rows, err := pg.Query(
 		"SELECT a.slug FROM albums AS a "+
