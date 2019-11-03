@@ -161,8 +161,26 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 			http.Redirect(w, r, "/album/"+slug, http.StatusSeeOther)
 		}
 	} else if strings.HasSuffix(r.URL.String(), "update") {
+		r.ParseForm()
 		log.Print("Update...")
+		for k, v := range r.Form {
+			if strings.HasPrefix(k, "photo_") {
+				// handle delete photo
+				if v[0] == "on" {
+					log.Print("Deleting photo...")
+					log.Print(k)
+					photoID := strings.TrimPrefix(k, "photo_")
+					s.db.DeletePhotoByID(photoID)
+				}
+			}
+			if strings.HasPrefix(k, "caption_") {
+				photoID := strings.TrimPrefix(k, "caption_")
+				s.db.UpdatePhotoCaptionByID(photoID, v[0])
+				// handle update captions
+			}
+		}
 	}
+	http.Redirect(w, r, "/album/"+v["slug"]+"/manage", http.StatusSeeOther)
 }
 
 func (s *Server) handleBulkEditAlbumBySlug(w http.ResponseWriter, r *http.Request) {
