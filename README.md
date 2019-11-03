@@ -42,7 +42,7 @@ in the root of the repository.
 
 ***Note:*** *I've had issues attempting to `go get` gin from within
 jphotos, so I'd recommend installing gin from outside the project
-directory.*
+directory. Try `cd ..; go get github.com/codegangsta/gin; cd -`*
 
 [gin]: https://github.com/codegangsta/gin
 
