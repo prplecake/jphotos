@@ -2,7 +2,9 @@ app:
   port: 3001
 database:
   username: mjorgensen
-  name: something
+  password:
+  hostname: localhost
+  name: jphotos
 uploads:
   path: data/uploads/photos/
   thumbnailpath: data/thumbnails/

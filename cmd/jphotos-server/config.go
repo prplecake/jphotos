@@ -16,8 +16,8 @@ type appConfig struct {
 }
 
 type databaseConfig struct {
-	Username, Password string
-	DBName             string `yaml:"name"`
+	Username, Password, Hostname, Name string
+	Port                               int
 }
 
 type templateConfig struct {
@@ -41,6 +41,8 @@ func defaultConfig() configuration {
 		},
 		DB: databaseConfig{
 			Username: os.Getenv("USER"),
+			Hostname: "localhost",
+			Port:     5432,
 		},
 		Templates: templateConfig{
 			"templates",

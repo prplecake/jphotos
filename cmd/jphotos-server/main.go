@@ -37,7 +37,7 @@ func main() {
 	}
 
 	app.InitTemplates(config.Templates.Path + "/**")
-	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.DBName)
+	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,5 +45,4 @@ func main() {
 	log.Fatal(http.ListenAndServe(
 		":"+config.App.Port,
 		jphotos.NewServer(postgres)))
-
 }
