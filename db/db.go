@@ -95,7 +95,7 @@ type Store interface {
 	GetPhotoByID(id string) (*Photo, error)
 	GetAlbumIDByPhotoID(id string) (string, error)
 
-	UpdatePhotoCaption(id, newCaption string) error
+	UpdatePhotoCaptionByID(id, newCaption string) error
 	UpdatePhotoAlbum(photoID, albumID string) error
 
 	DeletePhotoByID(id string) error

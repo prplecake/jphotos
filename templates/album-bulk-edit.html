@@ -7,7 +7,7 @@
 	{{template "uploadPhotoForm" .Album}}
 </details>
 {{end}}
-<form method="POST">
+<form method="POST" action="/album/{{.Album.Slug}}/update">
 <button type="reset" class="btn btn-danger">Reset</button>
 
 <div class="album-content">
@@ -29,8 +29,7 @@
 </div>
 <button type="submit" class="btn btn-primary">Update Album</button>
 <button type="reset" class="btn">Reset Form</button>
-<button type="submit" class="btn btn-danger"
-	formaction="/album/{{.Album.Slug}}/update">Delete Selected Photos</button>
+<button type="submit" class="btn btn-danger">Delete Selected Photos</button>
 </form>
 {{template "_pageFooter"}}
 

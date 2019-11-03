@@ -53,7 +53,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		newCaption := r.FormValue("caption")
 		if newCaption != "" {
-			err := s.db.UpdatePhotoCaption(v["id"], newCaption)
+			err := s.db.UpdatePhotoCaptionByID(v["id"], newCaption)
 			if err != nil {
 				log.Print(err)
 				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
