@@ -24,6 +24,7 @@ func verifyAlbumInput(name string) []string {
 
 func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	type albumData struct {
+		Title  string
 		Albums []db.Album
 		Auth   *auth.Authorization
 		Errors []string
@@ -58,6 +59,7 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.RenderTemplate(w, "albums", albumData{
+		Title:  "Albums",
 		Albums: albums,
 		Auth:   auth,
 		Errors: errors,
