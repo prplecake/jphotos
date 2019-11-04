@@ -50,7 +50,8 @@ func NewSession(username, password string, s db.Store) (*Token, error) {
 	}
 
 	// TODO this seems a little ridiculous to pull a dep for...
-	sessionToken := uuid.NewV4().String()
+	newUUID, _ := uuid.NewV4()
+	sessionToken := newUUID.String()
 	expires := time.Now().Add(ExpirationTime)
 
 	s.UserAddSession(*user, sessionToken, expires)
