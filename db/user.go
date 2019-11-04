@@ -2,6 +2,7 @@ package db
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/lib/pq"
@@ -24,6 +25,43 @@ func (pg *PGStore) AddUser(username string, hash []byte) error {
 		}
 	}
 	return err
+}
+
+// RemoveUser removes a user from the database.
+func (pg *PGStore) RemoveUser(username string) error {
+	_, err := pg.conn.Query("DELETE FROM users * WHERE username = $1", username)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// GetAllUsers returns a slice of Users
+func (pg *PGStore) GetAllUsers() ([]User, error) {
+	rows, err := pg.Query("SELECT username, created FROM users ORDER BY created ")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	users := make([]User, 0)
+
+	for rows.Next() {
+		var (
+			username string
+			created  time.Time
+		)
+		err := rows.Scan(&username, &created)
+		if err != nil {
+			return nil, fmt.Errorf("GetAllUsers(): Couldn't scan: %w", err)
+		}
+		users = append(users, User{
+			Username: username,
+			Created:  created.Format("2006-01-02 15:04"),
+		})
+	}
+	return users, nil
+
 }
 
 // GetUserByName returns the DB user information for a user if that user exists

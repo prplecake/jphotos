@@ -39,11 +39,21 @@ func main() {
 	}
 	log.Print(config)
 
+	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.Name)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	migrateCmd := flag.NewFlagSet("migrate", flag.ExitOnError)
 	migrateUp := migrateCmd.Bool("up", false, "migrate up")
 	migrateDown := migrateCmd.Bool("down", false, "migrate down")
 	migrateForce := migrateCmd.Bool("force", false, "force migration")
 	migrateVersion := migrateCmd.Int("version", 0, "migrations to run")
+
+	userCmd := flag.NewFlagSet("user", flag.ExitOnError)
+	userCreate := userCmd.Bool("create", false, "create user")
+	userDelete := userCmd.Bool("delete", false, "delete user")
+	userName := userCmd.String("username", "", "username")
 
 	var direction string
 	dbURL := fmt.Sprintf(
@@ -75,6 +85,14 @@ func main() {
 				}
 			}
 			dbMigrate(direction, dbURL, *migrateVersion)
+		case "user":
+			userCmd.Parse(os.Args[2:])
+			if *userCreate {
+				createUser(postgres)
+			}
+			if *userDelete {
+				deleteUser(*userName, postgres)
+			}
 		default:
 			log.Print("Subcommand not understood.")
 		}
