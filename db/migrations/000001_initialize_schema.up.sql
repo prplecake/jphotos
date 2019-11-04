@@ -14,7 +14,7 @@ IF NOT EXISTS users
 CREATE TABLE
 IF NOT EXISTS sessions
 (
-	user_id	UUID 	REFERENCES users (id),
+	user_id	UUID 	REFERENCES users (id) ON DELETE CASCADE,
 	token	TEXT	UNIQUE,
 	expires	TIMESTAMPTZ
 );

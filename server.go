@@ -56,6 +56,8 @@ func (s *Server) routes() {
 	r.HandleFunc("/upload", s.handleUploadPhoto).
 		Methods("GET", "POST")
 
+	r.HandleFunc("/users", s.handleUsersIndex)
+
 	r.PathPrefix("/p/").Handler(
 		http.StripPrefix("/p/",
 			http.FileServer(http.Dir("data/uploads/photos/"))))

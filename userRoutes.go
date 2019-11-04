@@ -7,6 +7,7 @@ import (
 
 	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
+	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
 type loginData struct {
@@ -54,4 +55,34 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("User '" + ld.Username + "' logged in")
 		return
 	}
+}
+
+type usersData struct {
+	Title string
+	Auth  *auth.Authorization
+	Users []db.User
+}
+
+func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
+	auth, err := auth.Get(r, auth.RoleUser, s.db)
+	if err != nil {
+		// not logged in, redirect
+		app.RenderTemplate(w, "error", &app.ErrorInfo{
+			Info:          "Unauthorized.",
+			RedirectLink:  "/",
+			RedirectTimer: 0,
+		})
+	}
+
+	users, err := s.db.GetAllUsers()
+	if err != nil {
+		log.Print(err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
+	app.RenderTemplate(w, "users", usersData{
+		Title: "Manage Users",
+		Auth:  auth,
+		Users: users,
+	})
+
 }
