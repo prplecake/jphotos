@@ -15,7 +15,7 @@ import (
 var (
 	// ErrBadContentType is returned when the server gets an unexpected
 	// content type.
-	ErrBadContentType = errors.New("Wrong content type.")
+	ErrBadContentType = errors.New("wrong content type")
 )
 
 // UploadSavePhoto saves an uploaded file to the filesystem.
