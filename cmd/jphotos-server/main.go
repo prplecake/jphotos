@@ -37,7 +37,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print(config)
 
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.Name)
 	if err != nil {
