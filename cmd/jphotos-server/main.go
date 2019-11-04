@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	config configuration
+	config app.Configuration
 )
 
 func processArgs() []string {
@@ -119,5 +119,5 @@ func runServer() {
 
 	log.Fatal(http.ListenAndServe(
 		":"+config.App.Port,
-		jphotos.NewServer(postgres)))
+		jphotos.NewServer(postgres, config)))
 }

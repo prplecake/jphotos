@@ -2,52 +2,29 @@ package main
 
 import (
 	"os"
+
+	"git.sr.ht/~mjorgensen/jphotos/app"
 )
 
-type configuration struct {
-	App       appConfig
-	DB        databaseConfig `yaml:"database"`
-	Templates templateConfig
-	Uploads   uploadConfig
-}
-
-type appConfig struct {
-	Port string
-}
-
-type databaseConfig struct {
-	Username, Password, Hostname, Name string
-	Port                               int
-}
-
-type templateConfig struct {
-	Path string
-}
-
-type uploadConfig struct {
-	Path           string
-	ThumbnailsPath string
-}
-
-func defaultConfig() configuration {
+func defaultConfig() app.Configuration {
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = "3000"
 	}
 
-	config := configuration{
-		App: appConfig{
+	config := app.Configuration{
+		App: app.Config{
 			Port: port,
 		},
-		DB: databaseConfig{
+		DB: app.DatabaseConfig{
 			Username: os.Getenv("USER"),
 			Hostname: "localhost",
 			Port:     5432,
 		},
-		Templates: templateConfig{
+		Templates: app.TemplateConfig{
 			"templates",
 		},
-		Uploads: uploadConfig{
+		Uploads: app.UploadConfig{
 			"data/uploads/photos/",
 			"data/thumbnails/",
 		},
