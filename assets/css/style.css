@@ -296,3 +296,8 @@ details.delete {
 .album-content > .photo-item {
 	max-width: 250px;
 }
+
+.photo-item input[type=checkbox] {
+	display: block;
+	margin: auto;
+}
