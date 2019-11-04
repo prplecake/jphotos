@@ -2,9 +2,9 @@
 
 jphotos is a simple HTTP server for sharing pictures.
 
-jphotos will be written in Go and use Amazon S3 as the storage backend.
-The project will fill a long-time desire to have a platform to share my
-photos, that isn't Flickr, or 500px, or Format, Imgur, etc.
+jphotos will be written in Go and possibly use Amazon S3 as the storage
+backend. The project will fill a long-time desire to have a platform to
+share my photos, that isn't Flickr, or 500px, or Format, Imgur, etc.
 
 photos.jrgnsn.net is eventually where this app will go live and will be
 where I host pictures, photography, etc.
@@ -48,17 +48,16 @@ directory. Try `cd ..; go get github.com/codegangsta/gin; cd -`*
 
 ### Initializing the database
 
-First, make sure you have postgres installed.
-
-Then, import the schema:
-
-	psql < $REPO/db/sql/schema.sql
+First, set up your database.
 
 * [Debian PostgreSQL Help][debian-postgres]
 * [macOS PostgreSQL Help][macos-postgres]
 
+Then, read about [database migrations][db-migrations]
+
 [debian-postgres]:https://man.sr.ht/~mjorgensen/jphotos/debian_postgresql.md
 [macos-postgres]:https://man.sr.ht/~mjorgensen/jphotos/macos_postgresql.md
+[db-migrations]:https://man.sr.ht/~mjorgensen/jphotos/database_migrations.md
 
 ## Resources
 
