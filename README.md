@@ -24,7 +24,7 @@ where I host pictures, photography, etc.
 
 * go (>-=1.12)
 
-		go build cmd/jphotos-server/
+		go build ./cmd/jphotos-server/
 		./jphotos-server
 
 in the root of the repository.
