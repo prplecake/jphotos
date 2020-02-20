@@ -15,44 +15,10 @@ jphotos is a simple HTTP server for sharing pictures.
 
 Read our [**Getting Started**][getting-started] guide.
 
+Interested in developing? Get started with our [developer documentation][dev-docs].
+
 [getting-started]:https://man.sr.ht/~mjorgensen/jphotos/getting_started.md
-
-## Developing
-
-### Live reloading for development
-
-Live reloading can be accomplished with [codegangsta/gin][gin] by
-running:
-
-```
-$ gin --build ./cmd/jphotos-server [OPTION...]
-```
-
-in the root of the repository.
-
-Options:
-
-* `--all` - to rebuild on template modifications
-* `--excludeDir data` - so gin doesn't rebuild after a photo upload
-
-**Note:** I've had issues attempting to `go get` gin from within
-jphotos, so I'd recommend installing gin from outside the project
-directory. Try `cd ..; go get github.com/codegangsta/gin; cd -` instead.
-
-[gin]: https://github.com/codegangsta/gin
-
-### Initializing the database
-
-First, set up your database.
-
-* [Debian PostgreSQL Help][debian-postgres]
-* [macOS PostgreSQL Help][macos-postgres]
-
-Then, read about [database migrations][db-migrations].
-
-[debian-postgres]:https://man.sr.ht/~mjorgensen/jphotos/debian_postgresql.md
-[macos-postgres]:https://man.sr.ht/~mjorgensen/jphotos/macos_postgresql.md
-[db-migrations]:https://man.sr.ht/~mjorgensen/jphotos/database_migrations.md
+[dev-docs]:https://man.sr.ht/~mjorgensen/jphotos/developer/getting_started.md
 
 ## Resources
 
