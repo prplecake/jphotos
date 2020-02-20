@@ -48,7 +48,7 @@ First, set up your database.
 * [Debian PostgreSQL Help][debian-postgres]
 * [macOS PostgreSQL Help][macos-postgres]
 
-Then, read about [database migrations][db-migrations]
+Then, read about [database migrations][db-migrations].
 
 [debian-postgres]:https://man.sr.ht/~mjorgensen/jphotos/debian_postgresql.md
 [macos-postgres]:https://man.sr.ht/~mjorgensen/jphotos/macos_postgresql.md
@@ -64,7 +64,7 @@ inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]. Please use
 patches.
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
-[~mjorgensen/jphotos][todo]
+[~mjorgensen/jphotos][todo].
 
 [man]: https://man.sr.ht/~mjorgensen/jphotos
 [lists]: https://lists.sr.ht/~mjorgensen/public-inbox
