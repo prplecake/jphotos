@@ -5,29 +5,17 @@ status](https://builds.sr.ht/~mjorgensen/jphotos.svg)](https://builds.sr.ht/~mjo
 
 jphotos is a simple HTTP server for sharing pictures.
 
-jphotos will be written in Go and possibly use Amazon S3 as the storage
-backend. The project will fill a long-time desire to have a platform to
-share my photos, that isn't Flickr, or 500px, or Format, Imgur, etc.
-
-photos.jrgnsn.net is eventually where this app will go live and will be
-where I host pictures, photography, etc.
-
 ## Features
 
 * No "social media" features
 * No JavaScript!
 * Blazingly fast
 
-## Building and Running
+## Getting Started
 
-**Dependencies:**
+Read our [**Getting Started**][getting-started] guide.
 
-* go (>-=1.12)
-
-		go build ./cmd/jphotos-server/
-		./jphotos-server
-
-in the root of the repository.
+[getting-started]:https://man.sr.ht/~mjorgensen/jphotos/getting_started.md
 
 ## Developing
 
@@ -36,16 +24,20 @@ in the root of the repository.
 Live reloading can be accomplished with [codegangsta/gin][gin] by
 running:
 
-	gin --build cmd/jbooks-server
+```
+gin --build ./cmd/jphotos-server [OPTION...]
+```
 
 in the root of the repository.
 
-* add `--all` to watch HTML templates
-* add `--excludeDir data` so gin doesn't rebuild after a photo upload
+Options:
 
-***Note:*** *I've had issues attempting to `go get` gin from within
+* `--all` - to rebuild on template modifications
+* `--excludeDir data` - so gin doesn't rebuild after a photo upload
+
+**Note:** I've had issues attempting to `go get` gin from within
 jphotos, so I'd recommend installing gin from outside the project
-directory. Try `cd ..; go get github.com/codegangsta/gin; cd -`*
+directory. Try `cd ..; go get github.com/codegangsta/gin; cd -` instead.
 
 [gin]: https://github.com/codegangsta/gin
 
@@ -64,7 +56,7 @@ Then, read about [database migrations][db-migrations]
 
 ## Resources
 
-Once documentation exists, it will be able to be [found here][man]
+Comprehensive documentation [can be found here][man].
 
 Discussion and patches are welcome and should be directed to my public
 inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]. Please use
