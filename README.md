@@ -3,7 +3,7 @@
 [![builds.sr.ht
 status](https://builds.sr.ht/~mjorgensen/jphotos.svg)](https://builds.sr.ht/~mjorgensen/jphotos?)
 
-jphotos is a simple HTTP server for sharing pictures.
+jphotos is a simple HTTP server for photo albums.
 
 ## Features
 
