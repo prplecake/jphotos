@@ -25,7 +25,7 @@ Live reloading can be accomplished with [codegangsta/gin][gin] by
 running:
 
 ```
-gin --build ./cmd/jphotos-server [OPTION...]
+$ gin --build ./cmd/jphotos-server [OPTION...]
 ```
 
 in the root of the repository.
