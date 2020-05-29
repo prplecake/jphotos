@@ -18,6 +18,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 		Auth      *auth.Authorization
 		Albums    []db.Album
 		AlbumSlug string
+		Version   string
 	}
 
 	v := mux.Vars(r)
@@ -49,7 +50,8 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
-		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album})
+		version := app.CurrentVersion
+		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album, version})
 	case "POST":
 		newCaption := r.FormValue("caption")
 		if newCaption != "" {

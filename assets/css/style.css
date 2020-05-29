@@ -3,6 +3,7 @@ body {
 	max-width: 100%;
 	font-family: sans-serif;
 	height: 100%;
+	margin: 0;
 }
 
 .container {
@@ -151,6 +152,13 @@ label {
 
 .page-auth {
 	grid-column-start: 2;
+}
+
+#current-version {
+	background-color: lightgray;
+	text-align: center;
+	font-size: 0.75em;
+
 }
 
 /****************************************************

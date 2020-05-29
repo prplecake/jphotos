@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 
 	"gopkg.in/yaml.v2"
 
@@ -111,6 +112,10 @@ func runServer() {
 	}
 
 	app.InitTemplates(config.Templates.Path + "/**")
+
+	// Get current git version
+	app.CurrentVersion = getGitTag()
+
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.Name)
 	if err != nil {
 		log.Fatal(err)
@@ -119,4 +124,11 @@ func runServer() {
 	log.Fatal(http.ListenAndServe(
 		":"+config.App.Port,
 		jphotos.NewServer(postgres, config)))
+}
+
+func getGitTag() string {
+	gitCmd := exec.Command("git", "describe", "--tag")
+	outBytes, _ := gitCmd.Output()
+	out := string(outBytes)
+	return out
 }

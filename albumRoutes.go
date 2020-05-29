@@ -24,10 +24,11 @@ func verifyAlbumInput(name string) []string {
 
 func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	type albumData struct {
-		Title  string
-		Albums []db.Album
-		Auth   *auth.Authorization
-		Errors []string
+		Title   string
+		Albums  []db.Album
+		Auth    *auth.Authorization
+		Errors  []string
+		Version string
 	}
 
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
@@ -59,10 +60,11 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.RenderTemplate(w, "albums", albumData{
-		Title:  "Albums",
-		Albums: albums,
-		Auth:   auth,
-		Errors: errors,
+		Title:   "Albums",
+		Albums:  albums,
+		Auth:    auth,
+		Errors:  errors,
+		Version: app.CurrentVersion,
 	})
 
 	return
@@ -75,10 +77,11 @@ type albumData struct {
 }
 
 type payload struct {
-	Title  string
-	Album  *db.Album
-	Auth   *auth.Authorization
-	Photos []db.Photo
+	Title   string
+	Album   *db.Album
+	Auth    *auth.Authorization
+	Photos  []db.Photo
+	Version string
 }
 
 func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
@@ -109,10 +112,11 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
 
 	p := &payload{
-		Title:  album.Name,
-		Album:  album,
-		Auth:   auth,
-		Photos: photos,
+		Title:   album.Name,
+		Album:   album,
+		Auth:    auth,
+		Photos:  photos,
+		Version: app.CurrentVersion,
 	}
 	app.RenderTemplate(w, "album", p)
 	return
