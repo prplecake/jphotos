@@ -11,8 +11,8 @@ import (
 
 // A User is a view into the details for a given user
 type User struct {
-	id, Username string
-	Hash         []byte
+	id, Username, Created string
+	Hash                  []byte
 }
 
 // A Session is a view into a session
@@ -71,6 +71,8 @@ func (pg *PGStore) Exec(query string, args ...interface{}) error {
 type Store interface {
 	ExecuteSchema(filename string) error
 	AddUser(username string, hash []byte) error
+	RemoveUser(username string) error
+	GetAllUsers() ([]User, error)
 	GetUserByName(username string) (*User, error)
 	UserAddSession(user User, session string, expires time.Time) error
 

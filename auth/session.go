@@ -49,8 +49,9 @@ func NewSession(username, password string, s db.Store) (*Token, error) {
 		return nil, ErrInvalidUsernameOrPassword
 	}
 
-	// TODO this seems a little ridiculout to pull a dep for...
-	sessionToken := uuid.NewV4().String()
+	// TODO this seems a little ridiculous to pull a dep for...
+	newUUID, _ := uuid.NewV4()
+	sessionToken := newUUID.String()
 	expires := time.Now().Add(ExpirationTime)
 
 	s.UserAddSession(*user, sessionToken, expires)

@@ -1,0 +1,17 @@
+{{template "_pageHeader" .}}
+{{if .Users}}
+<div class="users-list">
+	<ul>
+	{{range .Users}}
+	<li>
+	<a href="/user/{{.Username}}"
+		class="user-list-item">{{.Username}}</a>
+	- {{.Created}}
+	</li>
+	{{end}}
+	</ul>
+</div>
+{{else}}
+<p class="error">No users.</p>
+{{end}}
+{{template "_pageFooter"}}

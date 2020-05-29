@@ -2,16 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{if .}}{{.}} - {{end}}jphotos</title>
+	<title>{{if .Title}}{{.Title}} - {{end}}jphotos</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/style.css" />
 </head>
 <body>
 	<div class="container">
 		<header>
 			<h1 class="page-title">
-				{{if .}}{{.}} - {{end}}jphotos
+				{{if .Title}}{{.Title}} - {{end}}jphotos
 			</h1>
-			{{template "navigation"}}
+			{{template "navigation" .Auth}}
 		</header>
 		<div class="content">
 {{end}}

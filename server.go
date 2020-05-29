@@ -6,19 +6,22 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
 // A Server handles routing and dependency injection into the routes.
 type Server struct {
 	db     db.Store
+	config app.Configuration
 	router *mux.Router
 }
 
 // NewServer creates a Server backed by a backing database
-func NewServer(db db.Store) *Server {
+func NewServer(db db.Store, config app.Configuration) *Server {
 	s := &Server{
 		db:     db,
+		config: config,
 		router: mux.NewRouter(),
 	}
 	s.routes()
@@ -55,6 +58,8 @@ func (s *Server) routes() {
 
 	r.HandleFunc("/upload", s.handleUploadPhoto).
 		Methods("GET", "POST")
+
+	r.HandleFunc("/users", s.handleUsersIndex)
 
 	r.PathPrefix("/p/").Handler(
 		http.StripPrefix("/p/",
