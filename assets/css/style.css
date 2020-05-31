@@ -161,6 +161,15 @@ label {
 	top: 0;
 	position: sticky;
 }
+#footer {
+	text-align: center;
+}
+.small-text {
+	font-size: 0.8em;
+}
+.text-muted {
+	color: darkslategray;
+}
 
 /****************************************************
 /*
