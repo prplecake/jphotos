@@ -257,6 +257,7 @@ label {
 .photo-container {
 	display: grid;
 	grid-template-columns: 0.5fr 2fr;
+	margin: 0 1em;
 }
 
 .photo-container header {
