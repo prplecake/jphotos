@@ -9,6 +9,7 @@ import (
 var (
 	templates      *template.Template
 	CurrentVersion string
+	CurrentBranch  string
 )
 
 // InitTemplates parses the templates and panics if it can't

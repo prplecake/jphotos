@@ -29,6 +29,7 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 		Auth    *auth.Authorization
 		Errors  []string
 		Version string
+		Branch  string
 	}
 
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
@@ -68,6 +69,7 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 		Auth:    auth,
 		Errors:  errors,
 		Version: app.CurrentVersion,
+		Branch:  app.CurrentBranch,
 	})
 
 	return
@@ -80,11 +82,11 @@ type albumData struct {
 }
 
 type payload struct {
-	Title   string
-	Album   *db.Album
-	Auth    *auth.Authorization
-	Photos  []db.Photo
-	Version string
+	Title           string
+	Album           *db.Album
+	Auth            *auth.Authorization
+	Photos          []db.Photo
+	Version, Branch string
 }
 
 func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
@@ -120,6 +122,7 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 		Auth:    auth,
 		Photos:  photos,
 		Version: app.CurrentVersion,
+		Branch:  app.CurrentBranch,
 	}
 	app.RenderTemplate(w, "album", p)
 	return

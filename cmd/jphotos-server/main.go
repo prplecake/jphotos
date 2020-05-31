@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 
@@ -115,6 +116,7 @@ func runServer() {
 
 	// Get current git version
 	app.CurrentVersion = getGitTag()
+	app.CurrentBranch = getGitBranch()
 
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.Name)
 	if err != nil {
@@ -131,4 +133,11 @@ func getGitTag() string {
 	outBytes, _ := gitCmd.Output()
 	out := string(outBytes)
 	return out
+}
+
+func getGitBranch() string {
+	gitCmd := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
+	outBytes, _ := gitCmd.Output()
+	out := strings.TrimSpace(string(outBytes))
+	return string(out)
 }

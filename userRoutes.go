@@ -11,8 +11,12 @@ import (
 )
 
 type loginData struct {
-	Username, password, Next, Error, Version, Title string
-	Auth                                            *auth.Authorization
+	Username, password string
+	Next               string
+	Error              string
+	Version, Branch    string
+	Title              string
+	Auth               *auth.Authorization
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +35,7 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 		Next:     r.FormValue("next"),
 		Title:    "Login",
 		Version:  app.CurrentVersion,
+		Branch:   app.CurrentBranch,
 	}
 	switch r.Method {
 	case "GET":
@@ -61,10 +66,10 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type usersData struct {
-	Title   string
-	Auth    *auth.Authorization
-	Users   []db.User
-	Version string
+	Title           string
+	Auth            *auth.Authorization
+	Users           []db.User
+	Version, Branch string
 }
 
 func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
@@ -88,6 +93,7 @@ func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
 		Auth:    auth,
 		Users:   users,
 		Version: app.CurrentVersion,
+		Branch:  app.CurrentBranch,
 	})
 
 }
