@@ -45,6 +45,9 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 				if err == db.ErrAlbumExists {
 					errors = append(errors,
 						fmt.Sprintf("Album name already exists."))
+				} else if err == db.ErrAlbumNameInvalid {
+					errors = append(errors,
+						fmt.Sprintf("Album name is invalid."))
 				} else {
 					log.Fatal(err)
 				}
