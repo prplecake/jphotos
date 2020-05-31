@@ -318,3 +318,6 @@ details.delete {
 	display: block;
 	margin: auto;
 }
+.legal-notices-info {
+	width: min-content;
+}

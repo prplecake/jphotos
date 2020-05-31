@@ -8,6 +8,12 @@
 	<div class="page-links">
 		<a href="/album/{{.AlbumSlug}}">Back to album</a>
 		{{template "navigation"}}
+		<details class="legal-details">
+			<summary>legal</summary>
+			<div class="legal-notices-info">
+				{{template "_legalNotices"}}
+			</div>
+		</details>
 	</div>
 </div>
 
