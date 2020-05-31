@@ -11,7 +11,8 @@ import (
 )
 
 type loginData struct {
-	Username, password, Next, Error string
+	Username, password, Next, Error, Version, Title string
+	Auth                                            *auth.Authorization
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -28,6 +29,8 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 		Username: strings.ToLower(r.FormValue("username")),
 		password: r.FormValue("password"),
 		Next:     r.FormValue("next"),
+		Title:    "Login",
+		Version:  app.CurrentVersion,
 	}
 	switch r.Method {
 	case "GET":
@@ -58,9 +61,10 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type usersData struct {
-	Title string
-	Auth  *auth.Authorization
-	Users []db.User
+	Title   string
+	Auth    *auth.Authorization
+	Users   []db.User
+	Version string
 }
 
 func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
@@ -80,9 +84,10 @@ func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 	app.RenderTemplate(w, "users", usersData{
-		Title: "Manage Users",
-		Auth:  auth,
-		Users: users,
+		Title:   "Manage Users",
+		Auth:    auth,
+		Users:   users,
+		Version: app.CurrentVersion,
 	})
 
 }
