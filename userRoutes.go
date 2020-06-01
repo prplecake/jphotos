@@ -86,7 +86,7 @@ func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
 	users, err := s.db.GetAllUsers()
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 	}
 	app.RenderTemplate(w, "users", usersData{
 		Title:   "Manage Users",

@@ -24,7 +24,7 @@ func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
 	groups, err := s.db.GetGroupsForUser(auth.User)
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 

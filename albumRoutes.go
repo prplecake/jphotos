@@ -59,7 +59,7 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	albums, err := s.db.GetAllAlbums()
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
@@ -102,7 +102,7 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 				RedirectTimer: 3,
 			})
 		} else {
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 		}
 		return
 	}
@@ -110,7 +110,7 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 	photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
@@ -146,14 +146,14 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 			})
 		}
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
 	//photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	//if err != nil {
 	//	log.Print(err)
-	//	http.Error(w, "Internal server error", http.StatusInternalServerError)
+	//	app.ThrowInternalServerError(w)
 	//	return
 	//}
 	if strings.HasSuffix(r.URL.String(), "rename") {
@@ -161,13 +161,13 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 			err := s.db.RenameAlbumByID(album.ID, r.FormValue("new_name"))
 			if err != nil {
 				log.Print(err)
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				app.ThrowInternalServerError(w)
 				return
 			}
 			slug, err := s.db.GetAlbumSlugByID(album.ID)
 			if err != nil {
 				log.Print(err)
-				http.Error(w, "Internal server error", http.StatusInternalServerError)
+				app.ThrowInternalServerError(w)
 				return
 			}
 			http.Redirect(w, r, "/album/"+slug, http.StatusSeeOther)
@@ -213,14 +213,14 @@ func (s *Server) handleBulkEditAlbumBySlug(w http.ResponseWriter, r *http.Reques
 			})
 		}
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
 	photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
@@ -243,7 +243,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	album, err := s.db.GetAlbumBySlug(v["slug"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
@@ -251,7 +251,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	photos, err := s.db.GetAlbumPhotosByID(album.ID)
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
@@ -260,20 +260,20 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		err := app.RemoveFile("data/uploads/photos/" + photo.Location)
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
 		err = app.RemoveFile("data/thumbnails/thumb_" + photo.Location)
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
 		log.Printf("Removing photo from database [%s]", photo.ID)
 		err = s.db.DeletePhotoByID(photo.ID)
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
 	}
@@ -281,7 +281,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	err = s.db.DeleteAlbumBySlug(v["slug"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 

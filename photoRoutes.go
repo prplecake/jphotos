@@ -42,13 +42,13 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 		album, err := s.db.GetAlbumIDByPhotoID(v["id"])
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
 		albums, err := s.db.GetAllAlbums()
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
 		version := app.CurrentVersion
@@ -60,7 +60,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 			err := s.db.UpdatePhotoCaptionByID(v["id"], newCaption)
 			if err != nil {
 				log.Print(err)
-				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+				app.ThrowInternalServerError(w)
 				return
 			}
 		}
@@ -69,7 +69,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 			err := s.db.UpdatePhotoAlbum(v["id"], newAlbum)
 			if err != nil {
 				log.Print(err)
-				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+				app.ThrowInternalServerError(w)
 				return
 			}
 		}
@@ -89,7 +89,7 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 	photo, err := s.db.GetPhotoByID(v["id"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 	if err = app.RemoveFile("data/uploads/photos/" + photo.Location); err != nil {
@@ -102,7 +102,7 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 	err = s.db.DeletePhotoByID(v["id"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 	log.Print("Photo removed from database.")
