@@ -9,12 +9,6 @@ import (
 	"time"
 )
 
-// A User is a view into the details for a given user
-type User struct {
-	id, Username, Created string
-	Hash                  []byte
-}
-
 // A Session is a view into a session
 type Session struct {
 	User    User

@@ -13,6 +13,12 @@ var (
 	ErrUsernameExists = errors.New("DB: Username exists")
 )
 
+// A User is a view into the details for a given user
+type User struct {
+	id, Username, Created string
+	Hash                  []byte
+}
+
 // AddUser adds a user to the users table of the database, hashing the password
 // with bcrypt
 func (pg *PGStore) AddUser(username string, hash []byte) error {
