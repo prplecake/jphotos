@@ -54,7 +54,7 @@ func Get(r *http.Request, minimumRole Role, db db.Store) (*Authorization, error)
 		return nil, err
 	}
 
-	user, err := db.GetUserByName(username)
+	user, err := db.GetUserByUsername(username)
 	if err != nil {
 		return nil, err
 	}

@@ -64,8 +64,8 @@ func (pg *PGStore) GetAllUsers() ([]User, error) {
 
 }
 
-// GetUserByName returns the DB user information for a user if that user exists
-func (pg *PGStore) GetUserByName(username string) (*User, error) {
+// GetUserByUsername returns the DB user information for a user if that user exists
+func (pg *PGStore) GetUserByUsername(username string) (*User, error) {
 
 	rows, err := pg.Query("SELECT id, hash FROM users WHERE username = $1", username)
 	if err != nil {
