@@ -1,0 +1,14 @@
+[Unit]
+Description=jphotos HTTP server
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/jphotos
+User=jphotos
+ExecStart=/var/www/jphotos/jphotos-server
+ExecReload=/bin/kill $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
