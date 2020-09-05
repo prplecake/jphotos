@@ -73,7 +73,7 @@ func (pg *PGStore) GetAllUsers() ([]User, error) {
 // GetUserByUsername returns the DB user information for a user if that user exists
 func (pg *PGStore) GetUserByUsername(username string) (*User, error) {
 
-	rows, err := pg.Query("SELECT id, hash FROM users WHERE username = $1", username)
+	rows, err := pg.Query("SELECT id, hash, created FROM users WHERE username = $1", username)
 	if err != nil {
 		return nil, err
 	}
@@ -85,8 +85,9 @@ func (pg *PGStore) GetUserByUsername(username string) (*User, error) {
 
 	var hash []byte
 	var id string
+	var created string
 
-	err = rows.Scan(&id, &hash)
+	err = rows.Scan(&id, &hash, &created)
 	if err != nil {
 		return nil, err
 	}
@@ -99,6 +100,7 @@ func (pg *PGStore) GetUserByUsername(username string) (*User, error) {
 		Username: username,
 		id:       id,
 		Hash:     hash,
+		Created:  created,
 	}, nil
 }
 

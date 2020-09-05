@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gorilla/mux"
+
 	"git.sr.ht/~mjorgensen/jphotos/app"
 	"git.sr.ht/~mjorgensen/jphotos/auth"
 	"git.sr.ht/~mjorgensen/jphotos/db"
@@ -69,6 +71,7 @@ type usersData struct {
 	Title           string
 	Auth            *auth.Authorization
 	Users           []db.User
+	User            db.User
 	Version, Branch string
 }
 
@@ -96,4 +99,29 @@ func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
 		Branch:  app.CurrentBranch,
 	})
 
+}
+
+func (s *Server) handleGetUserByUsername(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	auth, err := auth.Get(r, auth.RoleUser, s.db)
+	if err != nil {
+		// not logged in, redirect
+		app.RenderTemplate(w, "error", &app.ErrorInfo{
+			Info:          "Unauthorized.",
+			RedirectLink:  "/",
+			RedirectTimer: 0,
+		})
+	}
+	user, err := s.db.GetUserByUsername(v["username"])
+	if err != nil {
+		log.Print(err)
+		app.ThrowInternalServerError(w)
+	}
+	app.RenderTemplate(w, "user", usersData{
+		Title:   "User: " + user.Username,
+		Auth:    auth,
+		User:    *user,
+		Version: app.CurrentVersion,
+		Branch:  app.CurrentBranch,
+	})
 }

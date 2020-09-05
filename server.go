@@ -60,6 +60,7 @@ func (s *Server) routes() {
 		Methods("GET", "POST")
 
 	r.HandleFunc("/users", s.handleUsersIndex)
+	r.HandleFunc("/user/{username}", s.handleGetUserByUsername)
 
 	r.PathPrefix("/p/").Handler(
 		http.StripPrefix("/p/",
