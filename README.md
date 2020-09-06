@@ -25,7 +25,7 @@ Interested in developing? Get started with our [developer documentation][dev-doc
 Comprehensive documentation [can be found here][man].
 
 Discussion and patches are welcome and should be directed to my public
-inbox for now: [~mjorgensen/public-inbox@lists.sr.ht][lists]. Please use
+inbox for now: [~mjorgensen/jphotos@lists.sr.ht][lists]. Please use
 `--subject-prefix PATCH jphotos` for clarity when sending
 patches.
 
