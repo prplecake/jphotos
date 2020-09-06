@@ -33,5 +33,5 @@ Bugs, issues, planning, and tasks can all be found at the tracker:
 [~mjorgensen/jphotos][todo].
 
 [man]: https://man.sr.ht/~mjorgensen/jphotos
-[lists]: https://lists.sr.ht/~mjorgensen/public-inbox
+[lists]: https://lists.sr.ht/~mjorgensen/jphotos
 [todo]: https://todo.sr.ht./~mjorgensen/jphotos
