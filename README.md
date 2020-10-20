@@ -24,14 +24,17 @@ Interested in developing? Get started with our [developer documentation][dev-doc
 
 Comprehensive documentation [can be found here][man].
 
-Discussion and patches are welcome and should be directed to my public
-inbox for now: [~mjorgensen/jphotos@lists.sr.ht][lists]. Please use
-`--subject-prefix PATCH jphotos` for clarity when sending
-patches.
+A low-level announcment list exists at 
+[~mjorgensen/jphotos-announce@lists.sr.ht][lists-announce].
+
+Discussion and patches are welcome and should be directed to the
+jphotos development mailing list: 
+[~mjorgensen/jphotos-devel@lists.sr.ht][lists-devel].
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
 [~mjorgensen/jphotos][todo].
 
 [man]: https://man.sr.ht/~mjorgensen/jphotos
-[lists]: https://lists.sr.ht/~mjorgensen/jphotos
+[lists-announce]: https://lists.sr.ht/~mjorgensen/jphotos-announce
+[lists-devel]: https://lists.sr.ht/~mjorgensen/jphotos-devel
 [todo]: https://todo.sr.ht./~mjorgensen/jphotos
