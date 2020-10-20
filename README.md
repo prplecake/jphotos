@@ -24,12 +24,12 @@ Interested in developing? Get started with our [developer documentation][dev-doc
 
 Comprehensive documentation [can be found here][man].
 
-A low-level announcment list exists at 
-[~mjorgensen/jphotos-announce@lists.sr.ht][lists-announce].
+A [low-level announcment list][lists-announce] exists at 
+~mjorgensen/jphotos-announce@lists.sr.ht.
 
 Discussion and patches are welcome and should be directed to the
-jphotos development mailing list: 
-[~mjorgensen/jphotos-devel@lists.sr.ht][lists-devel].
+jphotos [development mailing lis][lists-devel]: 
+~mjorgensen/jphotos-devel@lists.sr.ht.
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
 [~mjorgensen/jphotos][todo].
