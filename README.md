@@ -38,3 +38,16 @@ Bugs, issues, planning, and tasks can all be found at the tracker:
 [lists-announce]: https://lists.sr.ht/~mjorgensen/jphotos-announce
 [lists-devel]: https://lists.sr.ht/~mjorgensen/jphotos-devel
 [todo]: https://todo.sr.ht./~mjorgensen/jphotos
+
+## Screenshots
+
+As you can see, this project is still very much a work in progress!
+
+**Homepage/Albums Index**
+![albums index](https://drop.jrgnsn.net/HcHn.png)
+
+**Album View**
+![album view](https://drop.jrgnsn.net/yC3_.png)
+
+**Single Photo View**
+![single photo view](https://drop.jrgnsn.net/DGF7.png)
