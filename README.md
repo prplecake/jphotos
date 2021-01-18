@@ -28,7 +28,7 @@ A [low-level announcment list][lists-announce] exists at
 ~mjorgensen/jphotos-announce@lists.sr.ht.
 
 Discussion and patches are welcome and should be directed to the
-jphotos [development mailing lis][lists-devel]: 
+jphotos [development mailing list][lists-devel]: 
 ~mjorgensen/jphotos-devel@lists.sr.ht.
 
 Bugs, issues, planning, and tasks can all be found at the tracker: 
