@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"git.sr.ht/~mjorgensen/go-thumbnail"
+	"github.com/prplecake/go-thumbnail"
 
 	uuid "github.com/satori/go.uuid"
 )

@@ -3,7 +3,7 @@ package auth
 import (
 	"net/http"
 
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/db"
 )
 
 // A Role represents a user's maximum permission level
