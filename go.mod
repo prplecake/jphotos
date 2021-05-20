@@ -1,6 +1,6 @@
 module github.com/prplecake/jphotos
 
-go 1.13
+go 1.16
 
 require (
 	github.com/gchaincl/dotsql v1.0.0
