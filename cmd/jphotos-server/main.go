@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -31,7 +30,7 @@ func main() {
 	log.Print("Initializing...")
 	config = defaultConfig()
 	configFile := "cmd/jphotos-server/jphotos.yaml"
-	cf, err := ioutil.ReadFile(configFile)
+	cf, err := os.ReadFile(configFile)
 	if err != nil {
 		log.Panic(err)
 	}

@@ -3,7 +3,6 @@ package app
 import (
 	"errors"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -27,7 +26,7 @@ func UploadSavePhoto(f io.Reader, name string, uploadConfig UploadConfig) (strin
 	path := uploadConfig.Path + newID + ext
 	thumbPath := uploadConfig.ThumbnailsPath + "thumb_" + newID + ext
 
-	fileBytes, err := ioutil.ReadAll(f)
+	fileBytes, err := io.ReadAll(f)
 	if err != nil {
 		return "", "", err
 	}
@@ -63,7 +62,7 @@ func detectContentType(fb []byte) string {
 }
 
 func writeFile(p string, f []byte, fmode os.FileMode) error {
-	return ioutil.WriteFile(p, f, fmode)
+	return os.WriteFile(p, f, fmode)
 }
 
 // RemoveFile removes a file from the filesystem.
