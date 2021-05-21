@@ -9,8 +9,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/prplecake/go-thumbnail"
-
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -42,7 +40,7 @@ func UploadSavePhoto(f io.Reader, name, uploadDir string) (string, string, error
 	if err != nil {
 		return "", "", err
 	}
-	err = thumbnail.Create(path, fileBytes, contentType)
+	err = genThumbnail(path, fileBytes, contentType)
 	if err != nil {
 		return "", "", err
 	}
