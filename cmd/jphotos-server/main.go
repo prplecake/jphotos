@@ -3,16 +3,17 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 
-	"git.sr.ht/~mjorgensen/jphotos"
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos"
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/db"
 )
 
 var (
@@ -29,7 +30,7 @@ func main() {
 	log.Print("Initializing...")
 	config = defaultConfig()
 	configFile := "cmd/jphotos-server/jphotos.yaml"
-	cf, err := ioutil.ReadFile(configFile)
+	cf, err := os.ReadFile(configFile)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -111,6 +112,11 @@ func runServer() {
 	}
 
 	app.InitTemplates(config.Templates.Path + "/**")
+
+	// Get current git version
+	app.CurrentVersion = getGitTag()
+	app.CurrentBranch = getGitBranch()
+
 	postgres, err := db.NewPGStore(config.DB.Username, config.DB.Password, config.DB.Name)
 	if err != nil {
 		log.Fatal(err)
@@ -119,4 +125,18 @@ func runServer() {
 	log.Fatal(http.ListenAndServe(
 		":"+config.App.Port,
 		jphotos.NewServer(postgres, config)))
+}
+
+func getGitTag() string {
+	gitCmd := exec.Command("git", "describe", "--tag")
+	outBytes, _ := gitCmd.Output()
+	out := string(outBytes)
+	return out
+}
+
+func getGitBranch() string {
+	gitCmd := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
+	outBytes, _ := gitCmd.Output()
+	out := strings.TrimSpace(string(outBytes))
+	return string(out)
 }

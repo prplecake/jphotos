@@ -8,7 +8,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/db"
 )
 
 const (
@@ -36,7 +36,7 @@ var (
 // * ErrInvalidUsernameOrPassword
 // * Errors from database access
 func NewSession(username, password string, s db.Store) (*Token, error) {
-	user, err := s.GetUserByName(username)
+	user, err := s.GetUserByUsername(username)
 	if err != nil {
 		if err == db.ErrNotFound {
 			return nil, ErrInvalidUsernameOrPassword

@@ -3,7 +3,7 @@ package auth
 import (
 	"net/http"
 
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/db"
 )
 
 // A Role represents a user's maximum permission level
@@ -54,7 +54,7 @@ func Get(r *http.Request, minimumRole Role, db db.Store) (*Authorization, error)
 		return nil, err
 	}
 
-	user, err := db.GetUserByName(username)
+	user, err := db.GetUserByUsername(username)
 	if err != nil {
 		return nil, err
 	}

@@ -10,8 +10,8 @@ import (
 
 	"golang.org/x/crypto/ssh/terminal"
 
-	"git.sr.ht/~mjorgensen/jphotos/auth"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/auth"
+	"github.com/prplecake/jphotos/db"
 )
 
 func createUser(dbs *db.PGStore) {

@@ -6,9 +6,9 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/auth"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/auth"
+	"github.com/prplecake/jphotos/db"
 )
 
 func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
@@ -18,6 +18,8 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 		Auth      *auth.Authorization
 		Albums    []db.Album
 		AlbumSlug string
+		Version   string
+		Branch    string
 	}
 
 	v := mux.Vars(r)
@@ -40,23 +42,25 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 		album, err := s.db.GetAlbumIDByPhotoID(v["id"])
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
 		albums, err := s.db.GetAllAlbums()
 		if err != nil {
 			log.Print(err)
-			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			app.ThrowInternalServerError(w)
 			return
 		}
-		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album})
+		version := app.CurrentVersion
+		branch := app.CurrentBranch
+		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album, version, branch})
 	case "POST":
 		newCaption := r.FormValue("caption")
 		if newCaption != "" {
 			err := s.db.UpdatePhotoCaptionByID(v["id"], newCaption)
 			if err != nil {
 				log.Print(err)
-				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+				app.ThrowInternalServerError(w)
 				return
 			}
 		}
@@ -65,7 +69,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 			err := s.db.UpdatePhotoAlbum(v["id"], newAlbum)
 			if err != nil {
 				log.Print(err)
-				http.Error(w, "An unknown error occurred", http.StatusInternalServerError)
+				app.ThrowInternalServerError(w)
 				return
 			}
 		}
@@ -85,7 +89,7 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 	photo, err := s.db.GetPhotoByID(v["id"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 	if err = app.RemoveFile("data/uploads/photos/" + photo.Location); err != nil {
@@ -98,7 +102,7 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 	err = s.db.DeletePhotoByID(v["id"])
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 	log.Print("Photo removed from database.")

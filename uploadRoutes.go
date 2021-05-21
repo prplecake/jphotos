@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/auth"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/auth"
+	"github.com/prplecake/jphotos/db"
 )
 
 func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +20,7 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(100000)
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 
@@ -45,7 +45,7 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		log.Printf("MIME Header: %+v\n", files[i].Header)
 		log.Printf("Album: %s\n", r.FormValue("album-id"))
 
-		newID, path, err := app.UploadSavePhoto(file, files[i].Filename, s.config.Uploads.Path)
+		newID, path, err := app.UploadSavePhoto(file, files[i].Filename, s.config.Uploads)
 		if err != nil {
 			if err == app.ErrBadContentType {
 				log.Printf("Bad content type, not uploading [%s]", files[i].Filename)

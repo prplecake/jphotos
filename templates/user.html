@@ -1,0 +1,12 @@
+{{template "_pageHeader" .}}
+{{if .User}}
+<div class="users-list">
+	<ul>
+	<li>
+	{{.User.Username}}
+	- {{.User.Created}}
+	</li>
+	</ul>
+</div>
+{{end}}
+{{template "_pageFooter"}}

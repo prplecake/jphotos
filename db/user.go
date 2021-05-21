@@ -13,6 +13,12 @@ var (
 	ErrUsernameExists = errors.New("DB: Username exists")
 )
 
+// A User is a view into the details for a given user
+type User struct {
+	id, Username, Created string
+	Hash                  []byte
+}
+
 // AddUser adds a user to the users table of the database, hashing the password
 // with bcrypt
 func (pg *PGStore) AddUser(username string, hash []byte) error {
@@ -64,10 +70,10 @@ func (pg *PGStore) GetAllUsers() ([]User, error) {
 
 }
 
-// GetUserByName returns the DB user information for a user if that user exists
-func (pg *PGStore) GetUserByName(username string) (*User, error) {
+// GetUserByUsername returns the DB user information for a user if that user exists
+func (pg *PGStore) GetUserByUsername(username string) (*User, error) {
 
-	rows, err := pg.Query("SELECT id, hash FROM users WHERE username = $1", username)
+	rows, err := pg.Query("SELECT id, hash, created FROM users WHERE username = $1", username)
 	if err != nil {
 		return nil, err
 	}
@@ -79,8 +85,9 @@ func (pg *PGStore) GetUserByName(username string) (*User, error) {
 
 	var hash []byte
 	var id string
+	var created string
 
-	err = rows.Scan(&id, &hash)
+	err = rows.Scan(&id, &hash, &created)
 	if err != nil {
 		return nil, err
 	}
@@ -93,6 +100,7 @@ func (pg *PGStore) GetUserByName(username string) (*User, error) {
 		Username: username,
 		id:       id,
 		Hash:     hash,
+		Created:  created,
 	}, nil
 }
 

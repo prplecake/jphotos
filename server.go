@@ -6,8 +6,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/db"
 )
 
 // A Server handles routing and dependency injection into the routes.
@@ -60,6 +60,7 @@ func (s *Server) routes() {
 		Methods("GET", "POST")
 
 	r.HandleFunc("/users", s.handleUsersIndex)
+	r.HandleFunc("/user/{username}", s.handleGetUserByUsername)
 
 	r.PathPrefix("/p/").Handler(
 		http.StripPrefix("/p/",

@@ -1,0 +1,18 @@
+server {
+    listen 80;
+    server_name photos.example.com;
+
+    # TODO: chunk uploads so each photos is it's own request
+    client_max_body_size 1G;
+
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_set_header X-Fforwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Host $http_host;
+    }
+    location /p/ {
+        alias /path/to/jphotos/data/uploads/photos/;
+    }
+
+}

@@ -6,7 +6,11 @@ import (
 	"net/http"
 )
 
-var templates *template.Template
+var (
+	templates      *template.Template
+	CurrentVersion string
+	CurrentBranch  string
+)
 
 // InitTemplates parses the templates and panics if it can't
 func InitTemplates(path string) {

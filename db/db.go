@@ -9,12 +9,6 @@ import (
 	"time"
 )
 
-// A User is a view into the details for a given user
-type User struct {
-	id, Username, Created string
-	Hash                  []byte
-}
-
 // A Session is a view into a session
 type Session struct {
 	User    User
@@ -73,7 +67,7 @@ type Store interface {
 	AddUser(username string, hash []byte) error
 	RemoveUser(username string) error
 	GetAllUsers() ([]User, error)
-	GetUserByName(username string) (*User, error)
+	GetUserByUsername(username string) (*User, error)
 	UserAddSession(user User, session string, expires time.Time) error
 
 	//

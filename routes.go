@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/auth"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/auth"
+	"github.com/prplecake/jphotos/db"
 )
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +24,7 @@ func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {
 	groups, err := s.db.GetGroupsForUser(auth.User)
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 		return
 	}
 

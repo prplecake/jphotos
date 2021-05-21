@@ -21,12 +21,19 @@ var (
 	// ErrAlbumExists is returned when the unique requirement of an
 	// album name is violated
 	ErrAlbumExists = errors.New("DB: Album exists")
+	// ErrAlbumNameInvalid is returned when an album name is not valid.
+	// Most likely to fire when a slug is blank. (jphotos#60)
+	ErrAlbumNameInvalid = errors.New("DB: Album name invalid")
 )
 
 // AddAlbum adds an album to the albums table of the database
 func (pg *PGStore) AddAlbum(name string) error {
 	now := time.Now()
 	slug := strings.ToLower(slugify.Marshal(name))
+	log.Printf("Length of slug: %d", len(slug))
+	if len(slug) == 0 {
+		return ErrAlbumNameInvalid
+	}
 	err := pg.Exec("INSERT INTO albums (name, slug, created)"+
 		"VALUES ($1, $2, $3)",
 		name, slug, now)

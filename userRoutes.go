@@ -5,13 +5,20 @@ import (
 	"net/http"
 	"strings"
 
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/auth"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/gorilla/mux"
+
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/auth"
+	"github.com/prplecake/jphotos/db"
 )
 
 type loginData struct {
-	Username, password, Next, Error string
+	Username, password string
+	Next               string
+	Error              string
+	Version, Branch    string
+	Title              string
+	Auth               *auth.Authorization
 }
 
 func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -28,6 +35,9 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 		Username: strings.ToLower(r.FormValue("username")),
 		password: r.FormValue("password"),
 		Next:     r.FormValue("next"),
+		Title:    "Login",
+		Version:  app.CurrentVersion,
+		Branch:   app.CurrentBranch,
 	}
 	switch r.Method {
 	case "GET":
@@ -58,9 +68,11 @@ func (s *Server) loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type usersData struct {
-	Title string
-	Auth  *auth.Authorization
-	Users []db.User
+	Title           string
+	Auth            *auth.Authorization
+	Users           []db.User
+	User            db.User
+	Version, Branch string
 }
 
 func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
@@ -77,12 +89,39 @@ func (s *Server) handleUsersIndex(w http.ResponseWriter, r *http.Request) {
 	users, err := s.db.GetAllUsers()
 	if err != nil {
 		log.Print(err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		app.ThrowInternalServerError(w)
 	}
 	app.RenderTemplate(w, "users", usersData{
-		Title: "Manage Users",
-		Auth:  auth,
-		Users: users,
+		Title:   "Manage Users",
+		Auth:    auth,
+		Users:   users,
+		Version: app.CurrentVersion,
+		Branch:  app.CurrentBranch,
 	})
 
+}
+
+func (s *Server) handleGetUserByUsername(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	auth, err := auth.Get(r, auth.RoleUser, s.db)
+	if err != nil {
+		// not logged in, redirect
+		app.RenderTemplate(w, "error", &app.ErrorInfo{
+			Info:          "Unauthorized.",
+			RedirectLink:  "/",
+			RedirectTimer: 0,
+		})
+	}
+	user, err := s.db.GetUserByUsername(v["username"])
+	if err != nil {
+		log.Print(err)
+		app.ThrowInternalServerError(w)
+	}
+	app.RenderTemplate(w, "user", usersData{
+		Title:   "User: " + user.Username,
+		Auth:    auth,
+		User:    *user,
+		Version: app.CurrentVersion,
+		Branch:  app.CurrentBranch,
+	})
 }
