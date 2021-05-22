@@ -13,6 +13,10 @@ import (
 	"github.com/prplecake/jphotos/db"
 )
 
+var (
+	AlbumsEndpoint = "/albums"
+)
+
 func verifyAlbumInput(name string) []string {
 	issues := []string{}
 	if len(name) == 0 {
@@ -141,7 +145,7 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		if err == db.ErrNotFound {
 			app.RenderTemplate(w, "error", &app.ErrorInfo{
 				Info:          "Album not found",
-				RedirectLink:  "/albums",
+				RedirectLink:  AlbumsEndpoint,
 				RedirectTimer: 3,
 			})
 		}
@@ -208,7 +212,7 @@ func (s *Server) handleBulkEditAlbumBySlug(w http.ResponseWriter, r *http.Reques
 		if err == db.ErrNotFound {
 			app.RenderTemplate(w, "error", &app.ErrorInfo{
 				Info:          "Album not found",
-				RedirectLink:  "/albums",
+				RedirectLink:  AlbumsEndpoint,
 				RedirectTimer: 3,
 			})
 		}
@@ -285,5 +289,5 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	http.Redirect(w, r, "/albums", http.StatusSeeOther)
+	http.Redirect(w, r, AlbumsEndpoint, http.StatusSeeOther)
 }
