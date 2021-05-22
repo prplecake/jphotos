@@ -23,10 +23,6 @@ header h1 {
 	margin-bottom: 0;
 }
 
-.navigation {
-	grid-column-start: 2;
-}
-
 .nav {
 	list-style-type: none;
 	margin: 0;
@@ -38,6 +34,7 @@ li[role="menuitem"] {
 
 }
 .navigation {
+	grid-column-start: 2;
 	text-align: center;
 	position: relative;
 	margin: 1em;
