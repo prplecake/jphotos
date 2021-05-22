@@ -13,6 +13,7 @@ body {
 
 header {
 	display: grid;
+	grid-template-columns: 1fr 1fr;
 }
 header h1 {
 	grid-column-start: 1;
@@ -22,7 +23,7 @@ header h1 {
 	margin-bottom: 0;
 }
 
-navigation {
+.navigation {
 	grid-column-start: 2;
 }
 
@@ -268,10 +269,6 @@ label {
 	grid-column-start: 2;
 	float: right;
 	margin: 1.75em 0 0 0;
-}
-
-.photo-container navigation {
-	grid-column-start: unset;
 }
 
 .photo-container .navigation {
