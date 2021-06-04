@@ -1,5 +1,6 @@
 .DS_Store
 jphotos-server
+jphotos-server.exe
 !jphotos-server/
 gin-bin
 cmd/jphotos-server/jphotos.yaml
