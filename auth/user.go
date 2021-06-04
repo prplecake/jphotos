@@ -3,7 +3,7 @@ package auth
 import (
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/prplecake/jphotos/db"
+	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
 // AddUser hashes the password and adds the new user to the database

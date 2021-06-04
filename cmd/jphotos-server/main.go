@@ -11,9 +11,9 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"github.com/prplecake/jphotos"
-	"github.com/prplecake/jphotos/app"
-	"github.com/prplecake/jphotos/db"
+	"git.sr.ht/~mjorgensen/jphotos"
+	"git.sr.ht/~mjorgensen/jphotos/app"
+	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
 var (

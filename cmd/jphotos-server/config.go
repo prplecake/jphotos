@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/prplecake/jphotos/app"
+	"git.sr.ht/~mjorgensen/jphotos/app"
 )
 
 func defaultConfig() app.Configuration {

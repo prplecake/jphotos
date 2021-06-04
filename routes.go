@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/prplecake/jphotos/app"
-	"github.com/prplecake/jphotos/auth"
-	"github.com/prplecake/jphotos/db"
+	"git.sr.ht/~mjorgensen/jphotos/app"
+	"git.sr.ht/~mjorgensen/jphotos/auth"
+	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
 func (s *Server) homeHandler(w http.ResponseWriter, r *http.Request) {

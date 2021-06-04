@@ -8,7 +8,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/prplecake/jphotos/db"
+	"git.sr.ht/~mjorgensen/jphotos/db"
 )
 
 const (
