@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/prplecake/go-thumbnail"
+	"git.sr.ht/~mjorgensen/go-thumbnail"
 )
 
 var config = thumbnail.Generator{
