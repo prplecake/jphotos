@@ -1,0 +1,18 @@
+image: debian/stable
+packages:
+  - golang
+sources:
+  - https://git.sr.ht/~mjorgensen/jphotos
+triggers:
+  - action: email
+    condition: always
+    to: notify@jrgnsn.net
+tasks:
+  - is-master: |
+      cd jphotos
+      if [ "$(git rev-parse master)" != "$(git rev-parse HEAD)" ]; then
+        complete-build;
+      fi
+  - build: |
+      cd jphotos
+      go build ./cmd/jphotos-server
