@@ -33,7 +33,7 @@ Bugs, issues, planning, and tasks can all be found at the tracker:
 [man]: https://man.sr.ht/~mjorgensen/jphotos
 [lists-announce]: https://lists.sr.ht/~mjorgensen/jphotos-announce
 [lists-devel]: https://lists.sr.ht/~mjorgensen/jphotos-devel
-[todo]: https://todo.sr.ht./~mjorgensen/jphotos
+[todo]: https://todo.sr.ht/~mjorgensen/jphotos
 [public-inbox]:https://lists.sr.ht/~mjorgensen/public-inbox
 
 ## Screenshots
