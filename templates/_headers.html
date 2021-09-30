@@ -4,6 +4,7 @@
 <head>
 	<title>{{if .Title}}{{.Title}} - {{end}}jphotos</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+	{{template "_plausibleTrackingCode"}}
 </head>
 <body>
 	{{template "_versionBanner" .}}
@@ -23,6 +24,7 @@
 <head>
 	<title>View Photo - jphotos</title>
 	<link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+	{{template "_plausibleTrackingCode"}}
 </head>
 <body>
 	{{template "_versionBanner" .}}
@@ -52,6 +54,10 @@
 	</div>
 </body>
 </html>
+{{end}}
+
+{{define "_plausibleTrackingCode"}}
+<script async defer data-domain="photos.jrgnsn.net" src="https://stats.jrgnsn.net/js/plausible.js"></script>
 {{end}}
 
 {{define "_versionBanner"}}
