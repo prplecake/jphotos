@@ -51,9 +51,9 @@ func (pg *PGStore) GetGroupsForUser(u User) ([]Group, error) {
 	return groups, nil
 }
 
-// GetGroupByID returns a group and a list of all its members
-func (pg *PGStore) GetGroupByID(id string) (Group, []GroupMember, error) {
-	rows, err := pg.Query("SELECT group_name FROM groups WHERE id = $1", id)
+// GetGroupByUUID returns a group and a list of all its members
+func (pg *PGStore) GetGroupByUUID(uuid string) (Group, []GroupMember, error) {
+	rows, err := pg.Query("SELECT group_name FROM groups WHERE id = $1", uuid)
 	if err != nil {
 		return Group{}, nil, err
 	}
@@ -72,7 +72,7 @@ func (pg *PGStore) GetGroupByID(id string) (Group, []GroupMember, error) {
 	rows, err = pg.Query("SELECT username,admin FROM member"+
 		" LEFT JOIN users ON member = id"+
 		" WHERE groups = $1"+
-		" ORDER BY username", id)
+		" ORDER BY username", uuid)
 	if err != nil {
 		return Group{}, nil, err
 	}
@@ -85,6 +85,6 @@ func (pg *PGStore) GetGroupByID(id string) (Group, []GroupMember, error) {
 
 	return Group{
 		Name: name,
-		UUID: id,
+		UUID: uuid,
 	}, members, nil
 }

@@ -75,31 +75,31 @@ type Store interface {
 	// These are methods used to primarily access the albums tabl
 	GetAllAlbums() ([]Album, error)
 	GetAlbumBySlug(slug string) (*Album, error)
-	GetAlbumPhotosByID(id string) ([]Photo, error)
-	GetAlbumSlugByID(id string) (string, error)
+	GetAlbumPhotosByUUID(uuid string) ([]Photo, error)
+	GetAlbumSlugByUUID(uuid string) (string, error)
 
 	AddAlbum(name string) error
 
-	RenameAlbumByID(id, newName string) error
+	RenameAlbumByUUID(uuid, newName string) error
 
 	DeleteAlbumBySlug(slug string) error
 
 	//
 	// Photo Methods
 	// These are methods used to primarily access the photos table
-	AddPhoto(p Photo, albumID string) error
-	GetPhotoByID(id string) (*Photo, error)
-	GetAlbumIDByPhotoID(id string) (string, error)
+	AddPhoto(p Photo, albumUUID string) error
+	GetPhotoByUUID(uuid string) (*Photo, error)
+	GetAlbumUUIDByPhotoUUID(uuid string) (string, error)
 
-	UpdatePhotoCaptionByID(id, newCaption string) error
-	UpdatePhotoAlbum(photoID, albumID string) error
+	UpdatePhotoCaptionByUUID(uuid, newCaption string) error
+	UpdatePhotoAlbum(photoUUID, albumUUID string) error
 
-	DeletePhotoByID(id string) error
+	DeletePhotoByUUID(uuid string) error
 
 	//
 	// Group Methods
 	GetGroupsForUser(u User) ([]Group, error)
-	GetGroupByID(id string) (Group, []GroupMember, error)
+	GetGroupByUUID(uuid string) (Group, []GroupMember, error)
 
 	// SessionGet returns a valid session if one exists.
 	// Guranteed to not return expired sessinos.

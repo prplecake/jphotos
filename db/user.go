@@ -73,7 +73,7 @@ func (pg *PGStore) GetAllUsers() ([]User, error) {
 // GetUserByUsername returns the DB user information for a user if that user exists
 func (pg *PGStore) GetUserByUsername(username string) (*User, error) {
 
-	rows, err := pg.Query("SELECT id, hash, created FROM users WHERE username = $1", username)
+	rows, err := pg.Query("SELECT uuid, hash, created FROM users WHERE username = $1", username)
 	if err != nil {
 		return nil, err
 	}
@@ -134,8 +134,8 @@ func (pg *PGStore) SessionGet(session string, newExpiration time.Time) (*Session
 
 	//c, err := pg.conn.Conn(ctx)
 	rows, err := pg.Query(
-		"SELECT username, id, expires FROM sessions"+
-			" INNER JOIN users ON sessions.user_id = users.id"+
+		"SELECT username, uuid, expires FROM sessions"+
+			" INNER JOIN users ON sessions.user_id = users.uuid"+
 			" WHERE token = $1", session)
 	if err != nil {
 		return nil, err

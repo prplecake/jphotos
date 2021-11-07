@@ -45,7 +45,7 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		log.Printf("MIME Header: %+v\n", files[i].Header)
 		log.Printf("Album: %s\n", r.FormValue("album-id"))
 
-		newID, path, err := app.UploadSavePhoto(file, files[i].Filename, s.config.Uploads)
+		newUUID, path, err := app.UploadSavePhoto(file, files[i].Filename, s.config.Uploads)
 		if err != nil {
 			if err == app.ErrBadContentType {
 				log.Printf("Bad content type, not uploading [%s]", files[i].Filename)
@@ -55,7 +55,7 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 		}
 
 		err = s.db.AddPhoto(db.Photo{
-			ID:       newID,
+			UUID:     newUUID,
 			Caption:  r.FormValue("caption"),
 			Location: filepath.Base(path),
 		}, r.FormValue("album-id"))
@@ -66,7 +66,7 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Uploaded %d of %d files.", count, len(files))
 	log.Printf("Uploaded %d files", count)
 
-	slug, err := s.db.GetAlbumSlugByID(r.FormValue("album-id"))
+	slug, err := s.db.GetAlbumSlugByUUID(r.FormValue("album-id"))
 	log.Print(slug)
 	if err != nil {
 		log.Print(err)

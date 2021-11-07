@@ -12,7 +12,7 @@
 	{{if .Photos}}
 	{{range .Photos}}
 	<div class="photo-item">
-		<a href="/photo/{{.ID}}">
+		<a href="/photo/{{.UUID}}">
 			<img src="/t/thumb_{{.Location}}" alt="{{.Caption}}" />
 		</a><br />
 		<div class="photo-caption">{{.Caption}}</div>
@@ -53,6 +53,6 @@
 	<input class="form-control" type="text" id="caption"
 		name="caption" placeholder="caption" /><br />
 	<input class="btn btn-primary" type="submit" value="Upload & Add to Album" />
-	<input type="hidden" name="album-id" value="{{.ID}}" />
+	<input type="hidden" name="album-id" value="{{.UUID}}" />
 </form>
 {{end}}

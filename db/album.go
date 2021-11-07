@@ -13,7 +13,7 @@ import (
 
 // An Album is a view into an album
 type Album struct {
-	Name, Slug, ID string
+	Name, Slug, UUID string
 }
 
 var (
@@ -47,7 +47,7 @@ func (pg *PGStore) AddAlbum(name string) error {
 
 // GetAlbums returns a list of all Albums
 func (pg *PGStore) GetAllAlbums() ([]Album, error) {
-	rows, err := pg.Query("SELECT id, name, slug FROM albums " +
+	rows, err := pg.Query("SELECT uuid, name, slug FROM albums " +
 		"ORDER BY name ASC")
 	if err != nil {
 		log.Fatal(err)
@@ -69,7 +69,7 @@ func (pg *PGStore) GetAllAlbums() ([]Album, error) {
 
 // GetAlbum returns an album, if it exists and matches the provided id
 func (pg *PGStore) GetAlbumBySlug(slug string) (*Album, error) {
-	rows, err := pg.Query("SELECT name, id FROM albums WHERE slug = $1", slug)
+	rows, err := pg.Query("SELECT name, uuid FROM albums WHERE slug = $1", slug)
 	if err != nil {
 		return nil, err
 	}
@@ -78,9 +78,9 @@ func (pg *PGStore) GetAlbumBySlug(slug string) (*Album, error) {
 		return nil, ErrNotFound
 	}
 
-	var name, id string
+	var name, uuid string
 
-	err = rows.Scan(&name, &id)
+	err = rows.Scan(&name, &uuid)
 	if err != nil {
 		return nil, err
 	}
@@ -92,19 +92,19 @@ func (pg *PGStore) GetAlbumBySlug(slug string) (*Album, error) {
 	return &Album{
 		Name: name,
 		Slug: slug,
-		ID:   id,
+		UUID: uuid,
 	}, nil
 }
 
 // GetAlbumPhotos returns a list of all photos in an album
-func (pg *PGStore) GetAlbumPhotosByID(id string) ([]Photo, error) {
+func (pg *PGStore) GetAlbumPhotosByUUID(uuid string) ([]Photo, error) {
 	rows, err := pg.Query(
-		"SELECT p.id, p.caption, p.location, p.added "+
+		"SELECT p.uuid, p.caption, p.location, p.added "+
 			"FROM album_photos as ap "+
-			"INNER JOIN photos as p ON p.id = ap.photo "+
-			"INNER JOIN albums as a ON ap.album = a.id "+
+			"INNER JOIN photos as p ON p.uuid = ap.photo "+
+			"INNER JOIN albums as a ON ap.album = a.uuid "+
 			"WHERE ap.album = $1 ORDER BY p.added ASC",
-		id)
+		uuid)
 	if err != nil {
 		return nil, fmt.Errorf("GetAlbumPhotos: %w", err)
 	}
@@ -112,21 +112,21 @@ func (pg *PGStore) GetAlbumPhotosByID(id string) ([]Photo, error) {
 
 	for rows.Next() {
 		var (
-			id, caption, location string
-			added                 time.Time
+			uuid, caption, location string
+			added                   time.Time
 		)
-		err = rows.Scan(&id, &caption, &location, &added)
+		err = rows.Scan(&uuid, &caption, &location, &added)
 		if err != nil {
 			return nil, fmt.Errorf("GetAlbumPhotos: %w", err)
 		}
-		photos = append(photos, Photo{id, caption, location, added})
+		photos = append(photos, Photo{uuid, caption, location, added})
 	}
 	return photos, nil
 }
 
-// GetAlbumSlugByID returns the slug matching the provided ID
-func (pg *PGStore) GetAlbumSlugByID(id string) (string, error) {
-	rows, err := pg.Query("SELECT slug FROM albums WHERE id = $1", id)
+// GetAlbumSlugByUUID returns the slug matching the provided ID
+func (pg *PGStore) GetAlbumSlugByUUID(uuid string) (string, error) {
+	rows, err := pg.Query("SELECT slug FROM albums WHERE uuid = $1", uuid)
 	if err != nil {
 		return "", err
 	}
@@ -155,10 +155,10 @@ func (pg *PGStore) DeleteAlbumBySlug(slug string) error {
 	return pg.Exec("DELETE FROM albums WHERE slug = $1", slug)
 }
 
-// RenameAlbum renames an album
-func (pg *PGStore) RenameAlbumByID(id, newName string) error {
+// RenameAlbumByUUID renames an album
+func (pg *PGStore) RenameAlbumByUUID(uuid, newName string) error {
 	return pg.Exec(
 		"UPDATE albums SET name = $1, slug = $2 "+
-			"WHERE id = $3",
-		newName, strings.ToLower(slugify.Marshal(newName)), id)
+			"WHERE uuid = $3",
+		newName, strings.ToLower(slugify.Marshal(newName)), uuid)
 }
