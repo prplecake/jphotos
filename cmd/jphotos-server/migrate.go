@@ -17,6 +17,10 @@ func dbMigrate(direction, dbURL string, version int) {
 	if err != nil {
 		log.Fatal("migrate.New():", err)
 	}
+	currentVersion, _, err := m.Version()
+	if err != nil {
+		log.Fatal("error getting migration version information", err)
+	}
 	switch direction {
 	case "up":
 		if err := m.Up(); err != nil {
@@ -24,8 +28,8 @@ func dbMigrate(direction, dbURL string, version int) {
 		}
 		log.Print("Migrate Up: Success")
 	case "down":
-		if err := m.Down(); err != nil {
-			log.Fatal("m.Down():", err)
+		if err := m.Migrate(currentVersion - 1); err != nil {
+			log.Fatal("m.Migrate():", err)
 		}
 		log.Print("Migrate Down: Success")
 	case "force":
