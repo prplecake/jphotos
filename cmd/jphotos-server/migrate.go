@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func dbMigrate(direction, dbURL string, version int) {
+func dbMigrate(command, dbURL string, version int) {
 	m, err := migrate.New(
 		"file://./db/migrations",
 		dbURL,
@@ -17,11 +17,11 @@ func dbMigrate(direction, dbURL string, version int) {
 	if err != nil {
 		log.Fatal("migrate.New():", err)
 	}
-	currentVersion, _, err := m.Version()
+	currentVersion, dirty, err := m.Version()
 	if err != nil {
 		log.Fatal("error getting migration version information", err)
 	}
-	switch direction {
+	switch command {
 	case "up":
 		if err := m.Up(); err != nil {
 			log.Fatal("m.Up():", err)
@@ -37,5 +37,8 @@ func dbMigrate(direction, dbURL string, version int) {
 			log.Fatal("m.Force():", err)
 		}
 		log.Print("Migrate Force: Success")
+	case "status":
+		log.Print("Current migration version: ", currentVersion)
+		log.Print("Migration dirty? ", dirty)
 	}
 }

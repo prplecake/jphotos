@@ -49,6 +49,7 @@ func main() {
 	migrateDown := migrateCmd.Bool("down", false, "migrate down")
 	migrateForce := migrateCmd.Bool("force", false, "force migration")
 	migrateVersion := migrateCmd.Int("version", 0, "migrations to run")
+	migrateStatus := migrateCmd.Bool("status", false, "migration status")
 
 	userCmd := flag.NewFlagSet("user", flag.ExitOnError)
 	userCreate := userCmd.Bool("create", false, "create user")
@@ -65,6 +66,10 @@ func main() {
 		switch os.Args[1] {
 		case "migrate":
 			migrateCmd.Parse(os.Args[2:])
+			if *migrateStatus {
+				dbMigrate("status", dbURL, *migrateVersion)
+				os.Exit(0)
+			}
 			log.Print("subcommand 'migrate'")
 			log.Print("\tup:", *migrateUp)
 			log.Print("\tdown:", *migrateDown)
