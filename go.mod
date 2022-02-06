@@ -12,5 +12,5 @@ require (
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b
 	golang.org/x/crypto v0.0.0-20191029031824-8986dd9e96cf
 	golang.org/x/sys v0.0.0-20191104094858-e8c54fb511f6 // indirect
-	gopkg.in/yaml.v2 v2.2.5
+	gopkg.in/yaml.v2 v2.2.8
 )
