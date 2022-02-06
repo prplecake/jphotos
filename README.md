@@ -1,3 +1,6 @@
+[![Go](https://github.com/prplecake/jphotos/actions/workflows/go.yml/badge.svg)](https://github.com/prplecake/jphotos/actions/workflows/go.yml)
+[![CodeQL](https://github.com/prplecake/jphotos/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/prplecake/jphotos/actions/workflows/codeql-analysis.yml)
+
 # jphotos
 
 jphotos is a simple HTTP server for photo albums.
