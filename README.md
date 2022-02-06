@@ -1,5 +1,3 @@
-[![builds.sr.ht status](https://builds.sr.ht/~mjorgensen/jphotos.svg)](https://builds.sr.ht/~mjorgensen/jphotos?)
-
 # jphotos
 
 jphotos is a simple HTTP server for photo albums.
