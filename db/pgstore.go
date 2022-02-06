@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/gchaincl/dotsql"
+	"github.com/qustavo/dotsql"
 	_ "github.com/lib/pq" // The Postgres driver
 )
 
