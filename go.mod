@@ -3,7 +3,6 @@ module git.sr.ht/~mjorgensen/jphotos
 go 1.16
 
 require (
-	git.sr.ht/~mjorgensen/go-thumbnail v0.1.5
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
 	github.com/apache/thrift v0.12.0 // indirect
 	github.com/cockroachdb/cockroach-go v0.0.0-20181001143604-e0a95dfd547c // indirect
@@ -19,6 +18,7 @@ require (
 	github.com/lib/pq v1.10.4
 	github.com/metal3d/go-slugify v0.0.0-20160607203414-7ac2014b2f23
 	github.com/openzipkin/zipkin-go v0.1.6 // indirect
+	github.com/prplecake/go-thumbnail v0.1.4
 	github.com/qustavo/dotsql v1.1.0
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
