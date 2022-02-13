@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/qustavo/dotsql"
 	_ "github.com/lib/pq" // The Postgres driver
+	"github.com/qustavo/dotsql"
 )
 
 // A PGStore implements storage against PostGres
