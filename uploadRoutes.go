@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"git.sr.ht/~mjorgensen/jphotos/app"
-	"git.sr.ht/~mjorgensen/jphotos/auth"
-	"git.sr.ht/~mjorgensen/jphotos/db"
+	"github.com/prplecake/jphotos/app"
+	"github.com/prplecake/jphotos/auth"
+	"github.com/prplecake/jphotos/db"
 )
 
 func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {

@@ -1,4 +1,4 @@
-module git.sr.ht/~mjorgensen/jphotos
+module github.com/prplecake/jphotos
 
 go 1.16
 
