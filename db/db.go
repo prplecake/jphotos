@@ -72,7 +72,7 @@ type Store interface {
 
 	//
 	// Album Methods
-	// These are methods used to primarily access the albums tabl
+	// These are methods used to primarily access the albums table
 	GetAllAlbums() ([]Album, error)
 	GetAlbumBySlug(slug string) (*Album, error)
 	GetAlbumPhotosByUUID(uuid string) ([]Photo, error)
@@ -102,7 +102,7 @@ type Store interface {
 	GetGroupByUUID(uuid string) (Group, []GroupMember, error)
 
 	// SessionGet returns a valid session if one exists.
-	// Guranteed to not return expired sessinos.
+	// Guranteed to not return expired sessions.
 	// If a valid session is found, extend it! I don't recommend passing
 	// in a time that's past, though.
 	SessionGet(session string, newExpiration time.Time) (*Session, error)

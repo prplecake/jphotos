@@ -9,7 +9,7 @@ jphotos is a simple HTTP server for photo albums.
 
 * No "social media" features
 * No JavaScript!
-* Blazingly fast
+* Blazing fast
 
 ## Getting Started
 

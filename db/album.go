@@ -86,7 +86,7 @@ func (pg *PGStore) GetAlbumBySlug(slug string) (*Album, error) {
 	}
 
 	if rows.Next() {
-		panic("Database gurantee not met; multiples albums with same name")
+		panic("Database guarantee not met; multiples albums with same name")
 	}
 
 	return &Album{
@@ -143,7 +143,7 @@ func (pg *PGStore) GetAlbumSlugByUUID(uuid string) (string, error) {
 	}
 
 	if rows.Next() {
-		panic("Database gurantee not met; multiples albums with same name")
+		panic("Database guarantee not met; multiples albums with same name")
 	}
 
 	return slug, nil

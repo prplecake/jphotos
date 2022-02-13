@@ -22,7 +22,7 @@ func InitTemplates(path string) {
 // Panics if the templates haven't been initialized.
 func RenderTemplate(w http.ResponseWriter, template string, data interface{}) {
 	if templates == nil {
-		panic("Templates unitialized")
+		panic("Templates uninitialized")
 	}
 	err := templates.ExecuteTemplate(w, template+".html", data)
 	if err != nil {
