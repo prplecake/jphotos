@@ -93,10 +93,10 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err = app.RemoveFile("data/uploads/photos/" + photo.Location); err != nil {
-		log.Printf("File not found at specified location: %w", err)
+		log.Printf("File not found at specified location: %v", err)
 	}
 	if err = app.RemoveFile("data/thumbnails/thumb_" + photo.Location); err != nil {
-		log.Printf("File not found at specified location: %w", err)
+		log.Printf("File not found at specified location: %v", err)
 	}
 
 	err = s.db.DeletePhotoByUUID(v["id"])
