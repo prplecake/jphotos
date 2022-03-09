@@ -20,6 +20,8 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 		AlbumSlug string
 		Version   string
 		Branch    string
+		Previous  string
+		Next      string
 	}
 
 	v := mux.Vars(r)
@@ -51,9 +53,13 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 			app.ThrowInternalServerError(w)
 			return
 		}
+
+		previous := s.db.GetPreviousAlbumPhoto(album, photo.ID)
+		next := s.db.GetNextAlbumPhoto(album, photo.ID)
+
 		version := app.CurrentVersion
 		branch := app.CurrentBranch
-		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album, version, branch})
+		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album, version, branch, previous, next})
 	case "POST":
 		newCaption := r.FormValue("caption")
 		if newCaption != "" {

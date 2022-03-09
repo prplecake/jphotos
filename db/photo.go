@@ -10,6 +10,7 @@ import (
 type Photo struct {
 	UUID, Caption, Location string
 	Added                   time.Time
+	ID                      int
 }
 
 // AddPhoto adds a photo to the database
@@ -35,7 +36,7 @@ func (pg *PGStore) AddPhoto(p Photo, albumUUID string) error {
 // GetPhotoByUUID returns a photo object for that ID.
 func (pg *PGStore) GetPhotoByUUID(uuid string) (*Photo, error) {
 	rows, err := pg.Query(
-		"SELECT caption, location, added "+
+		"SELECT caption, location, added, id "+
 			"FROM photos WHERE uuid = $1",
 		uuid)
 	if err != nil {
@@ -50,9 +51,10 @@ func (pg *PGStore) GetPhotoByUUID(uuid string) (*Photo, error) {
 	var (
 		caption, location string
 		added             time.Time
+		id                int
 	)
 
-	err = rows.Scan(&caption, &location, &added)
+	err = rows.Scan(&caption, &location, &added, &id)
 	if err != nil {
 		return nil, err
 	}
@@ -62,6 +64,7 @@ func (pg *PGStore) GetPhotoByUUID(uuid string) (*Photo, error) {
 		Caption:  caption,
 		Location: location,
 		Added:    added,
+		ID:       id,
 	}, nil
 }
 
@@ -107,7 +110,7 @@ func (pg *PGStore) UpdatePhotoAlbum(photoUUID, albumUUID string) error {
 // GetAlbumUUIDByPhotoUUID returns the album slug a photo belongs to
 func (pg *PGStore) GetAlbumUUIDByPhotoUUID(photoUUID string) (string, error) {
 	rows, err := pg.Query(
-		"SELECT a.slug FROM albums AS a "+
+		"SELECT a.uuid FROM albums AS a "+
 			"INNER JOIN album_photos AS ap ON ap.album = a.uuid "+
 			"WHERE ap.photo = $1",
 		photoUUID)

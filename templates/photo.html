@@ -36,7 +36,16 @@
 </div>
 {{end}}
 
-<div class="photo-caption">{{.Photo.Caption}}</div>
+<div class="photo-caption">
+	{{if .Previous}}
+	<a href="/photo/{{.Previous}}">Previous Photo</a>
+	{{end}}
+	{{.Photo.Caption}}
+	{{.Photo.ID}}
+	{{if .Next}}
+	<a href="/photo/{{.Next}}">Next Photo</a>
+	{{end}}
+</div>
 {{else}}
 <p>No photo...</p>
 {{end}}

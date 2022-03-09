@@ -99,11 +99,11 @@ func (pg *PGStore) GetAlbumBySlug(slug string) (*Album, error) {
 // GetAlbumPhotos returns a list of all photos in an album
 func (pg *PGStore) GetAlbumPhotosByUUID(uuid string) ([]Photo, error) {
 	rows, err := pg.Query(
-		"SELECT p.uuid, p.caption, p.location, p.added "+
+		"SELECT p.uuid, p.caption, p.location, p.added, p.id "+
 			"FROM album_photos as ap "+
 			"INNER JOIN photos as p ON p.uuid = ap.photo "+
 			"INNER JOIN albums as a ON ap.album = a.uuid "+
-			"WHERE ap.album = $1 ORDER BY p.added ASC",
+			"WHERE ap.album = $1 ORDER BY p.id ASC",
 		uuid)
 	if err != nil {
 		return nil, fmt.Errorf("GetAlbumPhotos: %w", err)
@@ -114,14 +114,65 @@ func (pg *PGStore) GetAlbumPhotosByUUID(uuid string) ([]Photo, error) {
 		var (
 			uuid, caption, location string
 			added                   time.Time
+			id                      int
 		)
-		err = rows.Scan(&uuid, &caption, &location, &added)
+		err = rows.Scan(&uuid, &caption, &location, &added, &id)
 		if err != nil {
 			return nil, fmt.Errorf("GetAlbumPhotos: %w", err)
 		}
-		photos = append(photos, Photo{uuid, caption, location, added})
+		photos = append(photos, Photo{uuid, caption, location, added, id})
 	}
 	return photos, nil
+}
+
+// GetPreviousAlbumPhoto returns the next photo in the album.
+func (pg *PGStore) GetPreviousAlbumPhoto(albumID string, currentPhotoID int) string {
+	rows, _ := pg.Query(
+		"SELECT p.uuid "+
+			"FROM album_photos AS ap "+
+			"INNER JOIN photos AS p ON p.uuid = ap.photo "+
+			"INNER JOIN albums AS a on ap.album = a.uuid "+
+			"WHERE ap.album = $1 "+
+			"AND p.id < $2 ORDER BY p.id DESC",
+		albumID, currentPhotoID)
+	defer rows.Close()
+
+	if !rows.Next() {
+		return ""
+	}
+
+	var (
+		uuid string
+	)
+
+	_ = rows.Scan(&uuid)
+
+	return uuid
+}
+
+// GetNextAlbumPhoto returns the next photo in the album.
+func (pg *PGStore) GetNextAlbumPhoto(albumID string, currentPhotoID int) string {
+	rows, _ := pg.Query(
+		"SELECT p.uuid "+
+			"FROM album_photos AS ap "+
+			"INNER JOIN photos AS p ON p.uuid = ap.photo "+
+			"INNER JOIN albums AS a on ap.album = a.uuid "+
+			"WHERE ap.album = $1 "+
+			"AND p.id > $2 ORDER BY p.id ASC",
+		albumID, currentPhotoID)
+	defer rows.Close()
+
+	if !rows.Next() {
+		return ""
+	}
+
+	var (
+		uuid string
+	)
+
+	_ = rows.Scan(&uuid)
+
+	return uuid
 }
 
 // GetFirstXPhotosFromAlbumByID returns the top X photos that belong to
@@ -143,14 +194,15 @@ func (pg *PGStore) GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo,
 
 	for rows.Next() {
 		var (
-			id, caption, location string
-			added                 time.Time
+			uuid, caption, location string
+			added                   time.Time
+			id                      int
 		)
-		err = rows.Scan(&id, &caption, &location, &added)
+		err = rows.Scan(&uuid, &location)
 		if err != nil {
 			return nil, fmt.Errorf("GetFirstXPhotosFromAlbumByID: %w", err)
 		}
-		photos = append(photos, Photo{id, caption, location, added})
+		photos = append(photos, Photo{uuid, caption, location, added, id})
 	}
 	return photos, nil
 }
