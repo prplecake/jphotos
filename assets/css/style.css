@@ -184,12 +184,18 @@ label {
 	display:flex;
 	flex-wrap: wrap;
 }
+
 .album-list-item {
 	margin: 1em;
 	font-size: 1.1rem;
 	text-align: center;
 	vertical-align: middle;
 }
+
+.album-list a {
+	height: min-content;
+}
+
 .album-content {
 	display: flex;
 	flex-wrap: wrap;
@@ -224,9 +230,12 @@ label {
 }
 
 .album-cover-image div {
-	margin: 27px 0 0 0;
-	height: 100%;
 	width: 100%;
+}
+
+.album-cover-image img {
+	width: inherit;
+	object-fit: cover;
 }
 
 .album-name {
