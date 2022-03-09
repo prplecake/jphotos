@@ -5,3 +5,5 @@ jphotos-server.exe
 gin-bin
 cmd/jphotos-server/jphotos.yaml
 data/*
+
+*.exe
