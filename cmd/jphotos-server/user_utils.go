@@ -8,7 +8,7 @@ import (
 	"strings"
 	"syscall"
 
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 
 	"github.com/prplecake/jphotos/auth"
 	"github.com/prplecake/jphotos/db"
@@ -48,7 +48,7 @@ func credentials() (string, string) {
 	username, _ := reader.ReadString('\n')
 
 	fmt.Print("Enter Password: ")
-	bytePassword, _ := terminal.ReadPassword(int(syscall.Stdin))
+	bytePassword, _ := term.ReadPassword(int(syscall.Stdin))
 	password := string(bytePassword)
 
 	return strings.TrimSpace(username), strings.TrimSpace(password)

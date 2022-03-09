@@ -11,6 +11,7 @@ require (
 	github.com/prplecake/go-thumbnail v0.1.4
 	github.com/qustavo/dotsql v1.1.0
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70
+	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -20,5 +21,4 @@ require (
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/image v0.0.0-20220302094943-723b81ca9867 // indirect
 	golang.org/x/sys v0.0.0-20220307203707-22a9840ba4d7 // indirect
-	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 )
