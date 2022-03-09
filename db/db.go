@@ -91,6 +91,7 @@ type Store interface {
 	GetPhotoByUUID(uuid string) (*Photo, error)
 	GetNextAlbumPhoto(albumID string, currentPhotoID int) string
 	GetPreviousAlbumPhoto(albumID string, currentPhotoID int) string
+	GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo, error)
 	GetAlbumUUIDByPhotoUUID(uuid string) (string, error)
 
 	UpdatePhotoCaptionByUUID(uuid, newCaption string) error

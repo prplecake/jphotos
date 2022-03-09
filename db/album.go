@@ -181,11 +181,12 @@ func (pg *PGStore) GetNextAlbumPhoto(albumID string, currentPhotoID int) string 
 // covers.
 func (pg *PGStore) GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo, error) {
 	rows, err := pg.Query(
-		"SELECT TOP $2 p.id, p.location "+
+		"SELECT p.uuid, p.location "+
 			"FROM album_photos as ap "+
-			"INNER JOIN photos as p ON p.id = ap.photo "+
-			"INNER JOIN albums as a ON ap.album = a.id "+
-			"WHERE ap.album = $1 ORDER BY p.added ASC",
+			"INNER JOIN photos as p ON p.uuid = ap.photo "+
+			"INNER JOIN albums as a ON ap.album = a.uuid "+
+			"WHERE ap.album = $1 ORDER BY p.id ASC "+
+			"LIMIT $2",
 		albumID, x)
 	if err != nil {
 		return nil, fmt.Errorf("GetFirstXPhotosFromAlbumByID: %w", err)
