@@ -31,10 +31,10 @@ Comprehensive documentation [can be found here][wiki].
 As you can see, this project is still very much a work in progress!
 
 **Homepage/Albums Index**
-![albums index](https://drop.jrgnsn.net/HcHn.png)
+![albums index](assets/screenshots/albums-index.png)
 
 **Album View**
-![album view](https://drop.jrgnsn.net/yC3_.png)
+![album view](assets/screenshots/album-view.png)
 
 **Single Photo View**
-![single photo view](https://drop.jrgnsn.net/DGF7.png)
+![single photo view](assets/screenshots/single-photo-view.png)
