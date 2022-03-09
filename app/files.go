@@ -18,13 +18,13 @@ var (
 )
 
 // UploadSavePhoto saves an uploaded file to the filesystem.
-func UploadSavePhoto(f io.Reader, name string, uploadConfig UploadConfig) (string, string, error) {
+func UploadSavePhoto(f io.Reader, name string, mediaConfig MediaConfig) (string, string, error) {
 	newUUID, _ := uuid.NewV4()
 	newID := newUUID.String()
 
 	ext := filepath.Ext(name)
-	path := uploadConfig.Path + newID + ext
-	thumbPath := uploadConfig.ThumbnailsPath + "thumb_" + newID + ext
+	path := mediaConfig.Path + newID + ext
+	thumbPath := mediaConfig.ThumbnailsPath + "thumb_" + newID + ext
 
 	fileBytes, err := io.ReadAll(f)
 	if err != nil {

@@ -107,11 +107,11 @@ func main() {
 }
 
 func runServer() {
-	err := os.MkdirAll(config.Uploads.Path, 0755)
+	err := os.MkdirAll(config.Media.Path, 0755)
 	if err != nil {
 		log.Panic(err)
 	}
-	err = os.MkdirAll(config.Uploads.ThumbnailsPath, 0755)
+	err = os.MkdirAll(config.Media.ThumbnailsPath, 0755)
 	if err != nil {
 		log.Panic(err)
 	}

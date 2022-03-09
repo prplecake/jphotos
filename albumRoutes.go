@@ -280,7 +280,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 
 	for _, photo := range photos {
 		log.Printf("Removing photo from filesystem [%s]", photo.UUID)
-		err := app.RemoveFile(s.config.Uploads.Path + photo.Location)
+		err := app.RemoveFile(s.config.Media.Path + photo.Location)
 		if err != nil {
 			log.Print(err)
 			app.ThrowInternalServerError(w)

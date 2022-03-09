@@ -24,7 +24,7 @@ func defaultConfig() app.Configuration {
 		Templates: app.TemplateConfig{
 			"templates",
 		},
-		Uploads: app.UploadConfig{
+		Media: app.MediaConfig{
 			"data/uploads/photos/",
 			"data/thumbnails/",
 		},

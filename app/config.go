@@ -5,7 +5,7 @@ type Configuration struct {
 	App       Config
 	DB        DatabaseConfig `yaml:"database"`
 	Templates TemplateConfig
-	Uploads   UploadConfig
+	Media     MediaConfig
 }
 
 // A Config holds app-specific configuration.
@@ -25,7 +25,7 @@ type TemplateConfig struct {
 }
 
 // An UploadConfig holds upload-specific configuration.
-type UploadConfig struct {
+type MediaConfig struct {
 	Path           string
 	ThumbnailsPath string
 }

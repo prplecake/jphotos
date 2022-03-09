@@ -5,6 +5,6 @@ database:
   password:
   hostname: localhost
   name: jphotos
-uploads:
+media:
   path: data/uploads/photos/
   thumbnailpath: data/thumbnails/
