@@ -1,10 +1,12 @@
 package main
 
 import (
+	"log"
+	"strings"
+
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"log"
 
 	_ "github.com/lib/pq"
 )
@@ -19,7 +21,10 @@ func dbMigrate(command, dbURL string, version int) {
 	}
 	currentVersion, dirty, err := m.Version()
 	if err != nil {
-		log.Fatal("error getting migration version information", err)
+		if !strings.Contains(err.Error(), "no migration") {
+			// Assume the database is freshly created
+			log.Fatalf("error getting migration version information: %s", err.Error())
+		}
 	}
 	switch command {
 	case "up":

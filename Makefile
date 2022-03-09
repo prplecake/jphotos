@@ -17,7 +17,7 @@ build: install
 	go build ./cmd/jphotos-server
 
 serve: install
-	gin --build ./cmd/jphotos-server --excludeDir data -i
+	gin --build ./cmd/jphotos-server --all --excludeDir data -i
 
 clean:
 	rm jphotos-server gin-bin
