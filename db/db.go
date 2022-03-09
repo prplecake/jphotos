@@ -89,6 +89,9 @@ type Store interface {
 	// These are methods used to primarily access the photos table
 	AddPhoto(p Photo, albumUUID string) error
 	GetPhotoByUUID(uuid string) (*Photo, error)
+	GetNextAlbumPhoto(albumID string, currentPhotoID int) string
+	GetPreviousAlbumPhoto(albumID string, currentPhotoID int) string
+	GetFirstXPhotosFromAlbumByID(albumID string, x int) ([]Photo, error)
 	GetAlbumUUIDByPhotoUUID(uuid string) (string, error)
 
 	UpdatePhotoCaptionByUUID(uuid, newCaption string) error

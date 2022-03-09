@@ -21,15 +21,18 @@ func verifyAlbumInput(name string) []string {
 	issues := []string{}
 	if len(name) == 0 {
 		issues = append(issues,
-			fmt.Sprintf("Album name cannot be blank."))
+			"Album name cannot be blank.")
 	}
 	return issues
 }
 
 func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	type albumData struct {
-		Title   string
-		Albums  []db.Album
+		Title           string
+		AlbumsAndCovers struct {
+			Albums      []db.Album
+			AlbumCovers map[string][]db.Photo
+		}
 		Auth    *auth.Authorization
 		Errors  []string
 		Version string
@@ -49,10 +52,10 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 			if err := s.db.AddAlbum(name); err != nil {
 				if err == db.ErrAlbumExists {
 					errors = append(errors,
-						fmt.Sprintf("Album name already exists."))
+						"Album name already exists.")
 				} else if err == db.ErrAlbumNameInvalid {
 					errors = append(errors,
-						fmt.Sprintf("Album name is invalid."))
+						"Album name is invalid.")
 				} else {
 					log.Fatal(err)
 				}
@@ -67,16 +70,33 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.RenderTemplate(w, "albums", albumData{
-		Title:   "Albums",
-		Albums:  albums,
-		Auth:    auth,
-		Errors:  errors,
-		Version: app.CurrentVersion,
-		Branch:  app.CurrentBranch,
-	})
+	var albumCovers = make(map[string][]db.Photo)
+	for _, _album := range albums {
+		log.Print(_album)
+		firstXPhotos, err := s.db.GetFirstXPhotosFromAlbumByID(_album.UUID, 4)
+		if err != nil {
+			log.Print(err)
+		}
+		log.Print(firstXPhotos)
+		albumCovers[_album.UUID] = firstXPhotos
+	}
 
-	return
+	albumsAndCovers := struct {
+		Albums      []db.Album
+		AlbumCovers map[string][]db.Photo
+	}{
+		Albums:      albums,
+		AlbumCovers: albumCovers,
+	}
+
+	app.RenderTemplate(w, "albums", albumData{
+		Title:           "Albums",
+		AlbumsAndCovers: albumsAndCovers,
+		Auth:            auth,
+		Errors:          errors,
+		Version:         app.CurrentVersion,
+		Branch:          app.CurrentBranch,
+	})
 }
 
 type albumData struct {
@@ -129,7 +149,6 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 		Branch:  app.CurrentBranch,
 	}
 	app.RenderTemplate(w, "album", p)
-	return
 }
 
 func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request) {

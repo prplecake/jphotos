@@ -182,13 +182,20 @@ label {
 
 .album-list {
 	display:flex;
+	flex-wrap: wrap;
 }
+
 .album-list-item {
 	margin: 1em;
 	font-size: 1.1rem;
 	text-align: center;
 	vertical-align: middle;
 }
+
+.album-list a {
+	height: min-content;
+}
+
 .album-content {
 	display: flex;
 	flex-wrap: wrap;
@@ -200,6 +207,43 @@ label {
 
 .album-content img:hover {
 	border: 1px solid darkgray;
+}
+
+.album {
+	display: grid;
+}
+
+.album-cover {
+	display: flex;
+	max-width: 167px;
+	min-width: 167px;
+	flex-wrap: wrap;
+	margin: 0 auto;
+}
+
+.album-cover-image {
+	width: 75px;
+	height: 75px;
+	border: 1px dashed black;
+	margin: .2rem;
+	background-color: #e9ecef;
+}
+
+.album-cover-image div {
+	width: 100%;
+}
+
+.album-cover-image img {
+	width: inherit;
+	object-fit: cover;
+}
+
+.album-name {
+	margin: 0.5rem auto;
+}
+
+.no-padding {
+	padding: 0;
 }
 
 /****************************************************

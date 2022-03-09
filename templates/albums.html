@@ -21,12 +21,31 @@
 
 <h2>All Albums</h2>
 
-{{if .Albums}}
+{{if .AlbumsAndCovers}}
 <div class="album-list">
-	{{range .Albums}}
-	<a href="/album/{{.Slug}}" class="album-list-item btn">
+	{{ $albums := .AlbumsAndCovers.Albums}}
+	{{ $albumCovers := .AlbumsAndCovers.AlbumCovers}}
+	{{range $albums}}
+<a href="/album/{{.Slug}}">
+	<div class="album album-list-item">
+		{{ $covers := index $albumCovers .UUID }}
+		{{if $covers}}
+	<button class="btn no-padding">
+		<div class="album-cover">
+			{{range $covers}}
+			<div class="album-cover-image">
+				<div>
+					<img src="/p/{{.Location}}" />
+				</div>
+			</div>
+			{{end}}
+		</div>
+	</button>
+	{{end}}
+	<div class="album-name">
 		{{.Name}}
-	</a>
+	</div>
+</div></a>
 	{{end}}
 </div>
 {{else}}
