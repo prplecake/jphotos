@@ -28,12 +28,13 @@ func verifyAlbumInput(name string) []string {
 
 func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 	type albumData struct {
-		Title   string
-		Albums  []db.Album
-		Auth    *auth.Authorization
-		Errors  []string
-		Version string
-		Branch  string
+		Title       string
+		Albums      []db.Album
+		AlbumCovers map[string][]db.Photo
+		Auth        *auth.Authorization
+		Errors      []string
+		Version     string
+		Branch      string
 	}
 
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
@@ -67,13 +68,25 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var albumCovers = make(map[string][]db.Photo)
+	for _, _album := range albums {
+		log.Print(_album)
+		firstXPhotos, err := s.db.GetFirstXPhotosFromAlbumByID(_album.UUID, 4)
+		if err != nil {
+			log.Print(err)
+		}
+		log.Print(firstXPhotos)
+		albumCovers[_album.UUID] = firstXPhotos
+	}
+
 	app.RenderTemplate(w, "albums", albumData{
-		Title:   "Albums",
-		Albums:  albums,
-		Auth:    auth,
-		Errors:  errors,
-		Version: app.CurrentVersion,
-		Branch:  app.CurrentBranch,
+		Title:       "Albums",
+		Albums:      albums,
+		AlbumCovers: albumCovers,
+		Auth:        auth,
+		Errors:      errors,
+		Version:     app.CurrentVersion,
+		Branch:      app.CurrentBranch,
 	})
 
 	return
