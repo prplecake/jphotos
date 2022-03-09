@@ -46,7 +46,7 @@
 {{define "deletePhotoForm"}}
 <details class="delete">
 	<summary class="btn btn-danger">Delete photo</summary>
-	<form action="/photo/{{.Photo.ID}}/delete?next=/album/{{.AlbumSlug}}"
+	<form action="/photo/{{.Photo.UUID}}/delete?next=/album/{{.AlbumSlug}}"
 	method="POST">
 	<button type="submit" class="text-danger btn btn-danger">
 		YES - delete this photo
@@ -56,14 +56,14 @@
 {{end}}
 
 {{define "updatePhotoForm"}}
-<form method="POST" action="/photo/{{.Photo.ID}}">
+<form method="POST" action="/photo/{{.Photo.UUID}}">
 	{{if .Albums}}
 	<label for="new_album">
 		select a new album
 		<select class="form-control" name="new_album" id="new_album">
 			<option value="">-- Choose --</option>
 			{{range .Albums}}
-			<option value="{{.ID}}">{{.Name}}</option>
+			<option value="{{.UUID}}">{{.Name}}</option>
 			{{end}}
 		</select>
 	</label><br />

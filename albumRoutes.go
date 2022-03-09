@@ -13,6 +13,10 @@ import (
 	"github.com/prplecake/jphotos/db"
 )
 
+var (
+	AlbumsEndpoint = "/albums"
+)
+
 func verifyAlbumInput(name string) []string {
 	issues := []string{}
 	if len(name) == 0 {
@@ -107,7 +111,7 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	photos, err := s.db.GetAlbumPhotosByID(album.ID)
+	photos, err := s.db.GetAlbumPhotosByUUID(album.UUID)
 	if err != nil {
 		log.Print(err)
 		app.ThrowInternalServerError(w)
@@ -141,7 +145,7 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		if err == db.ErrNotFound {
 			app.RenderTemplate(w, "error", &app.ErrorInfo{
 				Info:          "Album not found",
-				RedirectLink:  "/albums",
+				RedirectLink:  AlbumsEndpoint,
 				RedirectTimer: 3,
 			})
 		}
@@ -158,13 +162,13 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	//}
 	if strings.HasSuffix(r.URL.String(), "rename") {
 		if len(r.FormValue("new_name")) > 0 {
-			err := s.db.RenameAlbumByID(album.ID, r.FormValue("new_name"))
+			err := s.db.RenameAlbumByUUID(album.UUID, r.FormValue("new_name"))
 			if err != nil {
 				log.Print(err)
 				app.ThrowInternalServerError(w)
 				return
 			}
-			slug, err := s.db.GetAlbumSlugByID(album.ID)
+			slug, err := s.db.GetAlbumSlugByUUID(album.UUID)
 			if err != nil {
 				log.Print(err)
 				app.ThrowInternalServerError(w)
@@ -181,13 +185,13 @@ func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request)
 				if v[0] == "on" {
 					log.Print("Deleting photo...")
 					log.Print(k)
-					photoID := strings.TrimPrefix(k, "photo_")
-					s.db.DeletePhotoByID(photoID)
+					photoUUID := strings.TrimPrefix(k, "photo_")
+					s.db.DeletePhotoByUUID(photoUUID)
 				}
 			}
 			if strings.HasPrefix(k, "caption_") {
-				photoID := strings.TrimPrefix(k, "caption_")
-				s.db.UpdatePhotoCaptionByID(photoID, v[0])
+				photoUUID := strings.TrimPrefix(k, "caption_")
+				s.db.UpdatePhotoCaptionByUUID(photoUUID, v[0])
 				// handle update captions
 			}
 		}
@@ -208,7 +212,7 @@ func (s *Server) handleBulkEditAlbumBySlug(w http.ResponseWriter, r *http.Reques
 		if err == db.ErrNotFound {
 			app.RenderTemplate(w, "error", &app.ErrorInfo{
 				Info:          "Album not found",
-				RedirectLink:  "/albums",
+				RedirectLink:  AlbumsEndpoint,
 				RedirectTimer: 3,
 			})
 		}
@@ -217,7 +221,7 @@ func (s *Server) handleBulkEditAlbumBySlug(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	photos, err := s.db.GetAlbumPhotosByID(album.ID)
+	photos, err := s.db.GetAlbumPhotosByUUID(album.UUID)
 	if err != nil {
 		log.Print(err)
 		app.ThrowInternalServerError(w)
@@ -248,7 +252,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	}
 
 	log.Printf("Album %s deleted.", v["slug"])
-	photos, err := s.db.GetAlbumPhotosByID(album.ID)
+	photos, err := s.db.GetAlbumPhotosByUUID(album.UUID)
 	if err != nil {
 		log.Print(err)
 		app.ThrowInternalServerError(w)
@@ -256,7 +260,7 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 	}
 
 	for _, photo := range photos {
-		log.Printf("Removing photo from filesystem [%s]", photo.ID)
+		log.Printf("Removing photo from filesystem [%s]", photo.UUID)
 		err := app.RemoveFile(s.config.Uploads.Path + photo.Location)
 		if err != nil {
 			log.Print(err)
@@ -269,8 +273,8 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 			app.ThrowInternalServerError(w)
 			return
 		}
-		log.Printf("Removing photo from database [%s]", photo.ID)
-		err = s.db.DeletePhotoByID(photo.ID)
+		log.Printf("Removing photo from database [%s]", photo.UUID)
+		err = s.db.DeletePhotoByUUID(photo.UUID)
 		if err != nil {
 			log.Print(err)
 			app.ThrowInternalServerError(w)
@@ -285,5 +289,5 @@ func (s *Server) handleDeleteAlbumBySlug(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	http.Redirect(w, r, "/albums", http.StatusSeeOther)
+	http.Redirect(w, r, AlbumsEndpoint, http.StatusSeeOther)
 }

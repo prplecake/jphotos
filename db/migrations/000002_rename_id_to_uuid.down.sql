@@ -1,0 +1,3 @@
+ALTER TABLE albums RENAME COLUMN uuid TO id;
+ALTER TABLE photos RENAME COLUMN uuid TO id;
+ALTER TABLE users RENAME COLUMN uuid TO id;

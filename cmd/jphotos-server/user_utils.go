@@ -19,7 +19,7 @@ func createUser(dbs *db.PGStore) {
 
 	err := auth.AddUser(username, password, dbs)
 	if err != nil {
-		log.Fatal("An error occured attempting to add user:", err)
+		log.Fatal("An error occurred attempting to add user:", err)
 	}
 
 	log.Printf("User '%s' created.", username)
@@ -36,7 +36,7 @@ func deleteUser(username string, dbs *db.PGStore) {
 
 	err := auth.RemoveUser(username, dbs)
 	if err != nil {
-		log.Fatalf("An error occured attempting to remove user [%s]: %v", username, err)
+		log.Fatalf("An error occurred attempting to remove user [%s]: %v", username, err)
 	}
 	log.Printf("User '%s' deleted.", username)
 }

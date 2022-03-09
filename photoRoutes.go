@@ -26,7 +26,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		auth, _ := auth.Get(r, auth.RoleUser, s.db)
-		photo, err := s.db.GetPhotoByID(v["id"])
+		photo, err := s.db.GetPhotoByUUID(v["id"])
 		if err != nil {
 			if err == db.ErrNotFound {
 
@@ -39,7 +39,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		album, err := s.db.GetAlbumIDByPhotoID(v["id"])
+		album, err := s.db.GetAlbumUUIDByPhotoUUID(v["id"])
 		if err != nil {
 			log.Print(err)
 			app.ThrowInternalServerError(w)
@@ -57,7 +57,7 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		newCaption := r.FormValue("caption")
 		if newCaption != "" {
-			err := s.db.UpdatePhotoCaptionByID(v["id"], newCaption)
+			err := s.db.UpdatePhotoCaptionByUUID(v["id"], newCaption)
 			if err != nil {
 				log.Print(err)
 				app.ThrowInternalServerError(w)
@@ -86,20 +86,20 @@ func (s *Server) handleDeletePhotoByID(w http.ResponseWriter, r *http.Request) {
 	var photo *db.Photo
 	v := mux.Vars(r)
 
-	photo, err := s.db.GetPhotoByID(v["id"])
+	photo, err := s.db.GetPhotoByUUID(v["id"])
 	if err != nil {
 		log.Print(err)
 		app.ThrowInternalServerError(w)
 		return
 	}
 	if err = app.RemoveFile("data/uploads/photos/" + photo.Location); err != nil {
-		log.Printf("File not found at specified location: %w", err)
+		log.Printf("File not found at specified location: %v", err)
 	}
 	if err = app.RemoveFile("data/thumbnails/thumb_" + photo.Location); err != nil {
-		log.Printf("File not found at specified location: %w", err)
+		log.Printf("File not found at specified location: %v", err)
 	}
 
-	err = s.db.DeletePhotoByID(v["id"])
+	err = s.db.DeletePhotoByUUID(v["id"])
 	if err != nil {
 		log.Print(err)
 		app.ThrowInternalServerError(w)
