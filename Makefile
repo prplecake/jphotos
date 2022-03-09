@@ -12,6 +12,7 @@ dev-install: install
 
 update:
 	go get -v -u ./...
+	go mod tidy
 
 build: install
 	go build ./cmd/jphotos-server
