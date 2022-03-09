@@ -22,11 +22,11 @@ func defaultConfig() app.Configuration {
 			Port:     5432,
 		},
 		Templates: app.TemplateConfig{
-			"templates",
+			Path: "templates",
 		},
 		Media: app.MediaConfig{
-			"data/uploads/photos/",
-			"data/thumbnails/",
+			Path:           "data/uploads/photos/",
+			ThumbnailsPath: "data/thumbnails/",
 		},
 	}
 	return config
