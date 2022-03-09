@@ -14,7 +14,7 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 	auth, _ := auth.Get(r, auth.RoleUser, s.db)
 	if auth == nil {
 		log.Print("Error: Unauthorized")
-		http.Error(w, "Unauthorized.", 401)
+		http.Error(w, "Unauthorized.", http.StatusUnauthorized)
 		return
 	}
 	err := r.ParseMultipartForm(100000)
@@ -29,12 +29,12 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Preparing to upload %d files.", len(files))
 	for i := range files {
 		file, err := files[i].Open()
-		defer file.Close()
 		if err != nil {
 			log.Print("Error retrieving the file")
 			log.Print(err)
 			return
 		}
+		defer file.Close()
 		if files[i].Size == 0 {
 			log.Print("Error: file is empty. File size: ", files[i].Size)
 			continue
@@ -59,6 +59,9 @@ func (s *Server) handleUploadPhoto(w http.ResponseWriter, r *http.Request) {
 			Caption:  r.FormValue("caption"),
 			Location: filepath.Base(path),
 		}, r.FormValue("album-id"))
+		if err != nil {
+			log.Printf("Error adding photo, %s: %s", newUUID, err)
+		}
 
 		count++
 		log.Printf("Successfully uploaded file %d.", count)

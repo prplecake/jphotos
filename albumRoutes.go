@@ -21,7 +21,7 @@ func verifyAlbumInput(name string) []string {
 	issues := []string{}
 	if len(name) == 0 {
 		issues = append(issues,
-			fmt.Sprintf("Album name cannot be blank."))
+			"Album name cannot be blank.")
 	}
 	return issues
 }
@@ -52,10 +52,10 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 			if err := s.db.AddAlbum(name); err != nil {
 				if err == db.ErrAlbumExists {
 					errors = append(errors,
-						fmt.Sprint("Album name already exists."))
+						"Album name already exists.")
 				} else if err == db.ErrAlbumNameInvalid {
 					errors = append(errors,
-						fmt.Sprint("Album name is invalid."))
+						"Album name is invalid.")
 				} else {
 					log.Fatal(err)
 				}
@@ -97,8 +97,6 @@ func (s *Server) handleAlbumIndex(w http.ResponseWriter, r *http.Request) {
 		Version:         app.CurrentVersion,
 		Branch:          app.CurrentBranch,
 	})
-
-	return
 }
 
 type albumData struct {
@@ -151,7 +149,6 @@ func (s *Server) handleGetAlbum(w http.ResponseWriter, r *http.Request) {
 		Branch:  app.CurrentBranch,
 	}
 	app.RenderTemplate(w, "album", p)
-	return
 }
 
 func (s *Server) handleManageAlbumBySlug(w http.ResponseWriter, r *http.Request) {
