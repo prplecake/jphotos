@@ -1,5 +1,6 @@
 [![Go](https://github.com/prplecake/jphotos/actions/workflows/go.yml/badge.svg)](https://github.com/prplecake/jphotos/actions/workflows/go.yml)
 [![CodeQL](https://github.com/prplecake/jphotos/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/prplecake/jphotos/actions/workflows/codeql-analysis.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/prplecake/jphotos/badge)](https://www.codefactor.io/repository/github/prplecake/jphotos)
 
 # jphotos
 
