@@ -74,7 +74,7 @@ li[role="menuitem"] {
 	cursor: pointer;
 	color: #000;
 	text-decoration: none;
-	margin: 12px 0 0 0;
+	margin: 12px 0 0;
 	transition: color .15s ease-in-out,
 	background-color .15s ease-in-out,
 	border-color .15s ease-in-out,
@@ -302,7 +302,7 @@ label {
 .photo-container .page-links {
 	grid-column-start: 2;
 	float: right;
-	margin: 1.75em 0 0 0;
+	margin: 1.75em 0 0;
 }
 
 .photo-container .navigation {
