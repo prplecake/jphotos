@@ -234,7 +234,8 @@ label {
 }
 
 .album-cover-image img {
-	width: inherit;
+	height: 75px;
+	max-width: 100%;
 	object-fit: cover;
 }
 
