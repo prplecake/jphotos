@@ -41,7 +41,13 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
-		album, err := s.db.GetAlbumUUIDByPhotoUUID(v["id"])
+		albumUUID, err := s.db.GetAlbumUUIDByPhotoUUID(v["id"])
+		if err != nil {
+			log.Print(err)
+			app.ThrowInternalServerError(w)
+			return
+		}
+		albumSlug, err := s.db.GetAlbumSlugByUUID(albumUUID)
 		if err != nil {
 			log.Print(err)
 			app.ThrowInternalServerError(w)
@@ -54,12 +60,12 @@ func (s *Server) handlePhotoByID(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		previous := s.db.GetPreviousAlbumPhoto(album, photo.ID)
-		next := s.db.GetNextAlbumPhoto(album, photo.ID)
+		previous := s.db.GetPreviousAlbumPhoto(albumUUID, photo.ID)
+		next := s.db.GetNextAlbumPhoto(albumUUID, photo.ID)
 
 		version := app.CurrentVersion
 		branch := app.CurrentBranch
-		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, album, version, branch, previous, next})
+		app.RenderTemplate(w, "photo", &photoData{photo, auth, albums, albumSlug, version, branch, previous, next})
 	case "POST":
 		newCaption := r.FormValue("caption")
 		if newCaption != "" {
