@@ -3,7 +3,7 @@ module github.com/prplecake/jphotos
 go 1.17
 
 require (
-	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gofrs/uuid v4.4.0+incompatible
 	github.com/golang-migrate/migrate/v4 v4.15.1
 	github.com/gorilla/mux v1.8.0
 	github.com/lib/pq v1.10.7
