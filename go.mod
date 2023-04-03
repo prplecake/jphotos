@@ -11,7 +11,7 @@ require (
 	github.com/prplecake/go-thumbnail v0.1.6
 	github.com/qustavo/dotsql v1.1.0
 	golang.org/x/crypto v0.0.0-20220411220226-7b82a4e95df4
-	golang.org/x/term v0.0.0-20220411215600-e5f449aeb171
+	golang.org/x/term v0.6.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -20,7 +20,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/image v0.5.0 // indirect
-	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+	golang.org/x/sys v0.6.0 // indirect
 )
 
 //replace github.com/prplecake/go-thumbnail => /Users/mjorgensen/Projects/go-thumbnail
