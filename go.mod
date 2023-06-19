@@ -10,7 +10,7 @@ require (
 	github.com/metal3d/go-slugify v0.0.0-20160607203414-7ac2014b2f23
 	github.com/prplecake/go-thumbnail v0.1.6
 	github.com/qustavo/dotsql v1.1.0
-	golang.org/x/crypto v0.9.0
+	golang.org/x/crypto v0.10.0
 	golang.org/x/term v0.9.0
 	gopkg.in/yaml.v2 v2.4.0
 )
