@@ -10,8 +10,8 @@ require (
 	github.com/metal3d/go-slugify v0.0.0-20160607203414-7ac2014b2f23
 	github.com/prplecake/go-thumbnail v0.1.6
 	github.com/qustavo/dotsql v1.2.0
-	golang.org/x/crypto v0.29.0
-	golang.org/x/term v0.26.0
+	golang.org/x/crypto v0.32.0
+	golang.org/x/term v0.28.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
@@ -20,7 +20,7 @@ require (
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/image v0.18.0 // indirect
-	golang.org/x/sys v0.27.0 // indirect
+	golang.org/x/sys v0.29.0 // indirect
 )
 
 //replace github.com/prplecake/go-thumbnail => /Users/mjorgensen/Projects/go-thumbnail
